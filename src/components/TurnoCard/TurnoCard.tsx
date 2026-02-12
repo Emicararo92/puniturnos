@@ -1,13 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./TurnoCard.module.css";
 import AssignCadeteModal from "../AssignCadeteModal/AssignCadeteModal";
+import IncidentModal from "../IncidentModal/IncidentModal";
 import { createClient } from "@/lib/supabase/client";
 
 type Cadete = {
   id?: string;
   nombre?: string;
+  falta?: boolean;
+  llegada_tarde?: boolean;
+  tardanza_pedido?: boolean;
+  activacion_tardia?: boolean;
 };
 
 type Props = {
@@ -29,11 +35,25 @@ export default function TurnoCard({
   cupoMax,
   refresh,
 }: Props) {
-  const [open, setOpen] = useState(false);
+  const [openAssign, setOpenAssign] = useState(false);
+  const [incidentCadete, setIncidentCadete] = useState<Cadete | null>(null);
+  const [cadetesLocal, setCadetesLocal] = useState<Cadete[]>(cadetes);
+
   const supabase = createClient();
 
+  useEffect(() => {
+    setCadetesLocal(cadetes);
+  }, [cadetes]);
+
   const cuposLibres =
-    cupoMax != null ? Math.max(cupoMax - cadetes.length, 0) : null;
+    cupoMax != null ? Math.max(cupoMax - cadetesLocal.length, 0) : null;
+
+  const estadoClase =
+    cadetesLocal.length === 0
+      ? styles.vacio
+      : cupoMax && cadetesLocal.length >= cupoMax
+        ? styles.completo
+        : styles.parcial;
 
   async function unassign(cadeteId?: string) {
     if (!cadeteId) return;
@@ -50,7 +70,7 @@ export default function TurnoCard({
 
   return (
     <>
-      <div className={styles.card}>
+      <div className={`${styles.card} ${estadoClase}`}>
         <div className={styles.header}>
           <span>
             {horaInicio.slice(0, 5)} - {horaFin.slice(0, 5)}
@@ -59,21 +79,44 @@ export default function TurnoCard({
         </div>
 
         <div className={styles.cadetes}>
-          {cadetes.length === 0 ? (
+          {cadetesLocal.length === 0 ? (
             <div className={styles.empty}>Sin asignar</div>
           ) : (
-            cadetes.map((c) => (
-              <div key={c.id} className={styles.cadeteRow}>
-                <span>{c.nombre}</span>
+            cadetesLocal.map((c) => {
+              const conIncidencia =
+                c.falta ||
+                c.llegada_tarde ||
+                c.tardanza_pedido ||
+                c.activacion_tardia;
 
-                <button
-                  className={styles.removeBtn}
-                  onClick={() => unassign(c.id)}
+              return (
+                <div
+                  key={c.id}
+                  className={`${styles.cadeteRow} ${
+                    conIncidencia ? styles.cadeteIncidencia : ""
+                  }`}
                 >
-                  ✕
-                </button>
-              </div>
-            ))
+                  <span>{c.nombre}</span>
+
+                  <div className={styles.actions}>
+                    <button
+                      className={styles.incidentBtn}
+                      onClick={() => setIncidentCadete(c)}
+                      title="Registrar incidencias"
+                    >
+                      ⚠️
+                    </button>
+
+                    <button
+                      className={styles.removeBtn}
+                      onClick={() => unassign(c.id)}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              );
+            })
           )}
         </div>
 
@@ -81,18 +124,48 @@ export default function TurnoCard({
           <div className={styles.cupo}>Cupos libres: {cuposLibres}</div>
         )}
 
-        <button className={styles.assignBtn} onClick={() => setOpen(true)}>
+        <button
+          className={styles.assignBtn}
+          onClick={() => setOpenAssign(true)}
+        >
           Asignar
         </button>
       </div>
 
       <AssignCadeteModal
-        open={open}
-        onClose={() => setOpen(false)}
+        open={openAssign}
+        onClose={() => setOpenAssign(false)}
         turnoId={turnoId}
         fecha={fecha}
         onAssigned={refresh}
       />
+
+      {incidentCadete && (
+        <IncidentModal
+          open={!!incidentCadete}
+          onClose={() => setIncidentCadete(null)}
+          turnoId={turnoId}
+          cadeteId={incidentCadete.id!}
+          nombre={incidentCadete.nombre!}
+          fecha={fecha}
+          refresh={refresh}
+          onSavedAsignacion={(updated: any) => {
+            setCadetesLocal((prev) =>
+              prev.map((c) =>
+                c.id === updated.cadete_id
+                  ? {
+                      ...c,
+                      falta: updated.falta,
+                      llegada_tarde: updated.llegada_tarde,
+                      tardanza_pedido: updated.tardanza_pedido,
+                      activacion_tardia: updated.activacion_tardia,
+                    }
+                  : c,
+              ),
+            );
+          }}
+        />
+      )}
     </>
   );
 }
