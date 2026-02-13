@@ -71,22 +71,22 @@ export default function TurnoCard({
   return (
     <>
       <div className={styles.card}>
-        {/* Header con hora y fecha */}
+        {/* Header compacto */}
         <div className={styles.header}>
           <div className={styles.headerLeft}>
             <span className={styles.time}>
-              {horaInicio.slice(0, 5)} - {horaFin.slice(0, 5)}
+              {horaInicio.slice(0, 5)}-{horaFin.slice(0, 5)}
             </span>
             <span className={styles.date}>
               {new Date(fecha).toLocaleDateString("es-AR", {
-                day: "numeric",
-                month: "short",
+                day: "2-digit",
+                month: "2-digit",
               })}
             </span>
           </div>
         </div>
 
-        {/* Barra de ocupación */}
+        {/* Barra de ocupación compacta */}
         {cupoMax && (
           <div className={styles.ocupacionBar}>
             <div
@@ -104,15 +104,15 @@ export default function TurnoCard({
               style={{ width: `${ocupacion}%` }}
             />
             <span className={styles.ocupacionText}>
-              {cadetesLocal.length}/{cupoMax} cupos
+              {cadetesLocal.length}/{cupoMax}
             </span>
           </div>
         )}
 
-        {/* Lista de cadetes */}
+        {/* Lista de cadetes compacta */}
         <div className={styles.cadetes}>
           {cadetesLocal.length === 0 ? (
-            <div className={styles.empty}>✨ Sin cadetes asignados</div>
+            <div className={styles.empty}>Sin cadetes</div>
           ) : (
             cadetesLocal.map((c) => {
               const conIncidencia =
@@ -134,7 +134,7 @@ export default function TurnoCard({
                     <button
                       className={styles.incidentBtn}
                       onClick={() => setIncidentCadete(c)}
-                      title="Registrar incidencias"
+                      title="Incidencias"
                     >
                       ⚠️
                     </button>
@@ -142,7 +142,7 @@ export default function TurnoCard({
                     <button
                       className={styles.removeBtn}
                       onClick={() => unassign(c.id)}
-                      title="Desasignar cadete"
+                      title="Quitar"
                     >
                       ✕
                     </button>
@@ -153,12 +153,12 @@ export default function TurnoCard({
           )}
         </div>
 
-        {/* Botón de asignar */}
+        {/* Botón de asignar compacto */}
         <button
           className={styles.assignBtn}
           onClick={() => setOpenAssign(true)}
         >
-          + Asignar Cadete
+          + Asignar
         </button>
       </div>
 
