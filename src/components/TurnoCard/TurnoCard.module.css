@@ -1,374 +1,264 @@
-/* TurnoCard.module.css */
+/* TurnoCard.module.css - Mobile First - Versión simplificada */
 
 .card {
-  background: white;
-  border-radius: 14px;
-  padding: 0;
+  background-color: white;
+  border-radius: 24px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eaeaea;
   display: flex;
   flex-direction: column;
-  border: 2px solid;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  overflow: hidden;
-  min-height: 200px;
-  position: relative;
-}
-
-/* Estados visuales */
-.card.vacio {
-  border-color: #22c55e;
-  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
-  border-left: 6px solid #22c55e;
-}
-
-.card.parcial {
-  border-color: #f59e0b;
-  background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
-  border-left: 6px solid #f59e0b;
-}
-
-.card.completo {
-  border-color: #ef4444;
-  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
-  border-left: 6px solid #ef4444;
+  gap: 1rem;
+  transition: all 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
+/* Header */
 .header {
-  padding: 18px 20px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-bottom: 2px solid #e2e8f0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-shrink: 0;
 }
 
-.header span {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: #1e293b;
+.headerLeft {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
-.header span::before {
-  content: "⏰";
-  font-size: 1rem;
+.time {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #1e293b;
+  background-color: #f1f5f9;
+  padding: 0.25rem 0.75rem;
+  border-radius: 40px;
 }
 
-.header small {
-  font-size: 0.85rem;
+.date {
   color: #64748b;
-  font-weight: 600;
-  background: white;
-  padding: 4px 10px;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  font-size: 0.9rem;
+  text-transform: capitalize;
 }
 
-.cadetes {
-  padding: 18px 20px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-height: 100px;
+/* Barra de ocupación */
+.ocupacionBar {
+  position: relative;
+  height: 32px;
+  background-color: #f1f5f9;
+  border-radius: 40px;
+  overflow: hidden;
+  margin: 0.25rem 0;
 }
 
-.empty {
+.ocupacionFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.ocupacionBaja {
+  background-color: #ef4444; /* Rojo - pocos cupos ocupados */
+}
+
+.ocupacionMedia {
+  background-color: #f59e0b; /* Amarillo - ocupación media */
+}
+
+.ocupacionAlta {
+  background-color: #10b981; /* Verde - casi completo */
+}
+
+.ocupacionCompleta {
+  background-color: #059669; /* Verde oscuro - completo */
+}
+
+.ocupacionText {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1;
-  color: #94a3b8;
-  font-size: 1rem;
-  font-weight: 500;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-radius: 10px;
-  border: 2px dashed #cbd5e1;
-  padding: 20px;
-  text-align: center;
+  height: 100%;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
+/* Lista de cadetes */
+.cadetes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+/* Scrollbar */
+.cadetes::-webkit-scrollbar {
+  width: 4px;
+}
+
+.cadetes::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.cadetes::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 10px;
+}
+
+/* Estado vacío */
+.empty {
+  color: #94a3b8;
+  text-align: center;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+/* Fila de cadete */
 .cadeteRow {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  background: white;
-  border-radius: 10px;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: #f8fafc;
+  border-radius: 16px;
   border: 1px solid #e2e8f0;
   transition: all 0.2s ease;
 }
 
 .cadeteRow:hover {
-  background: #f8fafc;
-  border-color: #c7d2fe;
-  transform: translateX(2px);
+  background-color: #f1f5f9;
+  transform: translateX(3px);
 }
 
-.cadeteRow span {
+.cadeteIncidencia {
+  border-left: 4px solid #ef4444;
+  background-color: #fef2f2;
+}
+
+.cadeteNombre {
+  color: #1e293b;
+  font-weight: 500;
   font-size: 0.95rem;
-  font-weight: 600;
-  color: #334155;
   flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-right: 10px;
+  padding-right: 0.5rem;
 }
 
-.removeBtn {
-  background: #fef2f2;
-  color: #dc2626;
-  border: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
+/* Acciones */
+.cadeteActions {
   display: flex;
+  gap: 0.5rem;
   align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-}
-
-.removeBtn:hover {
-  background: #fee2e2;
-  transform: scale(1.1);
-  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2);
-}
-
-.removeBtn:active {
-  transform: scale(0.95);
-}
-
-.cupo {
-  padding: 12px 20px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-top: 2px solid #e2e8f0;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #475569;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.cupo::before {
-  content: "👥";
-  font-size: 0.9em;
-}
-
-/* Estado vacío: verde */
-.card.vacio .cupo {
-  color: #059669;
-  background: linear-gradient(135deg, #d1fae5 0%, #bbf7d0 100%);
-}
-
-/* Estado parcial: amarillo */
-.card.parcial .cupo {
-  color: #d97706;
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-}
-
-/* Estado completo: rojo */
-.card.completo .cupo {
-  color: #dc2626;
-  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-}
-
-.assignBtn {
-  padding: 14px 20px;
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-  border: none;
-  color: white;
-  font-size: 0.95rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border-radius: 0 0 12px 12px;
-  margin-top: auto;
-  flex-shrink: 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.assignBtn::before {
-  content: "➕";
-  font-size: 1rem;
-}
-
-.assignBtn:hover {
-  background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
-}
-
-.assignBtn:active {
-  transform: translateY(0);
-}
-
-/* Estado vacío: botón verde */
-.card.vacio .assignBtn {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-}
-
-.card.vacio .assignBtn:hover {
-  background: linear-gradient(135deg, #0da271 0%, #047857 100%);
-}
-
-/* Estado parcial: botón amarillo */
-.card.parcial .assignBtn {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-}
-
-.card.parcial .assignBtn:hover {
-  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-}
-
-/* Estado completo: botón rojo y deshabilitado */
-.card.completo .assignBtn {
-  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-.card.completo .assignBtn:hover {
-  transform: none;
-  box-shadow: none;
-  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .card {
-    min-height: 180px;
-  }
-
-  .header {
-    padding: 16px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .header span {
-    font-size: 1rem;
-  }
-
-  .header small {
-    align-self: flex-end;
-    font-size: 0.8rem;
-  }
-
-  .cadetes {
-    padding: 16px;
-    gap: 8px;
-  }
-
-  .cadeteRow {
-    padding: 10px 14px;
-  }
-
-  .cadeteRow span {
-    font-size: 0.9rem;
-  }
-
-  .removeBtn {
-    width: 26px;
-    height: 26px;
-  }
-
-  .cupo {
-    padding: 10px 16px;
-    font-size: 0.85rem;
-  }
-
-  .assignBtn {
-    padding: 12px 16px;
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .card {
-    border-radius: 12px;
-    min-height: 170px;
-  }
-
-  .header {
-    padding: 14px;
-  }
-
-  .cadetes {
-    padding: 14px;
-  }
-
-  .empty {
-    padding: 16px;
-    font-size: 0.95rem;
-  }
-
-  .assignBtn {
-    padding: 12px 14px;
-    font-size: 0.85rem;
-  }
-}
-
-/* Animación de entrada para cada tarjeta */
-@keyframes cardFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.card {
-  animation: cardFadeIn 0.4s ease-out;
-}
-
-.actions {
-  display: flex;
-  gap: 6px;
 }
 
 .incidentBtn {
-  background: #f59e0b;
+  background: transparent;
   border: none;
-  color: black;
-  padding: 4px 8px;
-  border-radius: 6px;
+  font-size: 1rem;
   cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  opacity: 0.7;
 }
 
 .incidentBtn:hover {
-  background: #d97706;
+  opacity: 1;
+  background-color: #e2e8f0;
 }
 
-.conIncidencias {
-  border: 2px solid #ef4444;
-  background: #fff1f2;
+.removeBtn {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  opacity: 0.7;
 }
 
-.cadeteIncidencia {
-  background: #ffe5e5 !important;
-  border-left: 4px solid #ef4444 !important;
+.removeBtn:hover {
+  opacity: 1;
+  background-color: #fee2e2;
+}
+
+/* Botón de asignar */
+.assignBtn {
+  background-color: #1e293b;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 40px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.assignBtn:hover {
+  background-color: #0f172a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== TABLET ===== */
+@media (min-width: 640px) {
+  .card {
+    padding: 1.5rem;
+  }
+
+  .time {
+    font-size: 1.3rem;
+  }
+
+  .ocupacionBar {
+    height: 36px;
+  }
+
+  .ocupacionText {
+    font-size: 1rem;
+  }
+}
+
+/* ===== PANTALLAS MUY PEQUEÑAS ===== */
+@media (max-width: 380px) {
+  .card {
+    padding: 1rem;
+  }
+
+  .headerLeft {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .time {
+    font-size: 1.1rem;
+  }
+
+  .cadeteRow {
+    padding: 0.6rem 0.75rem;
+  }
 }

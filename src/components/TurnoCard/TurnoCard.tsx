@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -48,12 +49,11 @@ export default function TurnoCard({
   const cuposLibres =
     cupoMax != null ? Math.max(cupoMax - cadetesLocal.length, 0) : null;
 
-  const estadoClase =
-    cadetesLocal.length === 0
-      ? styles.vacio
-      : cupoMax && cadetesLocal.length >= cupoMax
-        ? styles.completo
-        : styles.parcial;
+  const ocupacion = cupoMax
+    ? Math.round((cadetesLocal.length / cupoMax) * 100)
+    : cadetesLocal.length > 0
+      ? 100
+      : 0;
 
   async function unassign(cadeteId?: string) {
     if (!cadeteId) return;
@@ -70,17 +70,49 @@ export default function TurnoCard({
 
   return (
     <>
-      <div className={`${styles.card} ${estadoClase}`}>
+      <div className={styles.card}>
+        {/* Header con hora y fecha */}
         <div className={styles.header}>
-          <span>
-            {horaInicio.slice(0, 5)} - {horaFin.slice(0, 5)}
-          </span>
-          <small>{new Date(fecha).toLocaleDateString()}</small>
+          <div className={styles.headerLeft}>
+            <span className={styles.time}>
+              {horaInicio.slice(0, 5)} - {horaFin.slice(0, 5)}
+            </span>
+            <span className={styles.date}>
+              {new Date(fecha).toLocaleDateString("es-AR", {
+                day: "numeric",
+                month: "short",
+              })}
+            </span>
+          </div>
         </div>
 
+        {/* Barra de ocupación */}
+        {cupoMax && (
+          <div className={styles.ocupacionBar}>
+            <div
+              className={`${styles.ocupacionFill} ${
+                ocupacion === 0
+                  ? styles.ocupacionBaja
+                  : ocupacion === 100
+                    ? styles.ocupacionCompleta
+                    : ocupacion > 66
+                      ? styles.ocupacionAlta
+                      : ocupacion > 33
+                        ? styles.ocupacionMedia
+                        : styles.ocupacionBaja
+              }`}
+              style={{ width: `${ocupacion}%` }}
+            />
+            <span className={styles.ocupacionText}>
+              {cadetesLocal.length}/{cupoMax} cupos
+            </span>
+          </div>
+        )}
+
+        {/* Lista de cadetes */}
         <div className={styles.cadetes}>
           {cadetesLocal.length === 0 ? (
-            <div className={styles.empty}>Sin asignar</div>
+            <div className={styles.empty}>✨ Sin cadetes asignados</div>
           ) : (
             cadetesLocal.map((c) => {
               const conIncidencia =
@@ -96,9 +128,9 @@ export default function TurnoCard({
                     conIncidencia ? styles.cadeteIncidencia : ""
                   }`}
                 >
-                  <span>{c.nombre}</span>
+                  <span className={styles.cadeteNombre}>{c.nombre}</span>
 
-                  <div className={styles.actions}>
+                  <div className={styles.cadeteActions}>
                     <button
                       className={styles.incidentBtn}
                       onClick={() => setIncidentCadete(c)}
@@ -110,6 +142,7 @@ export default function TurnoCard({
                     <button
                       className={styles.removeBtn}
                       onClick={() => unassign(c.id)}
+                      title="Desasignar cadete"
                     >
                       ✕
                     </button>
@@ -120,15 +153,12 @@ export default function TurnoCard({
           )}
         </div>
 
-        {cuposLibres !== null && (
-          <div className={styles.cupo}>Cupos libres: {cuposLibres}</div>
-        )}
-
+        {/* Botón de asignar */}
         <button
           className={styles.assignBtn}
           onClick={() => setOpenAssign(true)}
         >
-          Asignar
+          + Asignar Cadete
         </button>
       </div>
 

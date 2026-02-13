@@ -1,0 +1,230 @@
+/* LoginPage.module.css - Mobile First */
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+/* Tarjeta de login */
+.card {
+  background-color: rgba(253, 250, 251, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 40px;
+  padding: 2rem 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 40px rgba(34, 57, 90, 0.15);
+  border: 1px solid rgba(248, 187, 209, 0.3);
+  animation: slideUp 0.4s ease;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  color: var(--soft-azul);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(135deg, var(--soft-azul), var(--soft-rosa));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  color: var(--soft-azul);
+  font-size: 0.95rem;
+  opacity: 0.7;
+  margin: 0;
+}
+
+/* Formulario */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Grupo de input */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  color: var(--soft-azul);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.input {
+  padding: 1rem 1.25rem;
+  border-radius: 30px;
+  border: 2px solid rgba(248, 187, 209, 0.3);
+  background-color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  color: var(--soft-azul);
+  transition: all 0.2s ease;
+  outline: none;
+  width: 100%;
+}
+
+.input:focus {
+  border-color: var(--soft-rosa);
+  box-shadow: 0 0 0 4px rgba(248, 187, 209, 0.2);
+  background-color: white;
+}
+
+.input::placeholder {
+  color: var(--soft-azul);
+  opacity: 0.4;
+}
+
+/* Botón */
+.button {
+  background-color: var(--soft-azul);
+  color: var(--soft-blanco);
+  border: 2px solid var(--soft-azul);
+  padding: 1rem;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.button:hover:not(:disabled) {
+  background-color: transparent;
+  color: var(--soft-azul);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(34, 57, 90, 0.15);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Texto de carga */
+.loadingText {
+  display: inline-block;
+  position: relative;
+}
+
+.loadingText::after {
+  content: "...";
+  position: absolute;
+  animation: dots 1.5s steps(4, end) infinite;
+  width: 0;
+}
+
+/* Error */
+.error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--soft-error);
+  color: var(--soft-error);
+  padding: 0.875rem 1rem;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.errorIcon {
+  font-size: 1.1rem;
+}
+
+/* Animaciones */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dots {
+  0%,
+  20% {
+    content: "";
+  }
+  40% {
+    content: ".";
+  }
+  60% {
+    content: "..";
+  }
+  80%,
+  100% {
+    content: "...";
+  }
+}
+
+/* ===== TABLET Y SUPERIOR ===== */
+@media (min-width: 480px) {
+  .card {
+    padding: 2.5rem;
+  }
+
+  .title {
+    font-size: 2.25rem;
+  }
+
+  .input {
+    padding: 1.125rem 1.5rem;
+    font-size: 1.1rem;
+  }
+
+  .button {
+    padding: 1.125rem;
+    font-size: 1.2rem;
+  }
+}
+
+/* ===== PANTALLAS MUY PEQUEÑAS ===== */
+@media (max-width: 380px) {
+  .card {
+    padding: 1.5rem 1rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+  }
+
+  .input {
+    padding: 0.875rem 1rem;
+  }
+
+  .button {
+    padding: 0.875rem;
+  }
+}
+
+/* ===== AJUSTES PARA DISPOSITIVOS CON NOTCH ===== */
+@supports (padding: max(0px)) {
+  .container {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}

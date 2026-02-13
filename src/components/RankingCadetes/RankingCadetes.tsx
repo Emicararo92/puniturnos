@@ -62,30 +62,25 @@ export default function RankingCadetes({ semanaRef }: { semanaRef: string }) {
   }
 
   return (
-    <>
+    <div className={styles.pageContainer}>
       {/* BOTONES EXPORTAR */}
-      <div
-        style={{
-          display: "flex",
-          gap: 10,
-          justifyContent: "flex-end",
-          marginBottom: 20,
-        }}
-      >
+      <div className={styles.exportButtons}>
         <button
           onClick={() =>
             exportar(exportSemanaRef, `ranking-semana-${semanaRef}.png`)
           }
           className={styles.exportBtn}
         >
-          📸 Exportar Semana
+          <span className={styles.btnIcon}>📸</span>
+          Exportar Semana
         </button>
 
         <button
           onClick={() => exportar(exportTotalRef, "ranking-historico.png")}
           className={styles.exportBtn}
         >
-          📸 Exportar Histórico
+          <span className={styles.btnIcon}>📸</span>
+          Exportar Histórico
         </button>
       </div>
 
@@ -94,7 +89,10 @@ export default function RankingCadetes({ semanaRef }: { semanaRef: string }) {
         {/* Ranking Semana */}
         <div className={styles.container}>
           <div className={styles.header}>
-            <h3>📅 Esta Semana</h3>
+            <div className={styles.headerLeft}>
+              <span className={styles.headerIcon}>📅</span>
+              <h3>Esta Semana</h3>
+            </div>
             {!loading && (
               <span className={styles.count}>
                 {rankingSemana.length} cadetes
@@ -102,17 +100,33 @@ export default function RankingCadetes({ semanaRef }: { semanaRef: string }) {
             )}
           </div>
 
-          <div className={styles.list}>
-            {rankingSemana.map((cadete, i) => (
-              <RankingRow key={cadete.id} cadete={cadete} pos={i + 1} />
-            ))}
-          </div>
+          {loading ? (
+            <div className={styles.loadingState}>
+              <div className={styles.loadingSpinner}></div>
+              <p>Cargando ranking...</p>
+            </div>
+          ) : (
+            <div className={styles.list}>
+              <div className={styles.listHeader}>
+                <span className={styles.headerPos}>#</span>
+                <span className={styles.headerNombre}>Cadete</span>
+                <span className={styles.headerEfectividad}>Efectividad</span>
+                <span className={styles.headerTurnos}>Turnos</span>
+              </div>
+              {rankingSemana.map((cadete, i) => (
+                <RankingRow key={cadete.id} cadete={cadete} pos={i + 1} />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Ranking Histórico */}
         <div className={styles.container}>
           <div className={styles.header}>
-            <h3>🏆 Histórico</h3>
+            <div className={styles.headerLeft}>
+              <span className={styles.headerIcon}>🏆</span>
+              <h3>Histórico</h3>
+            </div>
             {!loading && (
               <span className={styles.count}>
                 {rankingTotal.length} cadetes
@@ -120,57 +134,68 @@ export default function RankingCadetes({ semanaRef }: { semanaRef: string }) {
             )}
           </div>
 
-          <div className={styles.list}>
-            {rankingTotal.map((cadete, i) => (
-              <RankingRow key={cadete.id} cadete={cadete} pos={i + 1} />
-            ))}
-          </div>
+          {loading ? (
+            <div className={styles.loadingState}>
+              <div className={styles.loadingSpinner}></div>
+              <p>Cargando ranking...</p>
+            </div>
+          ) : (
+            <div className={styles.list}>
+              <div className={styles.listHeader}>
+                <span className={styles.headerPos}>#</span>
+                <span className={styles.headerNombre}>Cadete</span>
+                <span className={styles.headerEfectividad}>Efectividad</span>
+                <span className={styles.headerTurnos}>Turnos</span>
+              </div>
+              {rankingTotal.map((cadete, i) => (
+                <RankingRow key={cadete.id} cadete={cadete} pos={i + 1} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
       {/* VERSION OCULTA EXPORT SEMANA */}
-      <div
-        ref={exportSemanaRef}
-        style={{
-          position: "absolute",
-          left: "-9999px",
-          background: "white",
-          padding: "40px",
-          width: "900px",
-          fontFamily: "sans-serif",
-        }}
-      >
-        <h1>Ranking Semanal</h1>
-        <p>Semana: {semanaRef}</p>
+      <div ref={exportSemanaRef} className={styles.exportHidden}>
+        <div className={styles.exportHeader}>
+          <h1>Ranking Semanal</h1>
+          <p>Semana: {semanaRef}</p>
+        </div>
 
-        {rankingSemana.map((c, i) => (
-          <p key={c.id}>
-            {i + 1}. {c.nombre} — {c.efectividad}% ({c.total_turnos} turnos)
-          </p>
-        ))}
+        <div className={styles.exportList}>
+          {rankingSemana.map((c, i) => (
+            <div key={c.id} className={styles.exportRow}>
+              <span className={styles.exportPos}>{i + 1}.</span>
+              <span className={styles.exportName}>{c.nombre}</span>
+              <span className={styles.exportValue}>{c.efectividad}%</span>
+              <span className={styles.exportTotal}>
+                ({c.total_turnos} turnos)
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* VERSION OCULTA EXPORT HISTÓRICO */}
-      <div
-        ref={exportTotalRef}
-        style={{
-          position: "absolute",
-          left: "-9999px",
-          background: "white",
-          padding: "40px",
-          width: "900px",
-          fontFamily: "sans-serif",
-        }}
-      >
-        <h1>Ranking Histórico</h1>
+      <div ref={exportTotalRef} className={styles.exportHidden}>
+        <div className={styles.exportHeader}>
+          <h1>Ranking Histórico</h1>
+        </div>
 
-        {rankingTotal.map((c, i) => (
-          <p key={c.id}>
-            {i + 1}. {c.nombre} — {c.efectividad}% ({c.total_turnos} turnos)
-          </p>
-        ))}
+        <div className={styles.exportList}>
+          {rankingTotal.map((c, i) => (
+            <div key={c.id} className={styles.exportRow}>
+              <span className={styles.exportPos}>{i + 1}.</span>
+              <span className={styles.exportName}>{c.nombre}</span>
+              <span className={styles.exportValue}>{c.efectividad}%</span>
+              <span className={styles.exportTotal}>
+                ({c.total_turnos} turnos)
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 

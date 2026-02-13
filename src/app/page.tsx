@@ -1,21 +1,14 @@
-"use client";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import HomePage from "../components/Home/Home";
 
-import { useState } from "react";
-import RankingCadetes from "../components/RankingCadetes/RankingCadetes";
-import WeeklyBoard from "../components/WeeklyBoard/WeeklyBoard";
+export default async function Page() {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
 
-export default function HomePage() {
-  const [semanaRef, setSemanaRef] = useState(() => {
-    const d = new Date();
-    const day = d.getDay();
-    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-    return new Date(d.setDate(diff)).toISOString().slice(0, 10);
-  });
+  if (!data.user) {
+    redirect("/login");
+  }
 
-  return (
-    <div>
-      <WeeklyBoard semanaRef={semanaRef} setSemanaRef={setSemanaRef} />
-      <RankingCadetes semanaRef={semanaRef} />
-    </div>
-  );
+  return <HomePage />;
 }

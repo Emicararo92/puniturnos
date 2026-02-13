@@ -134,21 +134,23 @@ export default function WeeklyBoard({ semanaRef, setSemanaRef }: any) {
               dia.isToday ? styles.today : ""
             } ${loading ? styles.loading : ""}`}
           >
-            <div className={styles.dateLabel}>{dia.label}</div>
+            <span className={styles.dateLabel}>{dia.label}</span>
 
-            <button
-              className={styles.summaryBtn}
-              onClick={() => setSummaryDay(dia)}
-            >
-              Ver resumen
-            </button>
+            <div className={styles.buttonGroup}>
+              <button
+                className={styles.summaryBtn}
+                onClick={() => setSummaryDay(dia)}
+              >
+                Ver resumen
+              </button>
 
-            <button
-              className={styles.assignBtn}
-              onClick={() => setSelectedDay(dia.fechaISO)}
-            >
-              Asignar
-            </button>
+              <button
+                className={styles.assignBtn}
+                onClick={() => setSelectedDay(dia.fechaISO)}
+              >
+                Asignar
+              </button>
+            </div>
           </div>
         ))}
       </div>
