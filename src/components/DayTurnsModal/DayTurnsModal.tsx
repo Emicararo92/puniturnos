@@ -21,12 +21,17 @@ export default function DayTurnsModal({ fecha, onClose }: Props) {
     loadTurnos();
   }, [fecha]);
 
+  // ✅ FIX DOMINGOS + timezone
   function getMonday(dateStr: string) {
-    const d = new Date(dateStr);
-    const day = d.getDay();
-    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    const [y, m, d] = dateStr.split("-").map(Number);
+    const date = new Date(y, m - 1, d);
 
-    return new Date(d.setDate(diff)).toISOString().slice(0, 10);
+    const day = date.getDay();
+    const diff = day === 0 ? -6 : 1 - day;
+
+    date.setDate(date.getDate() + diff);
+
+    return date.toLocaleDateString("sv-SE");
   }
 
   async function loadTurnos() {
@@ -44,8 +49,11 @@ export default function DayTurnsModal({ fecha, onClose }: Props) {
   const turnosDelDia = Object.values(
     data
       .filter(
-        (x) => new Date(x.fecha_turno).toISOString().slice(0, 10) === fecha,
+        (x) =>
+          new Date(x.fecha_turno).toLocaleDateString("sv-SE") ===
+          new Date(fecha).toLocaleDateString("sv-SE"),
       )
+
       .reduce((acc: any, curr) => {
         if (!acc[curr.turno_id]) {
           acc[curr.turno_id] = {
