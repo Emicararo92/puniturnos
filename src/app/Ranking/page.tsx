@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
@@ -11,5 +12,5 @@ export default function RankingPage() {
     return new Date(d.setDate(diff)).toISOString().slice(0, 10);
   });
 
-  return <RankingCadetes semanaRef={semanaRef} />;
+  return <RankingCadetes />;
 }
