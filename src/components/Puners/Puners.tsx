@@ -62,7 +62,11 @@ export default function Puners() {
       </div>
 
       {selected && (
-        <CadeteModal cadete={selected} onClose={() => setSelected(null)} />
+        <CadeteModal
+          cadete={selected}
+          onClose={() => setSelected(null)}
+          onUpdated={loadCadetes}
+        />
       )}
 
       {showForm && (
