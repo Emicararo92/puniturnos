@@ -1,0 +1,163 @@
+/* Puners.module.css - Mobile First */
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header h2 {
+  color: var(--soft-azul);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, var(--soft-azul), var(--soft-rosa));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== BOTÓN NUEVO ===== */
+.newBtn {
+  background-color: var(--soft-azul);
+  border: 1px solid var(--soft-azul);
+  color: var(--soft-blanco);
+  padding: 0.75rem 1.5rem;
+  border-radius: 40px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.newBtn:hover {
+  background-color: transparent;
+  color: var(--soft-azul);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(34, 57, 90, 0.15);
+}
+
+/* ===== LISTA DE CADETES ===== */
+.list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* ===== TARJETA DE CADETE ===== */
+.card {
+  background-color: rgba(253, 250, 251, 0.9);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(248, 187, 209, 0.2);
+  box-shadow: 0 4px 12px rgba(34, 57, 90, 0.04);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card:hover {
+  transform: translateX(4px);
+  border-color: var(--soft-rosa);
+  box-shadow: 0 8px 20px rgba(248, 187, 209, 0.15);
+  background-color: white;
+}
+
+.card strong {
+  color: var(--soft-azul);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.card span {
+  color: var(--soft-azul);
+  font-size: 0.85rem;
+  opacity: 0.7;
+  background-color: rgba(248, 187, 209, 0.15);
+  padding: 0.25rem 0.75rem;
+  border-radius: 40px;
+}
+
+/* Estado inactivo */
+.inactive {
+  opacity: 0.6;
+  background-color: rgba(203, 213, 225, 0.2);
+  border-color: rgba(203, 213, 225, 0.3);
+}
+
+.inactive strong {
+  color: #64748b;
+}
+
+.inactive:hover {
+  opacity: 0.8;
+  border-color: #94a3b8;
+}
+
+/* ===== TABLET ===== */
+@media (min-width: 640px) {
+  .list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .card {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .card strong {
+    font-size: 1.1rem;
+  }
+}
+
+/* ===== DESKTOP ===== */
+@media (min-width: 1024px) {
+  .container {
+    padding: 2rem;
+  }
+
+  .list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .header h2 {
+    font-size: 2rem;
+  }
+}
+
+/* ===== PANTALLAS MUY PEQUEÑAS ===== */
+@media (max-width: 380px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .newBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .card {
+    padding: 0.875rem 1rem;
+  }
+}

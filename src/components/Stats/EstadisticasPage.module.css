@@ -4,7 +4,7 @@
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 /* ===== HEADER ===== */
@@ -34,12 +34,12 @@
 /* Navegación de semanas */
 .weekNav {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
-  background-color: rgba(253, 250, 251, 0.85);
+  background-color: rgba(253, 250, 251, 0.9);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   padding: 0.5rem;
-  border-radius: 50px;
+  border-radius: 60px;
   border: 1px solid rgba(248, 187, 209, 0.3);
   width: 100%;
 }
@@ -48,13 +48,13 @@
   background-color: transparent;
   border: 1px solid var(--soft-azul);
   color: var(--soft-azul);
-  padding: 0.6rem 1rem;
+  width: 40px;
+  height: 40px;
   border-radius: 40px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 1.2rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,27 +63,47 @@
 .weekBtn:hover {
   background-color: var(--soft-azul);
   color: var(--soft-blanco);
-  border-color: var(--soft-azul);
-  transform: translateY(-2px);
+}
+
+.weekInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.weekLabel {
+  color: var(--soft-azul);
+  font-size: 0.7rem;
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.weekRange {
+  color: var(--soft-azul);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .weekBtnToday {
   background-color: var(--soft-azul);
   border: 1px solid var(--soft-azul);
   color: var(--soft-blanco);
-  padding: 0.6rem 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 40px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  flex: 2;
+  white-space: nowrap;
 }
 
 .weekBtnToday:hover {
   background-color: transparent;
   color: var(--soft-azul);
-  transform: translateY(-2px);
 }
 
 /* Filtros */
@@ -176,13 +196,12 @@
 
 /* ===== TARJETA DE CADETE ===== */
 .card {
-  background-color: rgba(253, 250, 251, 0.85);
+  background-color: rgba(253, 250, 251, 0.9);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 32px;
+  border-radius: 28px;
   padding: 1.25rem;
   border: 1px solid rgba(248, 187, 209, 0.2);
-  box-shadow: 0 8px 24px rgba(34, 57, 90, 0.06);
+  box-shadow: 0 8px 20px rgba(34, 57, 90, 0.06);
   transition: all 0.3s ease;
 }
 
@@ -233,7 +252,7 @@
 
 .metricLabel {
   color: var(--soft-azul);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   opacity: 0.6;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -257,11 +276,11 @@
 .efectividadBar {
   position: relative;
   height: 30px;
-  background-color: rgba(239, 68, 68, 0.15); /* Rojo suave de fondo */
+  background-color: rgba(248, 187, 209, 0.2);
   border-radius: 30px;
   margin: 1rem 0;
   overflow: hidden;
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(248, 187, 209, 0.3);
 }
 
 .efectividadFill {
@@ -269,21 +288,32 @@
   top: 0;
   left: 0;
   height: 100%;
-  background: linear-gradient(90deg, #ef4444, #10b981); /* Rojo a Verde */
-  border-radius: 30px;
   transition: width 0.3s ease;
 }
+
+.fillBaja {
+  background: linear-gradient(90deg, var(--soft-error), #f87171);
+}
+
+.fillMedia {
+  background: linear-gradient(90deg, var(--soft-warning), #fbbf24);
+}
+
+.fillAlta {
+  background: linear-gradient(90deg, var(--soft-success), #34d399);
+}
+
 .efectividadText {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: var(--soft-azul);
+  color: white;
   font-weight: 700;
   font-size: 0.9rem;
   z-index: 1;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* Tendencia */
@@ -305,9 +335,20 @@
 }
 
 .tendenciaValue {
-  color: var(--soft-azul);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
+}
+
+.tendenciaUp {
+  color: var(--soft-success);
+}
+
+.tendenciaDown {
+  color: var(--soft-error);
+}
+
+.tendenciaStable {
+  color: var(--soft-warning);
 }
 
 /* Recomendación */
@@ -348,7 +389,11 @@
 
   .weekNav {
     width: auto;
-    min-width: 300px;
+    min-width: 380px;
+  }
+
+  .weekRange {
+    font-size: 0.9rem;
   }
 
   .filters {
@@ -384,6 +429,21 @@
 }
 
 /* ===== PANTALLAS MUY PEQUEÑAS ===== */
+@media (max-width: 480px) {
+  .weekNav {
+    flex-wrap: wrap;
+  }
+
+  .weekBtnToday {
+    width: 100%;
+    order: 4;
+  }
+
+  .weekRange {
+    font-size: 0.8rem;
+  }
+}
+
 @media (max-width: 380px) {
   .card {
     padding: 1rem;

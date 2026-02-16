@@ -1,9 +1,9 @@
+import Puners from "@/src/components/Puners/Puners";
+
 function Page() {
   return (
     <>
-      <div>
-        <p>en proceso</p>
-      </div>
+      <Puners />
     </>
   );
 }

@@ -57,6 +57,20 @@ export default function EstadisticasPage() {
       return b.efectividad - a.efectividad;
     });
 
+  // Calcular rango de la semana para mostrar
+  const semanaInicio = new Date(semanaRef);
+  const semanaFin = new Date(semanaRef);
+  semanaFin.setDate(semanaFin.getDate() + 6);
+
+  const formatoSemana = `${semanaInicio.toLocaleDateString("es-AR", {
+    day: "numeric",
+    month: "short",
+  })} - ${semanaFin.toLocaleDateString("es-AR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  })}`;
+
   return (
     <div className={styles.pageContainer}>
       <div className={styles.header}>
@@ -73,18 +87,25 @@ export default function EstadisticasPage() {
           >
             ←
           </button>
-          <button
-            onClick={() => setSemanaRef(getMonday(new Date()))}
-            className={styles.weekBtnToday}
-          >
-            Semana actual
-          </button>
+
+          <div className={styles.weekInfo}>
+            <span className={styles.weekLabel}>Semana actual</span>
+            <strong className={styles.weekRange}>{formatoSemana}</strong>
+          </div>
+
           <button
             onClick={() => changeWeek(1)}
             className={styles.weekBtn}
             aria-label="Semana siguiente"
           >
             →
+          </button>
+
+          <button
+            onClick={() => setSemanaRef(getMonday(new Date()))}
+            className={styles.weekBtnToday}
+          >
+            Hoy
           </button>
         </div>
 
@@ -160,7 +181,7 @@ function CadeteCard({ cadete, prev }: any) {
     <div className={styles.card}>
       <div className={styles.cardHeader}>
         <h3 className={styles.cardTitle}>{cadete.nombre}</h3>
-        <span className={styles.confiabilidad}>{confiabilidad}% conf.</span>
+        <span className={styles.confiabilidad}>{confiabilidad}%</span>
       </div>
 
       <div className={styles.metricsGrid}>
@@ -170,12 +191,14 @@ function CadeteCard({ cadete, prev }: any) {
         </div>
         <div className={styles.metric}>
           <span className={styles.metricLabel}>❌ Faltas</span>
-          <span className={`${styles.metricValue} ${styles.metricBad}`}>
+          <span
+            className={`${styles.metricValue} ${cadete.faltas > 0 ? styles.metricBad : ""}`}
+          >
             {cadete.faltas}
           </span>
         </div>
         <div className={styles.metric}>
-          <span className={styles.metricLabel}>⏰ Llegadas tarde</span>
+          <span className={styles.metricLabel}>⏰ Llegadas</span>
           <span
             className={`${styles.metricValue} ${cadete.llegadas_tarde > 2 ? styles.metricWarning : ""}`}
           >
@@ -183,11 +206,11 @@ function CadeteCard({ cadete, prev }: any) {
           </span>
         </div>
         <div className={styles.metric}>
-          <span className={styles.metricLabel}>📉 Pedidos tarde</span>
+          <span className={styles.metricLabel}>📉 Pedidos</span>
           <span className={styles.metricValue}>{cadete.pedidos_tarde}</span>
         </div>
         <div className={styles.metric}>
-          <span className={styles.metricLabel}>⚡ Activaciones tarde</span>
+          <span className={styles.metricLabel}>⚡ Activaciones</span>
           <span className={styles.metricValue}>
             {cadete.activaciones_tarde}
           </span>
@@ -196,24 +219,39 @@ function CadeteCard({ cadete, prev }: any) {
 
       <div className={styles.efectividadBar}>
         <div
-          className={styles.efectividadFill}
+          className={`${styles.efectividadFill} ${
+            cadete.efectividad >= 95
+              ? styles.fillAlta
+              : cadete.efectividad >= 85
+                ? styles.fillMedia
+                : styles.fillBaja
+          }`}
           style={{ width: `${cadete.efectividad}%` }}
         />
-        <span className={styles.efectividadText}>
-          Efectividad: {cadete.efectividad}%
-        </span>
+        <span className={styles.efectividadText}>{cadete.efectividad}%</span>
       </div>
 
       <div className={styles.tendencia}>
         <span className={styles.tendenciaLabel}>📈 Tendencia:</span>
-        <span className={styles.tendenciaValue}>{tendencia}</span>
+        <span
+          className={`${styles.tendenciaValue} ${
+            tendencia.includes("⬆")
+              ? styles.tendenciaUp
+              : tendencia.includes("⬇")
+                ? styles.tendenciaDown
+                : styles.tendenciaStable
+          }`}
+        >
+          {tendencia}
+        </span>
       </div>
 
       <div
         className={`${styles.recomendacion} ${
           recomendacion.includes("Excelente")
             ? styles.recomendacionBuena
-            : recomendacion.includes("Rendimiento normal")
+            : recomendacion.includes("Rendimiento normal") ||
+                recomendacion.includes("Revisar")
               ? styles.recomendacionNeutral
               : styles.recomendacionMala
         }`}
