@@ -6,8 +6,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(34, 57, 90, 0.85);
-  backdrop-filter: blur(4px);
+  background-color: rgba(34, 57, 90, 0.6);
+  backdrop-filter: blur(3px);
   display: flex;
   align-items: flex-end;
   z-index: 1500;
@@ -29,7 +29,7 @@
   border-radius: 24px 24px 0 0;
   padding: 1.5rem;
   animation: slideUp 0.3s ease;
-  max-height: 80vh;
+  max-height: 85vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -44,49 +44,43 @@
 }
 
 .modal h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.4rem;
+  font-weight: 600;
   color: #22395a;
-  margin: 0 0 1.5rem 0;
-  padding-bottom: 1rem;
-  border-bottom: 3px solid #f8bbd1;
+  margin: 0 0 1.25rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f8bbd1;
 }
 
 .modal p {
-  margin: 1rem 0;
-  padding: 1rem;
-  background-color: rgba(248, 187, 209, 0.1);
-  border-radius: 16px;
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+  background-color: rgba(248, 187, 209, 0.08);
+  border-radius: 14px;
   border: 1px solid rgba(34, 57, 90, 0.1);
   color: #22395a;
-  font-size: 1rem;
+  font-size: 0.95rem;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-@media (min-width: 480px) {
-  .modal p {
-    flex-direction: row;
-    align-items: center;
-  }
-}
-
 .modal p strong {
-  min-width: 80px;
+  min-width: 70px;
+  font-weight: 600;
   color: #22395a;
-  font-weight: 700;
+  opacity: 0.8;
 }
 
 .modal p a {
   color: #22395a;
   text-decoration: none;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
+  font-weight: 500;
+  padding: 0.2rem 0.8rem;
   background-color: #f8bbd1;
   border-radius: 30px;
-  display: inline-block;
-  width: fit-content;
+  border: 1px solid #22395a;
+  transition: all 0.2s ease;
 }
 
 .modal p a:active {
@@ -96,38 +90,108 @@
 
 .modal button {
   width: 100%;
-  padding: 1.25rem;
-  margin-top: 1rem;
+  padding: 1rem;
+  margin-top: 0.75rem;
   border: none;
-  border-radius: 16px;
+  border-radius: 14px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  -webkit-appearance: none;
+  background-color: white;
+  border: 1px solid #22395a;
+  color: #22395a;
 }
 
+/* Botón WhatsApp */
 .modal button:first-of-type {
-  background-color: #f8bbd1;
-  color: #22395a;
-  border: 2px solid #22395a;
-}
-
-.modal button:last-of-type {
-  background-color: transparent;
-  border: 2px solid #22395a;
-  color: #22395a;
-  margin-top: 0.5rem;
+  background-color: #25d366;
+  border: 1px solid #075e54;
+  color: white;
+  font-weight: 600;
+  margin-top: 1rem;
 }
 
 .modal button:first-of-type:active {
-  background-color: #e6a9bf;
-  transform: scale(0.98);
+  background-color: #128c7e;
+}
+
+/* Botón de acción principal (Dar de baja/Reactivar) */
+.modal button:not(:first-of-type):not(:last-of-type) {
+  background-color: #22395a;
+  color: #fdfafb;
+  font-weight: 500;
+}
+
+.modal button:not(:first-of-type):not(:last-of-type):active {
+  background-color: #1a2d47;
+}
+
+/* Botón Cerrar (último) */
+.modal button:last-of-type {
+  background-color: transparent;
+  border: 1px solid rgba(34, 57, 90, 0.3);
+  color: #22395a;
+  opacity: 0.8;
+  margin-top: 0.5rem;
 }
 
 .modal button:last-of-type:active {
   background-color: rgba(34, 57, 90, 0.05);
-  transform: scale(0.98);
+  opacity: 1;
+}
+
+/* ===== CONFIRMACIÓN DE BAJA ===== */
+.confirmBox {
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  background-color: rgba(239, 68, 68, 0.08);
+  border-radius: 18px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  animation: fadeIn 0.2s ease;
+}
+
+.confirmBox p {
+  background: transparent;
+  border: none;
+  padding: 0 0 0.75rem 0;
+  margin: 0;
+  font-weight: 600;
+  color: #b91c1c;
+  text-align: center;
+}
+
+.confirmActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.confirmActions button {
+  margin: 0;
+  padding: 0.875rem;
+  font-size: 0.95rem;
+}
+
+.confirmActions button:first-child {
+  background-color: #ef4444;
+  border: 1px solid #b91c1c;
+  color: white;
+  flex: 2;
+}
+
+.confirmActions button:first-child:active {
+  background-color: #b91c1c;
+}
+
+.confirmActions button:last-child {
+  background-color: white;
+  border: 1px solid #22395a;
+  color: #22395a;
+  flex: 1;
+}
+
+.confirmActions button:last-child:active {
+  background-color: rgba(34, 57, 90, 0.05);
 }
 
 /* Desktop */
@@ -156,18 +220,13 @@
     }
   }
 
-  .modal h3 {
-    font-size: 1.75rem;
-  }
-
   .modal p {
-    padding: 0.9rem 1rem;
     transition: all 0.2s ease;
   }
 
   .modal p:hover {
-    background-color: rgba(248, 187, 209, 0.2);
-    transform: translateX(5px);
+    background-color: rgba(248, 187, 209, 0.15);
+    transform: translateX(3px);
   }
 
   .modal p a:hover {
@@ -176,18 +235,34 @@
   }
 
   .modal button {
-    padding: 1rem;
+    cursor: pointer;
     transition: all 0.2s ease;
   }
 
-  .modal button:first-of-type:hover {
-    background-color: #e6a9bf;
+  .modal button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(248, 187, 209, 0.4);
+    box-shadow: 0 4px 10px rgba(34, 57, 90, 0.15);
+  }
+
+  .modal button:first-of-type:hover {
+    background-color: #128c7e;
+    transform: translateY(-2px);
+  }
+
+  .modal button:not(:first-of-type):not(:last-of-type):hover {
+    background-color: #1a2d47;
   }
 
   .modal button:last-of-type:hover {
     background-color: rgba(34, 57, 90, 0.05);
     transform: translateY(-2px);
+  }
+
+  .confirmActions button:first-child:hover {
+    background-color: #b91c1c;
+  }
+
+  .confirmActions button:last-child:hover {
+    background-color: rgba(34, 57, 90, 0.05);
   }
 }

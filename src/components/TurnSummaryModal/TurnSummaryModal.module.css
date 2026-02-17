@@ -1,4 +1,4 @@
-/* TurnSummaryModal.module.css - Mobile First - Botón corregido */
+/* TurnSummaryModal.module.css - Mobile First - Corregido */
 
 .overlay {
   position: fixed;
@@ -6,8 +6,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(34, 57, 90, 0.85);
-  backdrop-filter: blur(4px);
+  background-color: rgba(34, 57, 90, 0.7);
+  backdrop-filter: blur(3px);
   display: flex;
   align-items: flex-end;
   z-index: 1200;
@@ -25,7 +25,7 @@
 
 .modal {
   width: 100%;
-  max-height: 85vh;
+  max-height: 80vh;
   background-color: #fdfafb;
   border-radius: 24px 24px 0 0;
   display: flex;
@@ -49,7 +49,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem 1.5rem;
-  border-bottom: 2px solid #f8bbd1;
+  border-bottom: 2px solid rgba(248, 187, 209, 0.5);
   background-color: #fdfafb;
   position: sticky;
   top: 0;
@@ -57,74 +57,32 @@
 }
 
 .title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 600;
   color: #22395a;
   margin: 0;
   text-transform: capitalize;
 }
 
-/* BOTÓN DE CIERRE CORREGIDO */
 .closeBtn {
   background: none;
-  border: 2px solid #22395a;
+  border: 1px solid rgba(34, 57, 90, 0.2);
   font-size: 1.2rem;
   color: #22395a;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 12px;
   transition: all 0.2s ease;
-  font-weight: 600;
-  background-color: #f8bbd1;
+  background-color: white;
 }
 
 .closeBtn:active {
-  background-color: #22395a;
-  color: #fdfafb;
-  transform: scale(0.95);
-  border-color: #f8bbd1;
-}
-
-/* Stats Summary */
-.statsSummary {
-  display: flex;
-  gap: 1rem;
-  padding: 1.5rem;
-  background-color: #22395a;
-  border-bottom: 2px solid #f8bbd1;
-}
-
-.stat {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: rgba(248, 187, 209, 0.1);
-  padding: 0.75rem;
-  border-radius: 16px;
-}
-
-.statLabel {
-  font-size: 0.85rem;
-  color: #f8bbd1;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.statValue {
-  font-size: 2rem;
-  font-weight: 800;
-  color: #fdfafb;
-  line-height: 1;
-  background-color: rgba(248, 187, 209, 0.2);
-  padding: 0.25rem 1rem;
-  border-radius: 30px;
+  background-color: #f8bbd1;
+  border-color: #22395a;
 }
 
 /* Turn List */
@@ -138,21 +96,16 @@
   -webkit-overflow-scrolling: touch;
 }
 
+/* Turn Item */
 .turnItem {
   background-color: white;
-  border-radius: 16px;
-  padding: 0.75rem;
-  box-shadow: 0 2px 8px rgba(34, 57, 90, 0.08);
+  border-radius: 18px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(34, 57, 90, 0.04);
   border: 1px solid rgba(34, 57, 90, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  transition: all 0.2s ease;
-}
-
-.turnItem:hover {
-  border-color: #f8bbd1;
-  box-shadow: 0 4px 12px rgba(248, 187, 209, 0.2);
+  gap: 0.75rem;
 }
 
 .turnTime {
@@ -161,52 +114,56 @@
   gap: 0.5rem;
   font-size: 0.9rem;
   color: #22395a;
-  font-weight: 600;
-  background-color: rgba(248, 187, 209, 0.2);
-  padding: 0.25rem 0.75rem;
+  font-weight: 500;
+  background-color: rgba(248, 187, 209, 0.1);
+  padding: 0.3rem 0.75rem;
   border-radius: 30px;
   width: fit-content;
 }
 
 .timeIcon {
   font-size: 1rem;
+  opacity: 0.7;
 }
 
 .turnStats {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
+/* Contador de cadetes */
 .cadeteCount {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  min-width: 50px;
-  background-color: #22395a;
-  padding: 0.25rem 0.75rem;
+  gap: 0.3rem;
+  min-width: 45px;
+  background-color: #f0f0f0;
+  padding: 0.3rem 0.75rem;
   border-radius: 30px;
   justify-content: center;
 }
 
 .cadeteIcon {
   font-size: 0.9rem;
-  color: #fdfafb;
+  color: #22395a;
+  opacity: 0.6;
 }
 
 .cadeteNumber {
   font-size: 1rem;
-  color: #fdfafb;
-  font-weight: 700;
+  color: #22395a;
+  font-weight: 600;
 }
 
+/* Barra de ocupación - CORREGIDA con máximo 12 */
 .ocupacionBar {
   flex: 1;
   height: 10px;
-  background-color: rgba(34, 57, 90, 0.15);
+  background-color: rgba(34, 57, 90, 0.1);
   border-radius: 30px;
   overflow: hidden;
-  border: 1px solid rgba(34, 57, 90, 0.1);
+  border: 1px solid rgba(34, 57, 90, 0.15);
 }
 
 .ocupacionFill {
@@ -215,83 +172,67 @@
   transition: width 0.3s ease;
 }
 
+/* ESCALA DE COLORES TIPO SEMÁFORO (basado en 12 máximo) */
+
+/* Vacío (0) - Gris */
 .ocupacionFill.vacio {
-  background-color: #f8bbd1;
-  background-image: linear-gradient(
-    45deg,
-    rgba(34, 57, 90, 0.1) 25%,
-    transparent 25%,
-    transparent 50%,
-    rgba(34, 57, 90, 0.1) 50%,
-    rgba(34, 57, 90, 0.1) 75%,
-    transparent 75%,
-    transparent
-  );
-  background-size: 20px 20px;
+  background-color: #9ca3af;
 }
 
+/* Bajo (1-4) - Verde */
 .ocupacionFill.bajo {
-  background-color: #f8bbd1;
+  background-color: #22c55e;
 }
 
+/* Medio (5-8) - Amarillo */
 .ocupacionFill.medio {
-  background-color: #22395a;
+  background-color: #facc15;
 }
 
+/* Completo/Alto (9-12) - Rojo */
 .ocupacionFill.completo {
-  background-color: #22395a;
-  background-image: linear-gradient(
-    45deg,
-    #f8bbd1 25%,
-    transparent 25%,
-    transparent 50%,
-    #f8bbd1 50%,
-    #f8bbd1 75%,
-    transparent 75%,
-    transparent
-  );
-  background-size: 20px 20px;
+  background-color: #ef4444;
 }
 
 /* Empty State */
 .empty {
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 2.5rem 1rem;
   color: #22395a;
-  font-size: 1rem;
-  background-color: rgba(248, 187, 209, 0.1);
-  border-radius: 16px;
-  border: 2px dashed #f8bbd1;
+  font-size: 0.95rem;
+  background-color: rgba(248, 187, 209, 0.08);
+  border-radius: 18px;
+  border: 1px dashed rgba(34, 57, 90, 0.2);
 }
 
 .empty p {
   margin: 0;
-  font-weight: 600;
+  opacity: 0.7;
 }
 
 /* Footer */
 .footer {
   padding: 1rem 1.5rem 1.5rem;
-  border-top: 2px solid #f8bbd1;
+  border-top: 1px solid rgba(34, 57, 90, 0.1);
   background-color: #fdfafb;
 }
 
 .closeButton {
   width: 100%;
   padding: 1rem;
-  background-color: #22395a;
-  border: 2px solid #f8bbd1;
+  background-color: white;
+  border: 1px solid #22395a;
   border-radius: 16px;
-  color: #fdfafb;
+  color: #22395a;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .closeButton:active {
-  background-color: #1a2d47;
-  transform: scale(0.98);
+  background-color: #f8bbd1;
+  border-color: #22395a;
 }
 
 /* Desktop */
@@ -302,11 +243,10 @@
   }
 
   .modal {
-    width: 95%;
-    max-width: 700px;
-    max-height: 85vh;
+    width: 90%;
+    max-width: 550px;
+    max-height: 70vh;
     border-radius: 24px;
-    margin: 0 auto;
     animation: fadeInScale 0.3s ease;
   }
 
@@ -322,81 +262,48 @@
   }
 
   .header {
-    padding: 1rem 1.5rem;
+    padding: 1.25rem 2rem;
   }
 
   .title {
     font-size: 1.3rem;
   }
 
-  .closeBtn {
-    width: 36px;
-    height: 36px;
-    font-size: 1.1rem;
-  }
-
   .closeBtn:hover {
-    background-color: #22395a;
-    color: #fdfafb;
-    transform: rotate(90deg);
-  }
-
-  .statsSummary {
-    padding: 1.25rem 1.5rem;
-  }
-
-  .stat {
-    padding: 0.5rem;
-  }
-
-  .statLabel {
-    font-size: 0.8rem;
-  }
-
-  .statValue {
-    font-size: 1.75rem;
+    background-color: #f8bbd1;
+    border-color: #22395a;
   }
 
   .turnList {
-    padding: 1.25rem 1.5rem;
-    gap: 0.6rem;
+    padding: 2rem;
+    gap: 1rem;
   }
 
   .turnItem {
-    padding: 0.6rem;
+    padding: 1.25rem;
+    transition: all 0.2s ease;
   }
 
-  .turnTime {
-    font-size: 0.85rem;
-  }
-
-  .cadeteCount {
-    min-width: 45px;
-    padding: 0.2rem 0.6rem;
-  }
-
-  .cadeteNumber {
-    font-size: 0.9rem;
-  }
-
-  .ocupacionBar {
-    height: 8px;
+  .turnItem:hover {
+    transform: translateX(5px);
+    border-color: #f8bbd1;
+    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.08);
   }
 
   .footer {
-    padding: 0.75rem 1.5rem 1rem;
+    padding: 1.25rem 2rem 1.5rem;
   }
 
   .closeButton {
-    padding: 0.75rem;
-    font-size: 0.95rem;
     max-width: 200px;
     margin: 0 auto;
+    transition: all 0.2s ease;
   }
 
   .closeButton:hover {
-    background-color: #1a2d47;
+    background-color: #22395a;
+    color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.2);
+    box-shadow: 0 4px 10px rgba(34, 57, 90, 0.15);
   }
 }

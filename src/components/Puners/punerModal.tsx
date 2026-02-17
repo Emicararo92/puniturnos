@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import styles from "./CadeteModal.module.css";
 
 export default function CadeteModal({ cadete, onClose, onUpdated }: any) {
   const supabase = createClient();
+  const [confirmBaja, setConfirmBaja] = useState(false);
 
-  async function toggleActivo() {
+  async function ejecutarToggle() {
     const hoy = new Date().toISOString().slice(0, 10);
 
     const { error } = await supabase
@@ -25,6 +27,25 @@ export default function CadeteModal({ cadete, onClose, onUpdated }: any) {
       console.error(error);
       alert("Error actualizando cadete");
     }
+  }
+
+  function toggleActivo() {
+    if (cadete.activo) {
+      setConfirmBaja(true);
+    } else {
+      ejecutarToggle();
+    }
+  }
+
+  function abrirWhatsapp() {
+    if (!cadete.telefono) return;
+
+    const numero = cadete.telefono.replace(/\D/g, "");
+    const mensaje = encodeURIComponent(
+      `Hola ${cadete.nombre}, te escribo por los turnos 🚀`,
+    );
+
+    window.open(`https://wa.me/${numero}?text=${mensaje}`, "_blank");
   }
 
   return (
@@ -63,12 +84,30 @@ export default function CadeteModal({ cadete, onClose, onUpdated }: any) {
           </p>
         )}
 
-        <button onClick={toggleActivo}>
-          {cadete.activo ? "Dar de baja" : "Reactivar"}
-        </button>
+        {cadete.telefono && (
+          <button onClick={abrirWhatsapp}>💬 Enviar WhatsApp</button>
+        )}
+
+        {/* CONFIRMACION VISUAL */}
+        {confirmBaja ? (
+          <div className={styles.confirmBox}>
+            <p>¿Dar de baja a {cadete.nombre}?</p>
+
+            <div className={styles.confirmActions}>
+              <button onClick={ejecutarToggle}>Sí, dar de baja</button>
+
+              <button onClick={() => setConfirmBaja(false)}>Cancelar</button>
+            </div>
+          </div>
+        ) : (
+          <button onClick={toggleActivo}>
+            {cadete.activo ? "Dar de baja" : "Reactivar"}
+          </button>
+        )}
 
         <button onClick={onClose}>Cerrar</button>
       </div>
     </div>
   );
 }
+  

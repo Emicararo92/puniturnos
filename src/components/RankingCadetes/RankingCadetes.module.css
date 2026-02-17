@@ -1,4 +1,4 @@
-/* RankingCadetes.module.css - Mobile First */
+/* RankingCadetes.module.css - Mobile First - VERSIÓN SUAVE */
 
 .pageContainer {
   width: 100%;
@@ -12,12 +12,12 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 1rem;
   background-color: white;
+  padding: 0.75rem;
   border-radius: 20px;
   margin-bottom: 1rem;
-  box-shadow: 0 2px 8px rgba(34, 57, 90, 0.06);
-  border: 1px solid rgba(34, 57, 90, 0.05);
+  box-shadow: 0 2px 8px rgba(34, 57, 90, 0.04);
+  border: 1px solid rgba(34, 57, 90, 0.08);
 }
 
 .navBtn {
@@ -28,16 +28,17 @@
   border-radius: 16px;
   color: #fdfafb;
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  opacity: 0.9;
 }
 
 .navBtn:active {
-  background-color: #1a2d47;
+  opacity: 1;
   transform: scale(0.95);
 }
 
@@ -52,37 +53,34 @@
 }
 
 .weekLabel {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #22395a;
-  opacity: 0.7;
+  opacity: 0.6;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .weekDate {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 0.95rem;
+  font-weight: 600;
   color: #22395a;
-  text-transform: capitalize;
 }
 
 .todayBtn {
   padding: 0 1rem;
   height: 44px;
-  background-color: #f8bbd1;
-  border: none;
+  background-color: rgba(248, 187, 209, 0.3);
+  border: 1px solid #22395a;
   border-radius: 16px;
   color: #22395a;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid #22395a;
 }
 
 .todayBtn:active {
-  background-color: #e6a9bf;
-  transform: scale(0.95);
+  background-color: rgba(248, 187, 209, 0.5);
 }
 
 /* Botones de exportación */
@@ -94,24 +92,25 @@
 
 .exportBtn {
   flex: 1;
-  padding: 1rem;
-  background-color: #22395a;
-  border: 2px solid #f8bbd1;
+  padding: 0.875rem;
+  background-color: white;
+  border: 1px solid rgba(34, 57, 90, 0.2);
   border-radius: 16px;
-  color: #fdfafb;
-  font-size: 1rem;
-  font-weight: 600;
+  color: #22395a;
+  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  opacity: 0.8;
 }
 
 .exportBtn:active {
-  background-color: #1a2d47;
-  transform: scale(0.98);
+  background-color: rgba(34, 57, 90, 0.05);
+  opacity: 1;
 }
 
 /* Grid de rankings */
@@ -125,8 +124,8 @@
   background-color: white;
   border-radius: 24px;
   padding: 1.5rem 1rem;
-  box-shadow: 0 4px 16px rgba(34, 57, 90, 0.1);
-  border: 1px solid rgba(34, 57, 90, 0.1);
+  box-shadow: 0 4px 12px rgba(34, 57, 90, 0.05);
+  border: 1px solid rgba(34, 57, 90, 0.08);
 }
 
 .header {
@@ -134,139 +133,141 @@
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 3px solid #f8bbd1;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(248, 187, 209, 0.5);
 }
 
 .header span {
-  font-size: 2rem;
-  background-color: rgba(248, 187, 209, 0.2);
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 16px;
+  font-size: 1.3rem;
+  opacity: 0.8;
 }
 
 .header h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: #22395a;
   margin: 0;
+  letter-spacing: -0.3px;
 }
 
-/* Filas de ranking */
+/* ===== GRUPOS DE RANKING CON COLORES SUAVES ===== */
+
+/* Grupo T1 - Puestos 1-4 (Prioridad alta) - Verde claro */
+.container > div > :nth-child(-n + 4) {
+  background-color: rgb(123, 244, 123); /* Verde claro muy suave */
+  border-left: 4px solid #90ee90;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.container > div > :nth-child(-n + 4) span:first-child {
+  background-color: #57ec57;
+  color: #22395a;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* Grupo T2 - Puestos 5-8 (Prioridad media) - Amarillo claro */
+.container > div > :nth-child(n + 5):nth-child(-n + 8) {
+  background-color: rgb(246, 246, 127); /* Amarillo claro muy suave */
+  border-left: 4px solid #ffffb0;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem;
+}
+
+.container > div > :nth-child(n + 5):nth-child(-n + 8) span:first-child {
+  background-color: #f5f564;
+  color: #22395a;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 500;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+/* Grupo Resto - Puestos 9+ (Sin prioridad) - Rojo claro */
+.container > div > :nth-child(n + 9) {
+  background-color: rgba(255, 182, 193, 0.15); /* Rojo claro muy suave */
+  border-left: 4px solid #ffb6c1;
+  border-radius: 12px;
+  margin-bottom: 0.35rem;
+  padding: 0.7rem;
+}
+
+.container > div > :nth-child(n + 9) span:first-child {
+  color: #22395a;
+  opacity: 0.6;
+  width: 24px;
+  text-align: center;
+  font-weight: 400;
+}
+
+/* Fila de ranking base */
 .row {
   display: grid;
   grid-template-columns: 40px 1fr 70px 50px;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  background-color: #fdfafb;
-  border-radius: 16px;
-  border: 1px solid rgba(34, 57, 90, 0.05);
+}
+
+.row span {
+  color: #22395a;
   transition: all 0.2s ease;
 }
 
-/* Destacados por posición */
-.row:first-child {
-  background: linear-gradient(135deg, #f8bbd1 0%, #ffd9e8 100%);
-  border: 2px solid #22395a;
-  transform: scale(1.02);
-  margin-bottom: 0.75rem;
-  box-shadow: 0 4px 12px rgba(248, 187, 209, 0.4);
-}
-
-.row:first-child span {
-  color: #22395a;
-  font-weight: 800;
-}
-
-.row:nth-child(2) {
-  background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 100%);
-  border: 1px solid #22395a;
-}
-
-.row:nth-child(3) {
-  background: linear-gradient(135deg, #cd7f32 20%, #e6b17e 100%);
-  border: 1px solid #22395a;
-}
-
-.row:nth-child(3) span {
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-/* Posiciones destacadas con íconos */
-.row:first-child span:first-child::before {
-  content: "👑 ";
-  font-size: 1rem;
-}
-
-.row:nth-child(2) span:first-child::after {
-  content: " 🥈";
-  font-size: 0.9rem;
-}
-
-.row:nth-child(3) span:first-child::after {
-  content: " 🥉";
-  font-size: 0.9rem;
-}
-
-/* Colores para el número de posición */
 .row span:first-child {
-  font-weight: 800;
-  font-size: 1.1rem;
-  color: #22395a;
+  font-weight: 500;
   text-align: center;
-}
-
-.row:nth-child(2) span:first-child {
-  color: #4a4a4a;
-}
-
-.row:nth-child(3) span:first-child {
-  color: #8b4513;
 }
 
 .row span:nth-child(2) {
-  font-weight: 600;
-  color: #22395a;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: 500;
 }
 
 .row span:nth-child(3) {
-  font-weight: 700;
-  color: #22395a;
-  background-color: rgba(248, 187, 209, 0.3);
-  padding: 0.25rem 0.5rem;
-  border-radius: 30px;
   text-align: center;
+  font-weight: 500;
+  background-color: rgba(34, 57, 90, 0.05);
+  padding: 0.15rem 0.4rem;
+  border-radius: 30px;
   font-size: 0.9rem;
 }
 
 .row span:nth-child(4) {
-  font-weight: 600;
-  color: #fdfafb;
-  background-color: #22395a;
-  padding: 0.25rem 0.5rem;
-  border-radius: 30px;
   text-align: center;
+  font-weight: 400;
+  color: #22395a;
+  opacity: 0.6;
   font-size: 0.85rem;
 }
 
-/* Tooltip para efectividad */
-.row span:nth-child(3):hover {
-  transform: scale(1.05);
-  background-color: #f8bbd1;
-  cursor: help;
+/* Separadores suaves entre grupos */
+.container > div > :nth-child(4) {
+  margin-bottom: 1rem;
 }
 
-/* Versión para exportación (oculta) */
+.container > div > :nth-child(8) {
+  margin-bottom: 0.75rem;
+}
+
+/* Versión para exportación */
 .exportHidden {
   position: absolute;
   left: -9999px;
@@ -282,51 +283,23 @@
 
 .exportHidden h2 {
   color: #22395a;
-  font-size: 2rem;
+  font-size: 1.8rem;
+  font-weight: 500;
   margin-bottom: 0.5rem;
-  border-bottom: 3px solid #f8bbd1;
+  border-bottom: 2px solid rgba(248, 187, 209, 0.5);
   padding-bottom: 0.5rem;
 }
 
 .exportHidden p {
   color: #22395a;
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.8;
 }
 
 .exportHidden div {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.5rem;
-  background-color: #fdfafb;
-  border-radius: 16px;
-  border: 1px solid rgba(34, 57, 90, 0.1);
-  font-size: 1.1rem;
-}
-
-/* Destacados en exportación */
-.exportHidden div:first-of-type {
-  background: linear-gradient(135deg, #f8bbd1 0%, #ffd9e8 100%);
-  border: 3px solid #22395a;
-  font-weight: 800;
-  font-size: 1.3rem;
-}
-
-.exportHidden div:nth-of-type(2) {
-  background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 100%);
-  border: 2px solid #22395a;
-}
-
-.exportHidden div:nth-of-type(3) {
-  background: linear-gradient(135deg, #cd7f32 20%, #e6b17e 100%);
-  color: white;
-  border: 2px solid #22395a;
-}
-
-.exportHidden div:nth-of-type(3) span {
-  color: white;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(34, 57, 90, 0.1);
 }
 
 /* Desktop */
@@ -338,31 +311,26 @@
   }
 
   .weekNav {
-    padding: 1rem 1.5rem;
-    max-width: 500px;
-    margin-bottom: 2rem;
+    max-width: 400px;
+    margin-bottom: 1.5rem;
   }
 
   .navBtn:hover {
+    opacity: 1;
     background-color: #1a2d47;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.2);
   }
 
   .todayBtn:hover {
-    background-color: #e6a9bf;
-    transform: translateY(-2px);
+    background-color: rgba(248, 187, 209, 0.4);
   }
 
   .exportButtons {
-    max-width: 500px;
-    margin-bottom: 2rem;
+    max-width: 350px;
   }
 
   .exportBtn:hover {
-    background-color: #1a2d47;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.2);
+    background-color: rgba(34, 57, 90, 0.1);
+    border-color: #22395a;
   }
 
   .rankingGrid {
@@ -372,38 +340,26 @@
 
   .container {
     flex: 1;
-    padding: 2rem 1.5rem;
-  }
-
-  .header {
-    margin-bottom: 2rem;
-  }
-
-  .header h3 {
-    font-size: 1.5rem;
+    padding: 1.5rem;
   }
 
   .row {
-    padding: 1rem;
-    margin-bottom: 0.75rem;
-    cursor: pointer;
+    cursor: default;
   }
 
-  .row:hover {
-    transform: translateX(5px);
-    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.15);
-    border-color: #f8bbd1;
+  /* Hover effects suaves */
+  .container > div > :nth-child(-n + 4):hover {
+    background-color: rgba(144, 238, 144, 0.3);
+    transform: translateX(3px);
   }
 
-  .row:first-child:hover {
-    transform: translateX(5px) scale(1.02);
+  .container > div > :nth-child(n + 5):nth-child(-n + 8):hover {
+    background-color: rgba(255, 255, 224, 0.8);
+    transform: translateX(3px);
   }
 
-  .row span:nth-child(3) {
-    font-size: 1rem;
-  }
-
-  .row span:nth-child(4) {
-    font-size: 0.95rem;
+  .container > div > :nth-child(n + 9):hover {
+    background-color: rgba(255, 182, 193, 0.25);
+    transform: translateX(2px);
   }
 }

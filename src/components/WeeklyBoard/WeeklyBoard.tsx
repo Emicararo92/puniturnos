@@ -67,6 +67,7 @@ export default function WeeklyBoard({ semanaRef, setSemanaRef }: any) {
           stats[fecha].turnos[item.turno_id] = {
             hora_inicio: item.hora_inicio,
             hora_fin: item.hora_fin,
+            cupo_max: item.cupo_max,
             asignados: 0,
           };
         }
