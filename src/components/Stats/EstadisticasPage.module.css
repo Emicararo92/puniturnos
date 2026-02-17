@@ -1,5 +1,6 @@
-/* EstadisticasPage.module.css - Mobile First - VERSIÓN LIMPIA */
+/* EstadisticasPage.module.css - Mobile First - ORGANIZADO */
 
+/* ===== LAYOUT PRINCIPAL ===== */
 .pageContainer {
   width: 100%;
   min-height: 100vh;
@@ -7,7 +8,7 @@
   padding: 1rem;
 }
 
-/* Header */
+/* ===== HEADER ===== */
 .header {
   margin-bottom: 1.5rem;
 }
@@ -22,7 +23,7 @@
   gap: 0.5rem;
 }
 
-/* Controles */
+/* ===== CONTROLES GENERALES ===== */
 .controls {
   display: flex;
   flex-direction: column;
@@ -89,14 +90,15 @@
   text-align: center;
 }
 
-.controls > div:last-child {
+/* ===== FILTROS GENERALES ===== */
+.filtersContainer {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-.controls input,
-.controls select {
+.searchInput,
+.filterSelect {
   width: 100%;
   padding: 0.875rem;
   border: 1px solid rgba(34, 57, 90, 0.2);
@@ -106,31 +108,85 @@
   transition: all 0.2s ease;
 }
 
-.controls input:focus,
-.controls select:focus {
+.searchInput:focus,
+.filterSelect:focus {
   outline: none;
   border-color: #22395a;
 }
 
-.controls select {
-  background-color: white;
+.filterSelect {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2322395a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
   cursor: pointer;
 }
 
-/* Selector de cadete */
-.controls > div:first-of-type + div select {
+/* ===== SELECTOR DE CADETE ===== */
+.cadeteSelectorContainer {
+  margin-bottom: 1.5rem;
+}
+
+.cadeteSelect {
+  width: 100%;
+  padding: 1rem;
   border: 1px solid #22395a;
+  border-radius: 16px;
+  font-size: 0.95rem;
   background-color: #f8f8f8;
   font-weight: 500;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2322395a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
 }
 
-/* Ocultar gráficos en mobile */
-:global(.desktopCharts) {
-  display: none;
+.cadeteSelect:focus {
+  outline: none;
+  border-color: #f8bbd1;
 }
 
-/* ===== CARD EXPANDIDA - VERSIÓN LIMPIA ===== */
-.expandedCard {
+/* ===== LOADING ===== */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(248, 187, 209, 0.3);
+  border-top-color: #22395a;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  color: #22395a;
+  opacity: 0.7;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ===== GRÁFICOS (SOLO DESKTOP) ===== */
+.chartsGrid {
+  display: none; /* Oculto en mobile */
+}
+
+/* ===== CARD DE CADETE SELECCIONADO ===== */
+.cadeteCard {
   background: white;
   border-radius: 24px;
   padding: 1.5rem;
@@ -139,7 +195,7 @@
   border: 1px solid rgba(34, 57, 90, 0.15);
 }
 
-.expandedCard h2 {
+.cadeteCard h2 {
   font-size: 1.4rem;
   font-weight: 600;
   color: #22395a;
@@ -148,34 +204,45 @@
   border-bottom: 2px solid #f8bbd1;
 }
 
-/* Contenedor de confiabilidad */
-.expandedCard > div:first-of-type {
-  margin: 1rem 0 1.5rem !important;
+/* ----- Sección Confiabilidad ----- */
+.confiabilidadSection {
+  margin: 1rem 0 1.5rem;
 }
 
-.expandedCard strong {
+.confiabilidadLabel {
   display: block;
   font-size: 0.95rem;
   font-weight: 500;
   color: #22395a;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.5rem;
 }
 
-/* Barra de progreso */
-.expandedCard > div:first-of-type > div {
-  height: 8px !important;
-  background: #f0f0f0 !important;
-  border-radius: 20px !important;
+.confiabilidadBar {
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 20px;
   overflow: hidden;
 }
 
-.expandedCard > div:first-of-type > div > div {
+.confiabilidadFill {
   height: 100%;
   border-radius: 20px;
   transition: width 0.3s ease;
 }
 
-/* Grid de métricas */
+.confiabilidadFill.alta {
+  background: linear-gradient(90deg, #22c55e, #86efac);
+}
+
+.confiabilidadFill.media {
+  background: linear-gradient(90deg, #facc15, #fde047);
+}
+
+.confiabilidadFill.baja {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+}
+
+/* ----- Grid de Métricas Rápidas ----- */
 .metricsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -209,7 +276,6 @@
   color: #22395a;
 }
 
-/* Colores suaves para métricas especiales */
 .metricValue.faltas {
   color: #b91c1c;
 }
@@ -218,7 +284,7 @@
   color: #b45309;
 }
 
-/* Lista de detalles */
+/* ----- Lista Detallada ----- */
 .detailsList {
   margin: 1.5rem 0;
   border-top: 1px solid #f0f0f0;
@@ -226,7 +292,7 @@
   padding: 0.5rem 0;
 }
 
-.detailItem {
+.detailRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -234,7 +300,7 @@
   border-bottom: 1px solid #f5f5f5;
 }
 
-.detailItem:last-child {
+.detailRow:last-child {
   border-bottom: none;
 }
 
@@ -255,8 +321,8 @@
   font-size: 0.9rem;
 }
 
-/* Tendencia */
-.tendenciaContainer {
+/* ----- Tendencia ----- */
+.tendenciaSection {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -296,7 +362,7 @@
   color: #b45309;
 }
 
-/* Desktop */
+/* ===== DESKTOP ===== */
 @media (min-width: 1024px) {
   .pageContainer {
     margin-left: 280px;
@@ -304,20 +370,22 @@
     padding: 2rem;
   }
 
+  /* Controles en desktop */
   .controls {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap: 1.5rem;
+    margin-bottom: 2rem;
   }
 
   .weekNav {
-    min-width: 380px;
+    min-width: 400px;
   }
 
   .weekNav button:hover {
     background-color: #22395a;
     color: white;
+    transform: translateY(-2px);
   }
 
   .weekNav button:last-child:hover {
@@ -325,32 +393,65 @@
     color: #22395a;
   }
 
-  .controls > div:last-child {
+  .filtersContainer {
     flex-direction: row;
-    min-width: 380px;
+    min-width: 400px;
   }
 
-  .controls input,
-  .controls select {
-    width: auto;
+  .searchInput,
+  .filterSelect {
     flex: 1;
   }
 
-  :global(.desktopCharts) {
+  .searchInput:hover,
+  .filterSelect:hover {
+    border-color: #22395a;
+  }
+
+  /* Selector de cadete en desktop */
+  .cadeteSelectorContainer {
+    max-width: 400px;
+    margin-bottom: 2rem;
+  }
+
+  .cadeteSelect {
+    transition: all 0.2s ease;
+  }
+
+  .cadeteSelect:hover {
+    border-color: #f8bbd1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.1);
+  }
+
+  /* Gráficos en desktop */
+  .chartsGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
     margin: 2rem 0;
   }
 
-  :global(.desktopCharts) > :last-child {
+  .chartsGrid > :last-child {
     grid-column: 1 / -1;
   }
 
-  .expandedCard {
+  /* Card en desktop */
+  .cadeteCard {
     max-width: 700px;
     margin: 2rem auto;
     padding: 2rem;
+    transition: all 0.3s ease;
+  }
+
+  .cadeteCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(34, 57, 90, 0.15);
+    border-color: #f8bbd1;
+  }
+
+  .cadeteCard h2 {
+    font-size: 1.6rem;
   }
 
   .metricsGrid {
@@ -366,11 +467,27 @@
     background: white;
     border-color: #f8bbd1;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.05);
+    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.08);
   }
 
   .detailsList {
     max-width: 500px;
     margin: 2rem auto;
+  }
+
+  .detailRow {
+    transition: all 0.2s ease;
+  }
+
+  .detailRow:hover {
+    transform: translateX(5px);
+    background: rgba(248, 187, 209, 0.05);
+    border-radius: 8px;
+    padding-left: 1rem;
+  }
+
+  .tendenciaSection {
+    max-width: 400px;
+    margin: 2rem auto 0;
   }
 }

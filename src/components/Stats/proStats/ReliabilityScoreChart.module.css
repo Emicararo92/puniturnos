@@ -1,72 +1,163 @@
-/* ReliabilityScoreChart.module.css - Mobile First */
+/* ReliabilityScoreChart.module.css - Diseño Mejorado */
 
 .container {
-  background-color: white;
+  background: white;
   border-radius: 24px;
   padding: 1.5rem 1rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 4px 16px rgba(34, 57, 90, 0.1);
-  border: 2px solid #22395a;
+  box-shadow: 0 10px 30px rgba(34, 57, 90, 0.08);
+  border: 1px solid rgba(34, 57, 90, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f8bbd1, #22395a, #f8bbd1);
 }
 
 .title {
   font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #22395a;
   margin: 0 0 1rem 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding-bottom: 0.75rem;
-  border-bottom: 3px solid #f8bbd1;
+  border-bottom: 2px solid rgba(248, 187, 209, 0.3);
+  position: relative;
+}
+
+.title::after {
+  content: "📊";
+  margin-left: auto;
+  font-size: 1.2rem;
+  opacity: 0.7;
 }
 
 .chartWrapper {
   width: 100%;
   height: 280px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  margin-top: 0.5rem;
 }
 
 /* Personalización del radar chart */
 .chartWrapper :global(.recharts-polar-grid-angle line) {
-  stroke: #f8bbd1;
-  stroke-opacity: 0.3;
+  stroke: #22395a;
+  stroke-opacity: 0.15;
+  stroke-width: 1px;
 }
 
 .chartWrapper :global(.recharts-polar-grid-concentric circle) {
-  stroke: #f8bbd1;
-  stroke-opacity: 0.3;
+  stroke: #22395a;
+  stroke-opacity: 0.1;
+  stroke-width: 1px;
+  stroke-dasharray: 3 3;
 }
 
 .chartWrapper :global(.recharts-polar-angle-axis-tick text) {
   fill: #22395a;
   font-size: 12px;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .chartWrapper :global(.recharts-polar-radius-axis-tick text) {
   fill: #22395a;
   font-size: 10px;
+  font-weight: 500;
+  opacity: 0.6;
+}
+
+/* Estilo del radar mejorado */
+.chartWrapper :global(.recharts-radar) {
+  filter: drop-shadow(0 4px 8px rgba(34, 57, 90, 0.2));
+  transition: all 0.3s ease;
+}
+
+.chartWrapper :global(.recharts-radar:hover) {
+  filter: drop-shadow(0 6px 12px rgba(34, 57, 90, 0.3));
+  fill-opacity: 0.8;
+}
+
+/* Tooltip personalizado si lo agregás después */
+.tooltip {
+  background: #22395a;
+  border: 2px solid #f8bbd1;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  color: white;
+  font-size: 0.9rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip p {
+  margin: 0;
+  font-weight: 600;
+}
+
+.tooltip span {
+  color: #f8bbd1;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* Leyenda mejorada */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(34, 57, 90, 0.2);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #22395a;
+  background: rgba(248, 187, 209, 0.1);
+  padding: 0.4rem 1rem;
+  border-radius: 30px;
+  border: 1px solid rgba(34, 57, 90, 0.1);
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f8bbd1, #22395a);
+  box-shadow: 0 2px 4px rgba(34, 57, 90, 0.2);
 }
 
 /* Desktop */
 @media (min-width: 1024px) {
   .container {
     padding: 2rem;
-    margin-bottom: 2rem;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    cursor: default;
   }
 
   .container:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(34, 57, 90, 0.15);
+    box-shadow: 0 20px 40px rgba(34, 57, 90, 0.12);
     border-color: #f8bbd1;
   }
 
   .title {
     font-size: 1.3rem;
+    margin-bottom: 1.5rem;
   }
 
   .chartWrapper {
@@ -75,5 +166,33 @@
 
   .chartWrapper :global(.recharts-polar-angle-axis-tick text) {
     font-size: 13px;
+    font-weight: 600;
+  }
+
+  .chartWrapper :global(.recharts-polar-radius-axis-tick text) {
+    font-size: 11px;
+  }
+
+  .chartWrapper :global(.recharts-polar-grid-concentric circle) {
+    transition: all 0.2s ease;
+  }
+
+  .container:hover :global(.recharts-polar-grid-concentric circle) {
+    stroke-opacity: 0.2;
+  }
+
+  .legend {
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .legendItem {
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+
+  .legendItem:hover {
+    background: rgba(248, 187, 209, 0.2);
+    transform: translateY(-2px);
   }
 }
