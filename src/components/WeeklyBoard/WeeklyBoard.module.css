@@ -1,262 +1,221 @@
-/* WeeklyBoard.module.css - Mobile First */
+/* WeeklyBoard.module.css - Mobile First con ajuste desktop */
+
 .container {
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0.75rem;
+  min-height: 100vh;
+  background-color: #fdfafb;
 }
 
-/* ===== MOBILE FIRST (base styles) ===== */
-
-/* Navegación semanal */
+/* Navegación de semanas */
 .weekNav {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  background-color: rgba(253, 250, 251, 0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  gap: 1rem;
   padding: 1rem;
-  border-radius: 30px;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 12px rgba(34, 57, 90, 0.08);
-  border: 1px solid rgba(248, 187, 209, 0.3);
+  background-color: #fdfafb;
+  border-bottom: 1px solid rgba(34, 57, 90, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
 }
 
 .weekNav strong {
-  color: var(--soft-azul);
   font-size: 1rem;
-  font-weight: 600;
+  color: #22395a;
   text-align: center;
+  font-weight: 600;
   order: -1;
+  padding: 0.5rem 0;
+}
+
+.weekNav button {
+  padding: 0.75rem 1rem;
+  background-color: transparent;
+  border: 1px solid #22395a;
+  border-radius: 12px;
+  color: #22395a;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
 }
 
 .weekNav div {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
+  gap: 0.75rem;
 }
 
-.weekNav button {
-  background-color: transparent;
-  border: 1px solid var(--soft-azul);
-  color: var(--soft-azul);
-  padding: 0.6rem 1rem;
-  border-radius: 40px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%;
-}
-
-.weekNav button:hover {
-  background-color: var(--soft-azul);
-  color: var(--soft-blanco);
-  border-color: var(--soft-azul);
+.weekNav button:active {
+  background-color: #22395a;
+  color: #fdfafb;
+  transform: scale(0.98);
 }
 
 /* Grilla de días */
 .daysGrid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 0.75rem;
-  padding: 0.25rem;
+  padding: 1rem;
 }
 
 /* Tarjeta de día */
 .dayCard {
-  background-color: rgba(253, 250, 251, 0.75);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 24px;
-  padding: 1rem;
+  background-color: white;
+  border-radius: 20px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(34, 57, 90, 0.08);
+  border: 1px solid rgba(34, 57, 90, 0.05);
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  box-shadow: 0 6px 16px rgba(34, 57, 90, 0.06);
-  border: 1px solid rgba(248, 187, 209, 0.2);
-  transition: all 0.25s ease;
-  min-height: unset;
+  transition: all 0.2s ease;
 }
 
-.dayCard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(34, 57, 90, 0.12);
-  border-color: rgba(248, 187, 209, 0.5);
-  background-color: rgba(253, 250, 251, 0.9);
+.dayCard.today {
+  background-color: rgba(248, 187, 209, 0.1);
+  border: 1px solid #f8bbd1;
+  box-shadow: 0 4px 12px rgba(248, 187, 209, 0.2);
 }
 
-/* Día actual (hoy) */
-.today {
-  border: 2px solid var(--soft-rosa);
-  background-color: rgba(248, 187, 209, 0.15);
-  box-shadow: 0 8px 20px rgba(248, 187, 209, 0.25);
-}
-
-.today:hover {
-  background-color: rgba(248, 187, 209, 0.2);
-}
-
-/* Estado de carga */
-.loading {
+.dayCard.loading {
   opacity: 0.6;
   pointer-events: none;
-  filter: grayscale(0.3);
 }
 
-/* Etiqueta de fecha */
 .dateLabel {
-  font-weight: 600;
-  color: var(--soft-azul);
   font-size: 1rem;
-  text-align: left;
-  line-height: 1.3;
-  padding-right: 0.5rem;
-  border-bottom: none;
-  width: auto;
+  font-weight: 500;
+  color: #22395a;
   text-transform: capitalize;
   flex: 1;
+}
+
+.today .dateLabel {
+  color: #22395a;
+  font-weight: 600;
 }
 
 /* Grupo de botones */
 .buttonGroup {
   display: flex;
   gap: 0.5rem;
-  width: 100%;
-  margin-top: 0.25rem;
 }
 
-/* Botón de resumen */
+.summaryBtn,
+.assignBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  white-space: nowrap;
+}
+
 .summaryBtn {
   background-color: transparent;
-  border: 1px solid var(--soft-rosa);
-  color: var(--soft-azul);
-  padding: 0.5rem 0.75rem;
-  border-radius: 30px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex: 1;
-  white-space: nowrap;
+  border: 1px solid #22395a;
+  color: #22395a;
 }
 
-.summaryBtn:hover {
-  background-color: var(--soft-rosa);
-  color: var(--soft-azul);
-  border-color: var(--soft-rosa);
-}
-
-/* Botón de asignar */
 .assignBtn {
-  background-color: var(--soft-azul);
-  border: 1px solid var(--soft-azul);
-  color: var(--soft-blanco);
-  padding: 0.5rem 0.75rem;
-  border-radius: 30px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex: 1;
-  white-space: nowrap;
+  background-color: #22395a;
+  color: #fdfafb;
 }
 
-.assignBtn:hover {
-  background-color: transparent;
-  color: var(--soft-azul);
-  border-color: var(--soft-azul);
+.summaryBtn:active {
+  background-color: rgba(34, 57, 90, 0.1);
 }
 
-/* ===== TABLET ===== */
-@media (min-width: 640px) {
+.assignBtn:active {
+  background-color: #1a2d47;
+  transform: scale(0.98);
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
   .container {
-    padding: 1rem;
+    margin-left: 280px; /* Ancho de la NavBar */
+    width: calc(100% - 280px);
   }
 
   .weekNav {
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 1.5rem;
-    border-radius: 100px;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    top: 0;
   }
 
   .weekNav strong {
     order: 0;
+    padding: 0;
     font-size: 1.1rem;
-    text-align: left;
-  }
-
-  .weekNav div {
-    flex-direction: row;
-    width: auto;
   }
 
   .weekNav button {
-    width: auto;
     padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    flex: none;
+  }
+
+  .weekNav button:hover {
+    background-color: #22395a;
+    color: #fdfafb;
+  }
+
+  .weekNav div {
+    gap: 0.5rem;
   }
 
   .daysGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
   }
 
   .dayCard {
+    padding: 1.5rem;
     flex-direction: column;
-    align-items: center;
-    padding: 1.25rem 1rem;
-    min-height: 180px;
+    align-items: flex-start;
+    gap: 1.5rem;
   }
 
   .dateLabel {
-    text-align: center;
     font-size: 1.1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px dashed rgba(248, 187, 209, 0.4);
     width: 100%;
+    border-bottom: 1px solid rgba(34, 57, 90, 0.1);
+    padding-bottom: 0.75rem;
   }
 
   .buttonGroup {
-    flex-direction: column;
+    width: 100%;
     gap: 0.75rem;
-    margin-top: 0;
   }
 
   .summaryBtn,
   .assignBtn {
-    width: 100%;
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-  }
-}
-
-/* ===== DESKTOP ===== */
-@media (min-width: 1024px) {
-  .daysGrid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  }
-}
-
-/* ===== PANTALLAS MUY PEQUEÑAS ===== */
-@media (max-width: 380px) {
-  .dayCard {
-    flex-direction: column;
-    align-items: stretch;
+    flex: 1;
+    padding: 0.75rem;
+    font-size: 0.95rem;
   }
 
-  .dateLabel {
-    text-align: center;
-    margin-bottom: 0.25rem;
+  .summaryBtn:hover {
+    background-color: rgba(34, 57, 90, 0.05);
   }
 
-  .buttonGroup {
-    flex-direction: column;
+  .assignBtn:hover {
+    background-color: #1a2d47;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.2);
+  }
+
+  .dayCard.today {
+    transform: scale(1.02);
   }
 }

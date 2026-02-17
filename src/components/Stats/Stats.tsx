@@ -4,10 +4,16 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useZona } from "../../Context/zonaContext";
 import styles from "./EstadisticasPage.module.css";
+
+import ComparativeEffectivenessChart from "../../components/Stats/proStats/ComparativeEffectivenessChart";
+import ReliabilityRadarChart from "../../components/Stats/proStats/ReliabilityScoreChart";
+import TrendPerformanceChart from "../../components/Stats/proStats/WeeklyTrendChart";
 
 export default function EstadisticasPage() {
   const supabase = createClient();
+  const { zonaSeleccionada } = useZona();
 
   const [data, setData] = useState<any[]>([]);
   const [prevData, setPrevData] = useState<any[]>([]);
@@ -16,24 +22,28 @@ export default function EstadisticasPage() {
   const [search, setSearch] = useState("");
   const [filtro, setFiltro] = useState("efectividad");
 
+  const [cadeteSeleccionado, setCadeteSeleccionado] = useState<any>(null);
+
   useEffect(() => {
+    if (!zonaSeleccionada) return;
     load();
-  }, [semanaRef]);
+  }, [semanaRef, zonaSeleccionada]);
 
   async function load() {
     setLoading(true);
 
-    const { data } = await supabase.rpc("metricas_cadete", {
+    const { data } = await supabase.rpc("metricas_cadete_zona", {
       semana_ref: semanaRef,
+      zona: zonaSeleccionada,
     });
 
-    // semana anterior para tendencia
     const prevMonday = getMonday(
       new Date(new Date(semanaRef).getTime() - 7 * 86400000),
     );
 
-    const { data: prev } = await supabase.rpc("metricas_cadete", {
+    const { data: prev } = await supabase.rpc("metricas_cadete_zona", {
       semana_ref: prevMonday,
+      zona: zonaSeleccionada,
     });
 
     setData(data || []);
@@ -48,16 +58,25 @@ export default function EstadisticasPage() {
     setSemanaRef(getMonday(date));
   }
 
-  const filtered = [...data]
+  const filtered = (data || [])
+    .filter((c) => c && c.nombre)
+    .map((c) => ({
+      ...c,
+      faltas: c.faltas ?? 0,
+      llegadas_tarde: c.llegadas_tarde ?? 0,
+      tardanza_pedido: c.tardanza_pedido ?? 0,
+      activacion_tardia: c.activacion_tardia ?? 0,
+      total_turnos: c.total_turnos ?? 0,
+      efectividad: Number(c.efectividad ?? 0),
+    }))
     .filter((c) => c.nombre.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
       if (filtro === "llegadas") return b.llegadas_tarde - a.llegadas_tarde;
       if (filtro === "faltas") return b.faltas - a.faltas;
-      if (filtro === "turnos") return b.turnos - a.turnos;
+      if (filtro === "turnos") return b.total_turnos - a.total_turnos;
       return b.efectividad - a.efectividad;
     });
 
-  // Calcular rango de la semana para mostrar
   const semanaInicio = new Date(semanaRef);
   const semanaFin = new Date(semanaRef);
   semanaFin.setDate(semanaFin.getDate() + 6);
@@ -77,51 +96,30 @@ export default function EstadisticasPage() {
         <h2 className={styles.title}>📊 Dashboard Cadetes</h2>
       </div>
 
-      {/* NAV SEMANA Y CONTROLES */}
+      {/* CONTROLES */}
       <div className={styles.controls}>
         <div className={styles.weekNav}>
-          <button
-            onClick={() => changeWeek(-1)}
-            className={styles.weekBtn}
-            aria-label="Semana anterior"
-          >
-            ←
-          </button>
+          <button onClick={() => changeWeek(-1)}>←</button>
 
-          <div className={styles.weekInfo}>
-            <span className={styles.weekLabel}>Semana actual</span>
-            <strong className={styles.weekRange}>{formatoSemana}</strong>
+          <div>
+            <span>Semana</span>
+            <strong>{formatoSemana}</strong>
           </div>
 
-          <button
-            onClick={() => changeWeek(1)}
-            className={styles.weekBtn}
-            aria-label="Semana siguiente"
-          >
-            →
-          </button>
-
-          <button
-            onClick={() => setSemanaRef(getMonday(new Date()))}
-            className={styles.weekBtnToday}
-          >
+          <button onClick={() => changeWeek(1)}>→</button>
+          <button onClick={() => setSemanaRef(getMonday(new Date()))}>
             Hoy
           </button>
         </div>
 
-        <div className={styles.filters}>
+        <div>
           <input
-            className={styles.searchInput}
             placeholder="Buscar cadete..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
-          <select
-            className={styles.selectFilter}
-            value={filtro}
-            onChange={(e) => setFiltro(e.target.value)}
-          >
+          <select value={filtro} onChange={(e) => setFiltro(e.target.value)}>
             <option value="efectividad">Mayor efectividad</option>
             <option value="llegadas">Más llegadas tarde</option>
             <option value="faltas">Más faltas</option>
@@ -130,25 +128,60 @@ export default function EstadisticasPage() {
         </div>
       </div>
 
-      {loading && (
-        <div className={styles.loadingState}>
-          <div className={styles.loadingSpinner}></div>
-          <p>Cargando estadísticas…</p>
+      {/* SELECTOR CADENTE */}
+      {!loading && filtered.length > 0 && (
+        <div style={{ marginBottom: 20 }}>
+          <select
+            value={cadeteSeleccionado?.cadete_id || ""}
+            onChange={(e) => {
+              const selected = filtered.find(
+                (c) => c.cadete_id === e.target.value,
+              );
+              setCadeteSeleccionado(selected || null);
+            }}
+          >
+            <option value="">Seleccionar cadete…</option>
+            {filtered.map((c) => (
+              <option key={c.cadete_id} value={c.cadete_id}>
+                {c.nombre}
+              </option>
+            ))}
+          </select>
         </div>
       )}
 
-      <div className={styles.cardsGrid}>
-        {filtered.map((c) => {
-          const prev = prevData.find((p) => p.cadete_id === c.cadete_id);
+      {/* CHARTS SOLO DESKTOP */}
+      {!loading && filtered.length > 0 && (
+        <div className="desktopCharts">
+          <ComparativeEffectivenessChart data={filtered} />
+          <ReliabilityRadarChart cadete={cadeteSeleccionado} />
+          <TrendPerformanceChart data={filtered} prevData={prevData} />
+        </div>
+      )}
 
-          return <CadeteCard key={c.cadete_id} cadete={c} prev={prev} />;
-        })}
-      </div>
+      {/* CARD GRANDE SELECCIONADA */}
+      {cadeteSeleccionado && (
+        <CadeteCardExpanded
+          cadete={cadeteSeleccionado}
+          prev={prevData.find(
+            (p) => p.cadete_id === cadeteSeleccionado.cadete_id,
+          )}
+        />
+      )}
     </div>
   );
 }
 
-function CadeteCard({ cadete, prev }: any) {
+function CadeteCardExpanded({ cadete, prev }: any) {
+  const confiabilidad =
+    cadete.total_turnos > 0
+      ? Math.round(
+          ((cadete.total_turnos - cadete.faltas - cadete.llegadas_tarde * 0.5) /
+            cadete.total_turnos) *
+            100,
+        )
+      : 0;
+
   const tendencia = prev
     ? cadete.efectividad > prev.efectividad
       ? "⬆ Mejora"
@@ -157,107 +190,43 @@ function CadeteCard({ cadete, prev }: any) {
         : "➡ Estable"
     : "—";
 
-  const confiabilidad =
-    cadete.turnos > 0
-      ? Math.round(
-          ((cadete.turnos - cadete.faltas - cadete.llegadas_tarde * 0.5) /
-            cadete.turnos) *
-            100,
-        )
-      : 0;
-
-  const recomendacion =
-    cadete.faltas > 0
-      ? "⚠ Revisar asistencia"
-      : cadete.llegadas_tarde > 2
-        ? "⏰ Problemas de puntualidad"
-        : confiabilidad < 80
-          ? "📉 Riesgo operativo"
-          : cadete.efectividad >= 95
-            ? "✅ Excelente rendimiento"
-            : "🙂 Rendimiento normal";
-
   return (
-    <div className={styles.card}>
-      <div className={styles.cardHeader}>
-        <h3 className={styles.cardTitle}>{cadete.nombre}</h3>
-        <span className={styles.confiabilidad}>{confiabilidad}%</span>
-      </div>
+    <div style={{ padding: 24, borderRadius: 16, background: "#fff" }}>
+      <h2>{cadete.nombre}</h2>
 
-      <div className={styles.metricsGrid}>
-        <div className={styles.metric}>
-          <span className={styles.metricLabel}>Turnos</span>
-          <span className={styles.metricValue}>{cadete.turnos}</span>
-        </div>
-        <div className={styles.metric}>
-          <span className={styles.metricLabel}>❌ Faltas</span>
-          <span
-            className={`${styles.metricValue} ${cadete.faltas > 0 ? styles.metricBad : ""}`}
-          >
-            {cadete.faltas}
-          </span>
-        </div>
-        <div className={styles.metric}>
-          <span className={styles.metricLabel}>⏰ Llegadas</span>
-          <span
-            className={`${styles.metricValue} ${cadete.llegadas_tarde > 2 ? styles.metricWarning : ""}`}
-          >
-            {cadete.llegadas_tarde}
-          </span>
-        </div>
-        <div className={styles.metric}>
-          <span className={styles.metricLabel}>📉 Pedidos</span>
-          <span className={styles.metricValue}>{cadete.pedidos_tarde}</span>
-        </div>
-        <div className={styles.metric}>
-          <span className={styles.metricLabel}>⚡ Activaciones</span>
-          <span className={styles.metricValue}>
-            {cadete.activaciones_tarde}
-          </span>
-        </div>
-      </div>
-
-      <div className={styles.efectividadBar}>
+      <div style={{ margin: "12px 0" }}>
+        <strong>Confiabilidad {confiabilidad}%</strong>
         <div
-          className={`${styles.efectividadFill} ${
-            cadete.efectividad >= 95
-              ? styles.fillAlta
-              : cadete.efectividad >= 85
-                ? styles.fillMedia
-                : styles.fillBaja
-          }`}
-          style={{ width: `${cadete.efectividad}%` }}
-        />
-        <span className={styles.efectividadText}>{cadete.efectividad}%</span>
-      </div>
-
-      <div className={styles.tendencia}>
-        <span className={styles.tendenciaLabel}>📈 Tendencia:</span>
-        <span
-          className={`${styles.tendenciaValue} ${
-            tendencia.includes("⬆")
-              ? styles.tendenciaUp
-              : tendencia.includes("⬇")
-                ? styles.tendenciaDown
-                : styles.tendenciaStable
-          }`}
+          style={{
+            height: 10,
+            background: "#eee",
+            borderRadius: 8,
+            overflow: "hidden",
+            marginTop: 6,
+          }}
         >
-          {tendencia}
-        </span>
+          <div
+            style={{
+              width: `${confiabilidad}%`,
+              height: "100%",
+              background:
+                confiabilidad > 90
+                  ? "#22c55e"
+                  : confiabilidad > 75
+                    ? "#facc15"
+                    : "#ef4444",
+            }}
+          />
+        </div>
       </div>
 
-      <div
-        className={`${styles.recomendacion} ${
-          recomendacion.includes("Excelente")
-            ? styles.recomendacionBuena
-            : recomendacion.includes("Rendimiento normal") ||
-                recomendacion.includes("Revisar")
-              ? styles.recomendacionNeutral
-              : styles.recomendacionMala
-        }`}
-      >
-        {recomendacion}
-      </div>
+      <p>Efectividad: {cadete.efectividad}%</p>
+      <p>Turnos: {cadete.total_turnos}</p>
+      <p>Faltas: {cadete.faltas}</p>
+      <p>Llegadas tarde: {cadete.llegadas_tarde}</p>
+      <p>Tardanza pedidos: {cadete.tardanza_pedido}</p>
+      <p>Activación tardía: {cadete.activacion_tardia}</p>
+      <p>Tendencia: {tendencia}</p>
     </div>
   );
 }

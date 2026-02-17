@@ -3,10 +3,12 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useZona } from "../../Context/zonaContext";
 import styles from "./CadeteForm.module.css";
 
 export default function CadeteForm({ onClose, onCreated }: any) {
   const supabase = createClient();
+  const { zonaSeleccionada } = useZona();
 
   const [nombre, setNombre] = useState("");
   const [telefono, setTelefono] = useState("");
@@ -18,8 +20,10 @@ export default function CadeteForm({ onClose, onCreated }: any) {
   async function handleSubmit(e: any) {
     e.preventDefault();
 
-    const { data } = await supabase.auth.getSession();
-    console.log("SESSION:", data.session);
+    if (!zonaSeleccionada) {
+      alert("Seleccioná una zona antes de crear cadetes.");
+      return;
+    }
 
     setLoading(true);
 
@@ -29,6 +33,7 @@ export default function CadeteForm({ onClose, onCreated }: any) {
       notas: notas || null,
       activo,
       prioridad_manual: prioridad ? Number(prioridad) : null,
+      zona_id: zonaSeleccionada,
     });
 
     setLoading(false);
@@ -49,7 +54,17 @@ export default function CadeteForm({ onClose, onCreated }: any) {
         onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit}
       >
-        <h3>Nuevo cadete</h3>
+        <div className={styles.modalHeader}>
+          <h3>Nuevo cadete</h3>
+          <button
+            type="button"
+            className={styles.closeModalBtn}
+            onClick={onClose}
+            aria-label="Cerrar"
+          >
+            ✕
+          </button>
+        </div>
 
         <input
           placeholder="Nombre completo"
@@ -86,7 +101,9 @@ export default function CadeteForm({ onClose, onCreated }: any) {
           Activo
         </label>
 
-        <button disabled={loading}>{loading ? "Guardando…" : "Guardar"}</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Guardando…" : "Guardar"}
+        </button>
       </form>
     </div>
   );

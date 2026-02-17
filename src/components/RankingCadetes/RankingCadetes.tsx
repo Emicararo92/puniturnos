@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 
@@ -7,6 +6,7 @@
 import { useEffect, useState, useRef } from "react";
 import html2canvas from "html2canvas";
 import { createClient } from "@/lib/supabase/client";
+import { useZona } from "../../Context/zonaContext";
 import styles from "./RankingCadetes.module.css";
 
 type CadeteRanking = {
@@ -18,6 +18,7 @@ type CadeteRanking = {
 
 export default function RankingCadetes() {
   const supabase = createClient();
+  const { zonaSeleccionada } = useZona();
 
   const exportSemanaRef = useRef<HTMLDivElement>(null);
   const exportTotalRef = useRef<HTMLDivElement>(null);
@@ -28,29 +29,27 @@ export default function RankingCadetes() {
 
   const [semanaRef, setSemanaRef] = useState(getMonday(new Date()));
 
-  /* ---------- SEMANA ---------- */
-
   function changeWeek(offset: number) {
     const [y, m, d] = semanaRef.split("-").map(Number);
     const date = new Date(y, m - 1, d);
-
     date.setDate(date.getDate() + offset * 7);
-
     setSemanaRef(getMonday(date));
   }
 
-  /* ---------- LOAD ---------- */
-
   async function loadRankings() {
+    if (!zonaSeleccionada) return;
+
     setLoading(true);
 
-    const { data: semana } = await supabase.rpc("ranking_cadetes", {
+    const { data: semana } = await supabase.rpc("ranking_cadetes_zona", {
       semana_ref: semanaRef,
+      zona: zonaSeleccionada,
       tipo: "semana",
     });
 
-    const { data: total } = await supabase.rpc("ranking_cadetes", {
+    const { data: total } = await supabase.rpc("ranking_cadetes_zona", {
       semana_ref: null,
+      zona: zonaSeleccionada,
       tipo: "total",
     });
 
@@ -61,9 +60,7 @@ export default function RankingCadetes() {
 
   useEffect(() => {
     loadRankings();
-  }, [semanaRef]);
-
-  /* ---------- EXPORT ---------- */
+  }, [semanaRef, zonaSeleccionada]);
 
   async function exportar(ref: any, nombre: string) {
     if (!ref.current) return;
@@ -82,11 +79,8 @@ export default function RankingCadetes() {
     link.click();
   }
 
-  /* ---------- RENDER ---------- */
-
   return (
     <div className={styles.pageContainer}>
-      {/* NAV SEMANA */}
       <div className={styles.weekNav}>
         <button onClick={() => changeWeek(-1)} className={styles.navBtn}>
           ←
@@ -114,30 +108,27 @@ export default function RankingCadetes() {
         </button>
       </div>
 
-      {/* EXPORT */}
       <div className={styles.exportButtons}>
         <button
           onClick={() =>
-            exportar(exportSemanaRef, `ranking-semana-${semanaRef}.png`)
+            exportar(exportSemanaRef, `ranking-${zonaSeleccionada}-semana.png`)
           }
           className={styles.exportBtn}
         >
-          <span className={styles.btnIcon}>📸</span>
-          <span className={styles.btnText}>Semana</span>
+          📸 Semana
         </button>
 
         <button
-          onClick={() => exportar(exportTotalRef, "ranking-historico.png")}
+          onClick={() =>
+            exportar(exportTotalRef, `ranking-${zonaSeleccionada}-total.png`)
+          }
           className={styles.exportBtn}
         >
-          <span className={styles.btnIcon}>📸</span>
-          <span className={styles.btnText}>Histórico</span>
+          📸 Histórico
         </button>
       </div>
 
-      {/* GRID */}
       <div className={styles.rankingGrid}>
-        {/* SEMANA */}
         <RankingBlock
           title="Esta Semana"
           icon="📅"
@@ -145,7 +136,6 @@ export default function RankingCadetes() {
           loading={loading}
         />
 
-        {/* HISTÓRICO */}
         <RankingBlock
           title="Histórico"
           icon="🏆"
@@ -154,27 +144,23 @@ export default function RankingCadetes() {
         />
       </div>
 
-      {/* EXPORT SEMANA - VERSIÓN MEJORADA CON COLORES */}
       <ExportBlock
         refProp={exportSemanaRef}
         title="Ranking Semanal"
         extra={`Semana: ${semanaRef}`}
         data={rankingSemana}
-        isSemana={true}
       />
 
-      {/* EXPORT TOTAL - VERSIÓN MEJORADA CON COLORES */}
       <ExportBlock
         refProp={exportTotalRef}
         title="Ranking Histórico"
         data={rankingTotal}
-        isSemana={false}
       />
     </div>
   );
 }
 
-/* ---------- COMPONENTES AUX ---------- */
+/* COMPONENTES AUX */
 
 function RankingBlock({ title, icon, data, loading }: any) {
   const t1 = data.slice(0, 4);
@@ -184,186 +170,71 @@ function RankingBlock({ title, icon, data, loading }: any) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <div className={styles.headerLeft}>
-          <span className={styles.headerIcon}>{icon}</span>
-          <h3 className={styles.headerTitle}>{title}</h3>
-        </div>
-        {!loading && (
-          <span className={styles.headerCount}>{data.length} cadetes</span>
-        )}
+        <span>{icon}</span>
+        <h3>{title}</h3>
       </div>
 
       {loading ? (
-        <div className={styles.loadingState}>
-          <div className={styles.loadingSpinner}></div>
-          <p>Cargando ranking…</p>
-        </div>
+        <p>Cargando ranking…</p>
       ) : (
-        <div className={styles.list}>
-          {/* T1 */}
-          {t1.length > 0 && (
-            <>
-              <div className={`${styles.tierHeader} ${styles.tier1Header}`}>
-                ⭐ PRIORIDAD T1
-              </div>
-              {t1.map((cadete: any, i: number) => (
-                <RankingRow
-                  key={cadete.id}
-                  cadete={cadete}
-                  pos={i + 1}
-                  tier={1}
-                />
-              ))}
-            </>
-          )}
+        <div>
+          {t1.map((c: any, i: number) => (
+            <RankingRow
+              key={c.id || `t1-${i}`}
+              cadete={c}
+              pos={i + 1}
+              tier={1}
+            />
+          ))}
 
-          {/* T2 */}
-          {t2.length > 0 && (
-            <>
-              <div className={`${styles.tierHeader} ${styles.tier2Header}`}>
-                🥈 PRIORIDAD T2
-              </div>
-              {t2.map((cadete: any, i: number) => (
-                <RankingRow
-                  key={cadete.id}
-                  cadete={cadete}
-                  pos={i + 5}
-                  tier={2}
-                />
-              ))}
-            </>
-          )}
+          {t2.map((c: any, i: number) => (
+            <RankingRow
+              key={c.id || `t2-${i}`}
+              cadete={c}
+              pos={i + 5}
+              tier={2}
+            />
+          ))}
 
-          {/* RESTO */}
-          {resto.length > 0 && (
-            <>
-              <div className={`${styles.tierHeader} ${styles.tier3Header}`}>
-                📋 OTROS
-              </div>
-              {resto.map((cadete: any, i: number) => (
-                <RankingRow
-                  key={cadete.id}
-                  cadete={cadete}
-                  pos={i + 9}
-                  tier={3}
-                />
-              ))}
-            </>
-          )}
+          {resto.map((c: any, i: number) => (
+            <RankingRow
+              key={c.id || `t3-${i}`}
+              cadete={c}
+              pos={i + 9}
+              tier={3}
+            />
+          ))}
         </div>
       )}
     </div>
   );
 }
 
-function ExportBlock({ refProp, title, extra, data, isSemana }: any) {
-  const t1 = data.slice(0, 4);
-  const t2 = data.slice(4, 8);
-  const resto = data.slice(8);
+function RankingRow({ cadete, pos }: any) {
+  return (
+    <div className={styles.row}>
+      <span>{pos}</span>
+      <span>{cadete.nombre}</span>
+      <span>{cadete.efectividad}%</span>
+      <span>{cadete.total_turnos}</span>
+    </div>
+  );
+}
 
+function ExportBlock({ refProp, title, extra, data }: any) {
   return (
     <div ref={refProp} className={styles.exportHidden}>
-      <div className={styles.exportContainer}>
-        <div className={styles.exportHeader}>
-          <h1 className={styles.exportTitle}>{title}</h1>
-          {extra && <p className={styles.exportSubtitle}>{extra}</p>}
+      <h2>{title}</h2>
+      {extra && <p>{extra}</p>}
+
+      {data.map((c: any, i: number) => (
+        <div key={`${c.id || "cadete"}-${i}`}>
+          {i + 1}. {c.nombre} - {c.efectividad}% ({c.total_turnos})
         </div>
-
-        {/* T1 */}
-        {t1.length > 0 && (
-          <>
-            <div className={`${styles.exportTierHeader} ${styles.exportTier1}`}>
-              ⭐ PRIORIDAD T1
-            </div>
-            {t1.map((c: any, i: number) => (
-              <ExportRow key={c.id} cadete={c} pos={i + 1} tier={1} />
-            ))}
-          </>
-        )}
-
-        {/* T2 */}
-        {t2.length > 0 && (
-          <>
-            <div className={`${styles.exportTierHeader} ${styles.exportTier2}`}>
-              🥈 PRIORIDAD T2
-            </div>
-            {t2.map((c: any, i: number) => (
-              <ExportRow key={c.id} cadete={c} pos={i + 5} tier={2} />
-            ))}
-          </>
-        )}
-
-        {/* RESTO */}
-        {resto.length > 0 && (
-          <>
-            <div className={`${styles.exportTierHeader} ${styles.exportTier3}`}>
-              📋 OTROS
-            </div>
-            {resto.map((c: any, i: number) => (
-              <ExportRow key={c.id} cadete={c} pos={i + 9} tier={3} />
-            ))}
-          </>
-        )}
-      </div>
+      ))}
     </div>
   );
 }
-
-function ExportRow({ cadete, pos, tier }: any) {
-  return (
-    <div className={`${styles.exportRow} ${styles[`exportRowTier${tier}`]}`}>
-      <span
-        className={`${styles.exportPos} ${pos <= 3 ? styles.exportTopThree : ""}`}
-      >
-        {pos === 1 && "🥇"}
-        {pos === 2 && "🥈"}
-        {pos === 3 && "🥉"}
-        {pos > 3 && pos}
-      </span>
-      <span className={styles.exportName}>{cadete.nombre}</span>
-      <span
-        className={`${styles.exportValue} ${
-          cadete.efectividad >= 95
-            ? styles.exportAlta
-            : cadete.efectividad >= 85
-              ? styles.exportMedia
-              : styles.exportBaja
-        }`}
-      >
-        {cadete.efectividad}%
-      </span>
-      <span className={styles.exportTotal}>({cadete.total_turnos} turnos)</span>
-    </div>
-  );
-}
-
-function RankingRow({ cadete, pos, tier }: any) {
-  return (
-    <div className={`${styles.row} ${styles[`rowTier${tier}`]}`}>
-      <span className={`${styles.pos} ${pos <= 3 ? styles.topThree : ""}`}>
-        {pos === 1 && "🥇"}
-        {pos === 2 && "🥈"}
-        {pos === 3 && "🥉"}
-        {pos > 3 && pos}
-      </span>
-      <span className={styles.nombre}>{cadete.nombre}</span>
-      <span
-        className={`${styles.efectividad} ${
-          cadete.efectividad >= 95
-            ? styles.efectividadAlta
-            : cadete.efectividad >= 85
-              ? styles.efectividadMedia
-              : styles.efectividadBaja
-        }`}
-      >
-        {cadete.efectividad}%
-      </span>
-      <span className={styles.turnos}>{cadete.total_turnos}</span>
-    </div>
-  );
-}
-
-/* ---------- UTILS ---------- */
 
 function getMonday(date: Date) {
   const d = new Date(date);

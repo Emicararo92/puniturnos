@@ -7,6 +7,7 @@ import styles from "./WeeklyBoard.module.css";
 import DayTurnsModal from "../DayTurnsModal/DayTurnsModal";
 import TurnSummaryModal from "../TurnSummaryModal/TurnSummaryModal";
 import { createClient } from "@/lib/supabase/client";
+import { useZona } from "../../Context/zonaContext";
 
 export default function WeeklyBoard({ semanaRef, setSemanaRef }: any) {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
@@ -15,6 +16,7 @@ export default function WeeklyBoard({ semanaRef, setSemanaRef }: any) {
   const [dayStats, setDayStats] = useState<Record<string, any>>({});
 
   const supabase = createClient();
+  const { zonaSeleccionada } = useZona();
 
   function getMonday(date: Date) {
     const d = new Date(date);
@@ -27,22 +29,22 @@ export default function WeeklyBoard({ semanaRef, setSemanaRef }: any) {
   function changeWeek(offset: number) {
     const [y, m, d] = semanaRef.split("-").map(Number);
     const date = new Date(y, m - 1, d);
-
     date.setDate(date.getDate() + offset * 7);
-
     setSemanaRef(getMonday(date));
   }
 
   useEffect(() => {
+    if (!zonaSeleccionada) return;
     loadWeekStats();
-  }, [semanaRef]);
+  }, [semanaRef, zonaSeleccionada]);
 
   async function loadWeekStats() {
     setLoading(true);
 
     try {
-      const { data } = await supabase.rpc("get_tablero_semanal", {
+      const { data } = await supabase.rpc("get_tablero_semanal_zona", {
         semana_ref: semanaRef,
+        zona: zonaSeleccionada,
       });
 
       const stats: Record<string, any> = {};
@@ -69,9 +71,7 @@ export default function WeeklyBoard({ semanaRef, setSemanaRef }: any) {
           };
         }
 
-        const estado = item.estado_turno || item.estado;
-
-        if (estado === "asignado") {
+        if (item.estado_turno === "asignado") {
           stats[fecha].turnos[item.turno_id].asignados++;
         }
       });

@@ -1,0 +1,80 @@
+/* ComparativeEffectivenessChart.module.css - Mobile First */
+
+.container {
+  background-color: white;
+  border-radius: 24px;
+  padding: 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 16px rgba(34, 57, 90, 0.1);
+  border: 2px solid #22395a;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #22395a;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid #f8bbd1;
+}
+
+.chartWrapper {
+  width: 100%;
+  height: 320px;
+  margin: 0 -0.5rem; /* Compensa el padding del container */
+}
+
+/* Tooltip personalizado */
+.tooltip {
+  background-color: #22395a;
+  border: 2px solid #f8bbd1;
+  border-radius: 16px;
+  padding: 1rem;
+  color: #fdfafb;
+  box-shadow: 0 4px 12px rgba(34, 57, 90, 0.3);
+}
+
+.tooltip p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.tooltip p:first-child {
+  font-weight: 700;
+  font-size: 1rem;
+  border-bottom: 1px solid #f8bbd1;
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.tooltip strong {
+  color: #f8bbd1;
+  font-size: 1.1rem;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .container {
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: all 0.2s ease;
+  }
+
+  .container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(34, 57, 90, 0.15);
+    border-color: #f8bbd1;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .chartWrapper {
+    height: 350px;
+    margin: 0;
+  }
+}

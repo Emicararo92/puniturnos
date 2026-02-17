@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import styles from "./AssignCadeteModal.module.css";
 import { createClient } from "@/lib/supabase/client";
+import { useZona } from "../../Context/zonaContext";
 
 type Props = {
   open: boolean;
@@ -28,20 +29,23 @@ export default function AssignCadeteModal({
 }: Props) {
   const [cadetes, setCadetes] = useState<Cadete[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
+
   const supabase = createClient();
+  const { zonaSeleccionada } = useZona();
 
   useEffect(() => {
-    if (open) {
+    if (open && zonaSeleccionada) {
       loadCadetes();
       setSelected([]);
     }
-  }, [open]);
+  }, [open, zonaSeleccionada]);
 
   async function loadCadetes() {
     const { data } = await supabase
       .from("cadetes")
       .select("id,nombre")
       .eq("activo", true)
+      .eq("zona_id", zonaSeleccionada) // ← filtro zona
       .order("nombre");
 
     setCadetes(data || []);
@@ -54,13 +58,14 @@ export default function AssignCadeteModal({
   }
 
   async function assignMultiple() {
-    if (selected.length === 0) return;
+    if (!selected.length || !zonaSeleccionada) return;
 
     const payload = selected.map((cadeteId) => ({
       turno_id: turnoId,
       cadete_id: cadeteId,
       fecha,
       estado: "asignado",
+      zona_id: zonaSeleccionada, // ← guardar zona
     }));
 
     const { error } = await supabase
@@ -77,6 +82,7 @@ export default function AssignCadeteModal({
 
     onAssigned();
     setSelected([]);
+    onClose();
   }
 
   if (!open) return null;

@@ -1,0 +1,102 @@
+/* WeeklyTrendChart.module.css - Mobile First */
+
+.container {
+  background-color: white;
+  border-radius: 24px;
+  padding: 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 16px rgba(34, 57, 90, 0.1);
+  border: 2px solid #22395a;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #22395a;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid #f8bbd1;
+}
+
+.chartWrapper {
+  width: 100%;
+  height: 300px;
+}
+
+/* Personalización del line chart */
+.chartWrapper :global(.recharts-cartesian-grid line) {
+  stroke: #f8bbd1;
+  stroke-opacity: 0.2;
+}
+
+.chartWrapper :global(.recharts-cartesian-axis line) {
+  stroke: #22395a;
+}
+
+.chartWrapper :global(.recharts-cartesian-axis-tick text) {
+  fill: #22395a;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.chartWrapper :global(.recharts-tooltip-wrapper) {
+  outline: none;
+}
+
+.chartWrapper :global(.recharts-default-tooltip) {
+  background-color: #22395a !important;
+  border: 2px solid #f8bbd1 !important;
+  border-radius: 12px !important;
+  padding: 0.75rem !important;
+  color: #fdfafb !important;
+}
+
+.chartWrapper :global(.recharts-tooltip-label) {
+  color: #f8bbd1 !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.chartWrapper :global(.recharts-tooltip-item) {
+  color: #fdfafb !important;
+  font-weight: 600 !important;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .container {
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: all 0.2s ease;
+  }
+
+  .container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(34, 57, 90, 0.15);
+    border-color: #f8bbd1;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .chartWrapper {
+    height: 320px;
+  }
+
+  .chartWrapper :global(.recharts-cartesian-axis-tick text) {
+    font-size: 12px;
+  }
+
+  .chartWrapper :global(.recharts-line-dot) {
+    transition: all 0.2s ease;
+  }
+
+  .chartWrapper :global(.recharts-line-dot:hover) {
+    r: 6;
+    fill: #f8bbd1;
+  }
+}

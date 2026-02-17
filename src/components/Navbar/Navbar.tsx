@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import Link from "next/link";
@@ -5,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useState } from "react";
 import styles from "./Navbar.module.css";
+import { useZona } from "../../Context/zonaContext";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +19,8 @@ export default function Navbar() {
     router.refresh();
   }
 
+  const { zonas, zonaSeleccionada, cambiarZona } = useZona();
+
   return (
     <nav className={styles.navbar}>
       {/* Logo o marca */}
@@ -25,6 +29,17 @@ export default function Navbar() {
           PuniTurnos
         </Link>
       </div>
+      <select
+        value={zonaSeleccionada}
+        onChange={(e) => cambiarZona(e.target.value)}
+        className={styles.zonaSelect}
+      >
+        {zonas.map((z: any) => (
+          <option key={z.id} value={z.id}>
+            {z.nombre}
+          </option>
+        ))}
+      </select>
 
       {/* Menú hamburguesa - visible solo en mobile */}
       <button

@@ -5,6 +5,7 @@
 import { useEffect, useState } from "react";
 import styles from "./DayTurnsModal.module.css";
 import { createClient } from "@/lib/supabase/client";
+import { useZona } from "../../Context/zonaContext";
 import TurnoCard from "../TurnoCard/TurnoCard";
 
 type Props = {
@@ -15,13 +16,15 @@ type Props = {
 export default function DayTurnsModal({ fecha, onClose }: Props) {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
   const supabase = createClient();
+  const { zonaSeleccionada } = useZona();
 
   useEffect(() => {
+    if (!zonaSeleccionada) return;
     loadTurnos();
-  }, [fecha]);
+  }, [fecha, zonaSeleccionada]);
 
-  // ✅ FIX DOMINGOS + timezone
   function getMonday(dateStr: string) {
     const [y, m, d] = dateStr.split("-").map(Number);
     const date = new Date(y, m - 1, d);
@@ -36,10 +39,12 @@ export default function DayTurnsModal({ fecha, onClose }: Props) {
 
   async function loadTurnos() {
     setLoading(true);
+
     const monday = getMonday(fecha);
 
-    const { data } = await supabase.rpc("get_tablero_semanal", {
+    const { data } = await supabase.rpc("get_tablero_semanal_zona", {
       semana_ref: monday,
+      zona: zonaSeleccionada,
     });
 
     setData(data || []);
@@ -53,7 +58,6 @@ export default function DayTurnsModal({ fecha, onClose }: Props) {
           new Date(x.fecha_turno).toLocaleDateString("sv-SE") ===
           new Date(fecha).toLocaleDateString("sv-SE"),
       )
-
       .reduce((acc: any, curr) => {
         if (!acc[curr.turno_id]) {
           acc[curr.turno_id] = {
@@ -104,18 +108,22 @@ export default function DayTurnsModal({ fecha, onClose }: Props) {
                 <p className={styles.date}>{diaFormateado}</p>
               </div>
             </div>
+
             <div className={styles.stats}>
               <div className={styles.statItem}>
                 <span className={styles.statNumber}>{turnosDelDia.length}</span>
                 <span className={styles.statLabel}>Turnos</span>
               </div>
+
               <div className={styles.statDivider}></div>
+
               <div className={styles.statItem}>
                 <span className={styles.statNumber}>{turnosAsignados}</span>
                 <span className={styles.statLabel}>Asignaciones</span>
               </div>
             </div>
           </div>
+
           <button className={styles.closeHeaderBtn} onClick={onClose}>
             ✕
           </button>
@@ -143,6 +151,7 @@ export default function DayTurnsModal({ fecha, onClose }: Props) {
                     <span className={styles.timeBadge}>
                       ⏰ {t.horaInicio} - {t.horaFin}
                     </span>
+
                     <span
                       className={`${styles.cupoBadge} ${
                         t.cadetes.length >= t.cupoMax
@@ -155,6 +164,7 @@ export default function DayTurnsModal({ fecha, onClose }: Props) {
                       {t.cadetes.length}/{t.cupoMax}
                     </span>
                   </div>
+
                   <TurnoCard
                     turnoId={t.turnoId}
                     horaInicio={t.horaInicio}
@@ -175,10 +185,12 @@ export default function DayTurnsModal({ fecha, onClose }: Props) {
             <span className={styles.infoTag}>
               Total del día: {turnosDelDia.length} turnos
             </span>
+
             <span className={styles.infoTag}>
               Asignaciones: {turnosAsignados}
             </span>
           </div>
+
           <button onClick={onClose} className={styles.closeBtn}>
             Cerrar Vista
           </button>

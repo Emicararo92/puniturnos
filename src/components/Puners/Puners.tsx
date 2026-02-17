@@ -4,12 +4,14 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useZona } from "../../Context/zonaContext";
 import CadeteModal from "./punerModal";
 import CadeteForm from "./punerForm";
 import styles from "./Puners.module.css";
 
 export default function Puners() {
   const supabase = createClient();
+  const { zonaSeleccionada } = useZona();
 
   const [cadetes, setCadetes] = useState<any[]>([]);
   const [selected, setSelected] = useState<any | null>(null);
@@ -17,11 +19,14 @@ export default function Puners() {
   const [loading, setLoading] = useState(false);
 
   async function loadCadetes() {
+    if (!zonaSeleccionada) return;
+
     setLoading(true);
 
     const { data, error } = await supabase
       .from("cadetes")
       .select("*")
+      .eq("zona_id", zonaSeleccionada)
       .order("activo", { ascending: false })
       .order("prioridad_manual", { ascending: true, nullsFirst: false })
       .order("nombre", { ascending: true });
@@ -33,7 +38,7 @@ export default function Puners() {
 
   useEffect(() => {
     loadCadetes();
-  }, []);
+  }, [zonaSeleccionada]);
 
   return (
     <div className={styles.container}>
@@ -55,7 +60,6 @@ export default function Puners() {
             onClick={() => setSelected(c)}
           >
             <strong>{c.nombre}</strong>
-
             <span>{c.activo ? "Activo" : "Inactivo"}</span>
           </div>
         ))}
