@@ -1,4 +1,4 @@
-/* EstadisticasPage.module.css - Mobile First - CON CARD COMPLETA */
+/* EstadisticasPage.module.css - Mobile First - VERSIÓN LIMPIA */
 
 .pageContainer {
   width: 100%;
@@ -13,8 +13,8 @@
 }
 
 .title {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 600;
   color: #22395a;
   margin: 0;
   display: flex;
@@ -35,44 +35,35 @@
   align-items: center;
   gap: 0.5rem;
   background-color: white;
-  padding: 0.75rem;
-  border-radius: 20px;
+  padding: 0.5rem;
+  border-radius: 16px;
   box-shadow: 0 2px 8px rgba(34, 57, 90, 0.06);
-  border: 1px solid rgba(34, 57, 90, 0.05);
-  flex-wrap: wrap;
+  border: 1px solid rgba(34, 57, 90, 0.1);
 }
 
 .weekNav button {
-  min-width: 44px;
-  height: 44px;
-  background-color: #22395a;
-  border: none;
-  border-radius: 16px;
-  color: #fdfafb;
-  font-size: 1.2rem;
-  font-weight: 600;
+  min-width: 40px;
+  height: 40px;
+  background-color: #f8f8f8;
+  border: 1px solid #22395a;
+  border-radius: 12px;
+  color: #22395a;
+  font-size: 1.1rem;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  padding: 0 0.75rem;
 }
 
 .weekNav button:last-child {
   background-color: #f8bbd1;
+  border: 1px solid #22395a;
   color: #22395a;
-  border: 2px solid #22395a;
-  font-size: 0.9rem;
-  margin-left: auto;
-}
-
-.weekNav button:active {
-  transform: scale(0.95);
-}
-
-.weekNav button:last-child:active {
-  background-color: #e6a9bf;
+  font-size: 0.85rem;
+  padding: 0 0.75rem;
+  min-width: auto;
 }
 
 .weekNav > div {
@@ -80,25 +71,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(248, 187, 209, 0.1);
-  padding: 0.5rem;
-  border-radius: 16px;
+  gap: 0.1rem;
 }
 
 .weekNav span {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: #22395a;
-  opacity: 0.7;
+  opacity: 0.6;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
 
 .weekNav strong {
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.8rem;
+  font-weight: 600;
   color: #22395a;
   text-align: center;
-  word-break: break-word;
 }
 
 .controls > div:last-child {
@@ -110,62 +98,30 @@
 .controls input,
 .controls select {
   width: 100%;
-  padding: 1rem;
-  border: 2px solid rgba(34, 57, 90, 0.2);
-  border-radius: 16px;
-  font-size: 16px;
+  padding: 0.875rem;
+  border: 1px solid rgba(34, 57, 90, 0.2);
+  border-radius: 12px;
+  font-size: 15px;
   background-color: white;
   transition: all 0.2s ease;
-  -webkit-appearance: none;
 }
 
 .controls input:focus,
 .controls select:focus {
   outline: none;
-  border-color: #f8bbd1;
-  box-shadow: 0 0 0 3px rgba(248, 187, 209, 0.3);
+  border-color: #22395a;
 }
 
 .controls select {
+  background-color: white;
   cursor: pointer;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2322395a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1em;
 }
 
 /* Selector de cadete */
-.selectCadeteContainer {
-  margin-bottom: 2rem;
-}
-
-.selectCadete {
-  width: 100%;
-  padding: 1.25rem;
-  border: 3px solid #22395a;
-  border-radius: 20px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #22395a;
-  background-color: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2322395a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 1.25rem center;
-  background-size: 1.2em;
-}
-
-.selectCadete:focus {
-  outline: none;
-  border-color: #f8bbd1;
-  box-shadow: 0 0 0 4px rgba(248, 187, 209, 0.3);
-}
-
-.selectCadete option {
-  padding: 1rem;
-  font-weight: normal;
+.controls > div:first-of-type + div select {
+  border: 1px solid #22395a;
+  background-color: #f8f8f8;
+  font-weight: 500;
 }
 
 /* Ocultar gráficos en mobile */
@@ -173,190 +129,109 @@
   display: none;
 }
 
-/* Card expandada - VERSIÓN COMPLETA */
+/* ===== CARD EXPANDIDA - VERSIÓN LIMPIA ===== */
 .expandedCard {
-  background-color: white;
-  border-radius: 28px;
+  background: white;
+  border-radius: 24px;
   padding: 1.5rem;
-  margin: 1.5rem 0;
-  box-shadow: 0 12px 32px rgba(34, 57, 90, 0.2);
-  border: 4px solid #22395a;
-  animation: slideUp 0.3s ease;
+  margin: 1rem 0;
+  box-shadow: 0 4px 16px rgba(34, 57, 90, 0.08);
+  border: 1px solid rgba(34, 57, 90, 0.15);
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.cardHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 4px solid #f8bbd1;
-}
-
-.cardHeader h2 {
-  font-size: 1.8rem;
-  font-weight: 800;
+.expandedCard h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
   color: #22395a;
-  margin: 0;
-  line-height: 1.2;
+  margin: 0 0 1.25rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f8bbd1;
 }
 
-.confiabilidadBadge {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: #fdfafb;
-  background-color: #22395a;
-  padding: 0.5rem 1.5rem;
-  border-radius: 50px;
-  border: 4px solid #f8bbd1;
-  box-shadow: 0 4px 0 #f8bbd1;
+/* Contenedor de confiabilidad */
+.expandedCard > div:first-of-type {
+  margin: 1rem 0 1.5rem !important;
 }
 
-/* Barra de confiabilidad */
-.reliabilityContainer {
-  margin: 1.5rem 0 2rem;
-  background-color: rgba(248, 187, 209, 0.1);
-  padding: 1.25rem;
-  border-radius: 20px;
-  border: 2px dashed #22395a;
-}
-
-.reliabilityLabel {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.75rem;
-  font-weight: 700;
+.expandedCard strong {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
   color: #22395a;
-  font-size: 1.1rem;
+  margin-bottom: 0.35rem;
 }
 
-.reliabilityBar {
-  width: 100%;
-  height: 24px;
-  background-color: rgba(34, 57, 90, 0.15);
-  border-radius: 30px;
+/* Barra de progreso */
+.expandedCard > div:first-of-type > div {
+  height: 8px !important;
+  background: #f0f0f0 !important;
+  border-radius: 20px !important;
   overflow: hidden;
-  border: 3px solid #22395a;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.reliabilityFill {
+.expandedCard > div:first-of-type > div > div {
   height: 100%;
-  transition: width 0.4s ease;
-  border-radius: 30px;
-  background: linear-gradient(90deg, #f8bbd1 0%, #22395a 100%);
-  position: relative;
-  overflow: hidden;
+  border-radius: 20px;
+  transition: width 0.3s ease;
 }
 
-.reliabilityFill::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-/* Grid de métricas - VERSIÓN DESTACADA */
+/* Grid de métricas */
 .metricsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin: 2rem 0;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
 }
 
 .metricCard {
-  background: linear-gradient(135deg, #fdfafb 0%, white 100%);
-  border-radius: 20px;
-  padding: 1.25rem 1rem;
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 1rem 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.75rem;
-  border: 3px solid #22395a;
-  box-shadow: 0 6px 0 #22395a;
-  transition: all 0.2s ease;
-}
-
-.metricCard:active {
-  transform: translateY(4px);
-  box-shadow: 0 2px 0 #22395a;
+  gap: 0.35rem;
+  border: 1px solid rgba(34, 57, 90, 0.1);
 }
 
 .metricLabel {
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   color: #22395a;
-  font-weight: 800;
+  opacity: 0.7;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background-color: #f8bbd1;
-  padding: 0.25rem 1rem;
-  border-radius: 30px;
-  border: 2px solid #22395a;
+  letter-spacing: 0.3px;
 }
 
 .metricValue {
-  font-size: 2rem;
-  font-weight: 900;
+  font-size: 1.2rem;
+  font-weight: 600;
   color: #22395a;
-  line-height: 1;
 }
 
-/* Colores especiales para métricas críticas */
+/* Colores suaves para métricas especiales */
 .metricValue.faltas {
-  color: #ef4444;
-  text-shadow: 2px 2px 0 rgba(239, 68, 68, 0.2);
+  color: #b91c1c;
 }
 
 .metricValue.llegadas {
-  color: #f59e0b;
-  text-shadow: 2px 2px 0 rgba(245, 158, 11, 0.2);
+  color: #b45309;
 }
 
-/* Lista de detalles - VERSIÓN COMPLETA */
+/* Lista de detalles */
 .detailsList {
-  margin: 2rem 0;
-  background-color: rgba(248, 187, 209, 0.1);
-  border-radius: 20px;
-  padding: 1rem;
-  border: 3px solid #22395a;
+  margin: 1.5rem 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 0.5rem 0;
 }
 
 .detailItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  border-bottom: 2px solid rgba(34, 57, 90, 0.1);
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f5f5f5;
 }
 
 .detailItem:last-child {
@@ -364,50 +239,20 @@
 }
 
 .detailLabel {
-  font-weight: 700;
+  font-size: 0.9rem;
   color: #22395a;
-  font-size: 1.1rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .detailValue {
-  font-weight: 800;
+  font-weight: 500;
   color: #22395a;
-  font-size: 1.3rem;
-  background-color: white;
-  padding: 0.35rem 1.25rem;
-  border-radius: 40px;
-  border: 2px solid #22395a;
-  box-shadow: 0 3px 0 #22395a;
-}
-
-/* Efectividad destacada */
-.efectividadRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 1.5rem 0;
-  padding: 1rem 1.5rem;
-  background: linear-gradient(135deg, #22395a 0%, #1a2d47 100%);
-  border-radius: 60px;
-  border: 3px solid #f8bbd1;
-}
-
-.efectividadLabel {
-  font-weight: 700;
-  color: #fdfafb;
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.efectividadValue {
-  font-weight: 900;
-  color: #f8bbd1;
-  font-size: 2rem;
-  text-shadow: 2px 2px 0 #22395a;
+  background: #f5f5f5;
+  padding: 0.2rem 0.8rem;
+  border-radius: 30px;
+  font-size: 0.9rem;
 }
 
 /* Tendencia */
@@ -415,66 +260,40 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 1.5rem 0;
-  padding: 1rem 1.5rem;
-  background-color: #f8bbd1;
-  border-radius: 60px;
-  border: 3px solid #22395a;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: #f8f9fa;
+  border-radius: 40px;
+  border: 1px solid rgba(34, 57, 90, 0.1);
 }
 
 .tendenciaLabel {
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 500;
   color: #22395a;
-  font-size: 1.1rem;
+  opacity: 0.8;
 }
 
 .tendenciaValue {
-  font-weight: 900;
-  color: #22395a;
-  font-size: 1.5rem;
-  background-color: white;
-  padding: 0.5rem 1.5rem;
-  border-radius: 40px;
-  border: 2px solid #22395a;
+  font-weight: 600;
+  padding: 0.2rem 0.8rem;
+  border-radius: 30px;
+  font-size: 0.9rem;
 }
 
 .tendenciaValue.mejora {
-  background-color: #22c55e;
-  color: white;
+  background: #e6f7e6;
+  color: #166534;
 }
 
 .tendenciaValue.empeora {
-  background-color: #ef4444;
-  color: white;
+  background: #fee9e7;
+  color: #b91c1c;
 }
 
 .tendenciaValue.estable {
-  background-color: #f59e0b;
-  color: white;
-}
-
-/* Turnos totales */
-.turnosTotal {
-  text-align: center;
-  margin: 1.5rem 0;
-  padding: 1rem;
-  background-color: #22395a;
-  border-radius: 60px;
-  border: 3px solid #f8bbd1;
-}
-
-.turnosTotal span {
-  font-weight: 700;
-  color: #fdfafb;
-  font-size: 1.2rem;
-  margin-right: 1rem;
-}
-
-.turnosTotal strong {
-  font-weight: 900;
-  color: #f8bbd1;
-  font-size: 2rem;
-  text-shadow: 2px 2px 0 #22395a;
+  background: #fff4e5;
+  color: #b45309;
 }
 
 /* Desktop */
@@ -485,167 +304,73 @@
     padding: 2rem;
   }
 
-  .header {
-    margin-bottom: 2rem;
-  }
-
-  .title {
-    font-size: 2rem;
-  }
-
   .controls {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 2rem;
+    gap: 1.5rem;
   }
 
   .weekNav {
-    width: auto;
-    min-width: 450px;
-    padding: 0.5rem;
+    min-width: 380px;
   }
 
   .weekNav button:hover {
-    background-color: #1a2d47;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.2);
+    background-color: #22395a;
+    color: white;
   }
 
   .weekNav button:last-child:hover {
     background-color: #e6a9bf;
-    transform: translateY(-2px);
-  }
-
-  .weekNav strong {
-    font-size: 1rem;
+    color: #22395a;
   }
 
   .controls > div:last-child {
     flex-direction: row;
-    width: auto;
-    min-width: 400px;
+    min-width: 380px;
   }
 
   .controls input,
   .controls select {
-    width: 200px;
-  }
-
-  .controls input:hover,
-  .controls select:hover {
-    border-color: #f8bbd1;
-  }
-
-  .selectCadeteContainer {
-    margin-bottom: 2rem;
-    max-width: 400px;
-  }
-
-  .selectCadete:hover {
-    border-color: #f8bbd1;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.1);
+    width: auto;
+    flex: 1;
   }
 
   :global(.desktopCharts) {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
-    margin-bottom: 2.5rem;
+    margin: 2rem 0;
   }
 
   :global(.desktopCharts) > :last-child {
     grid-column: 1 / -1;
   }
 
-  /* Card expandida en desktop - MÁS GRANDE */
   .expandedCard {
-    max-width: 900px;
+    max-width: 700px;
     margin: 2rem auto;
-    padding: 2.5rem;
-    transition: all 0.3s ease;
-  }
-
-  .expandedCard:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(34, 57, 90, 0.25);
-    border-color: #f8bbd1;
-  }
-
-  .cardHeader h2 {
-    font-size: 2.2rem;
-  }
-
-  .confiabilidadBadge {
-    font-size: 2rem;
+    padding: 2rem;
   }
 
   .metricsGrid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
   .metricCard {
-    padding: 1.5rem 1rem;
     transition: all 0.2s ease;
   }
 
   .metricCard:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 0 #22395a;
+    background: white;
     border-color: #f8bbd1;
-  }
-
-  .metricLabel {
-    font-size: 0.9rem;
-  }
-
-  .metricValue {
-    font-size: 2.2rem;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.05);
   }
 
   .detailsList {
-    padding: 1.5rem;
-  }
-
-  .detailItem {
-    padding: 1.25rem;
-  }
-
-  .detailLabel {
-    font-size: 1.2rem;
-  }
-
-  .detailValue {
-    font-size: 1.4rem;
-  }
-
-  .efectividadRow {
-    padding: 1.25rem 2rem;
-  }
-
-  .efectividadLabel {
-    font-size: 1.3rem;
-  }
-
-  .efectividadValue {
-    font-size: 2.2rem;
-  }
-
-  .tendenciaContainer {
-    padding: 1.25rem 2rem;
-  }
-
-  .tendenciaValue {
-    font-size: 1.6rem;
-  }
-
-  .turnosTotal {
-    padding: 1.25rem;
-  }
-
-  .turnosTotal strong {
-    font-size: 2.2rem;
+    max-width: 500px;
+    margin: 2rem auto;
   }
 }

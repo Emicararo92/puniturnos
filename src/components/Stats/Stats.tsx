@@ -190,47 +190,105 @@ function CadeteCardExpanded({ cadete, prev }: any) {
         : "➡ Estable"
     : "—";
 
+  // Determinar clase para la barra de confiabilidad
+  const barClass =
+    confiabilidad > 90 ? "excellent" : confiabilidad > 75 ? "good" : "bad";
+
   return (
-    <div style={{ padding: 24, borderRadius: 16, background: "#fff" }}>
+    <div className={styles.expandedCard}>
       <h2>{cadete.nombre}</h2>
 
-      <div style={{ margin: "12px 0" }}>
-        <strong>Confiabilidad {confiabilidad}%</strong>
-        <div
-          style={{
-            height: 10,
-            background: "#eee",
-            borderRadius: 8,
-            overflow: "hidden",
-            marginTop: 6,
-          }}
-        >
+      <div className={styles.reliabilityContainer}>
+        <strong className={styles.reliabilityLabel}>
+          Confiabilidad {confiabilidad}%
+        </strong>
+        <div className={styles.reliabilityBar}>
           <div
-            style={{
-              width: `${confiabilidad}%`,
-              height: "100%",
-              background:
-                confiabilidad > 90
-                  ? "#22c55e"
-                  : confiabilidad > 75
-                    ? "#facc15"
-                    : "#ef4444",
-            }}
+            className={`${styles.reliabilityFill} ${styles[barClass]}`}
+            style={{ width: `${confiabilidad}%` }}
           />
         </div>
       </div>
 
-      <p>Efectividad: {cadete.efectividad}%</p>
-      <p>Turnos: {cadete.total_turnos}</p>
-      <p>Faltas: {cadete.faltas}</p>
-      <p>Llegadas tarde: {cadete.llegadas_tarde}</p>
-      <p>Tardanza pedidos: {cadete.tardanza_pedido}</p>
-      <p>Activación tardía: {cadete.activacion_tardia}</p>
-      <p>Tendencia: {tendencia}</p>
+      <div className={styles.metricsGrid}>
+        <div className={styles.metricCard}>
+          <span className={styles.metricLabel}>Efectividad</span>
+          <strong className={styles.metricValue}>{cadete.efectividad}%</strong>
+        </div>
+        <div className={styles.metricCard}>
+          <span className={styles.metricLabel}>Turnos</span>
+          <strong className={styles.metricValue}>{cadete.total_turnos}</strong>
+        </div>
+        <div className={styles.metricCard}>
+          <span className={styles.metricLabel}>Faltas</span>
+          <strong className={`${styles.metricValue} ${styles.faltas}`}>
+            {cadete.faltas}
+          </strong>
+        </div>
+        <div className={styles.metricCard}>
+          <span className={styles.metricLabel}>Llegadas</span>
+          <strong className={`${styles.metricValue} ${styles.llegadas}`}>
+            {cadete.llegadas_tarde}
+          </strong>
+        </div>
+        <div className={styles.metricCard}>
+          <span className={styles.metricLabel}>Pedidos</span>
+          <strong className={styles.metricValue}>
+            {cadete.tardanza_pedido}
+          </strong>
+        </div>
+        <div className={styles.metricCard}>
+          <span className={styles.metricLabel}>Activación</span>
+          <strong className={styles.metricValue}>
+            {cadete.activacion_tardia}
+          </strong>
+        </div>
+      </div>
+
+      <div className={styles.detailsList}>
+        <div className={styles.detailItem}>
+          <span className={styles.detailLabel}>📊 Efectividad</span>
+          <span className={styles.detailValue}>{cadete.efectividad}%</span>
+        </div>
+        <div className={styles.detailItem}>
+          <span className={styles.detailLabel}>📅 Turnos</span>
+          <span className={styles.detailValue}>{cadete.total_turnos}</span>
+        </div>
+        <div className={styles.detailItem}>
+          <span className={styles.detailLabel}>❌ Faltas</span>
+          <span className={styles.detailValue}>{cadete.faltas}</span>
+        </div>
+        <div className={styles.detailItem}>
+          <span className={styles.detailLabel}>⏰ Llegadas tarde</span>
+          <span className={styles.detailValue}>{cadete.llegadas_tarde}</span>
+        </div>
+        <div className={styles.detailItem}>
+          <span className={styles.detailLabel}>📉 Pedidos tardíos</span>
+          <span className={styles.detailValue}>{cadete.tardanza_pedido}</span>
+        </div>
+        <div className={styles.detailItem}>
+          <span className={styles.detailLabel}>⚡ Activación tardía</span>
+          <span className={styles.detailValue}>{cadete.activacion_tardia}</span>
+        </div>
+      </div>
+
+      <div className={styles.tendenciaContainer}>
+        <span className={styles.tendenciaLabel}>Tendencia</span>
+        <span
+          className={`${styles.tendenciaValue} ${
+            tendencia.includes("⬆")
+              ? styles.mejora
+              : tendencia.includes("⬇")
+                ? styles.empeora
+                : styles.estable
+          }`}
+        >
+          {tendencia}
+        </span>
+      </div>
     </div>
   );
 }
-
 function getMonday(date: Date) {
   const d = new Date(date);
   const day = d.getDay();
