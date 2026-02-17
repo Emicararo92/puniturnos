@@ -1,4 +1,4 @@
-/* RankingCadetes.module.css - Mobile First - VERSIÓN SUAVE */
+/* RankingCadetes.module.css - Mobile First - VERSIÓN CORREGIDA */
 
 .pageContainer {
   width: 100%;
@@ -154,8 +154,8 @@
 
 /* Grupo T1 - Puestos 1-4 (Prioridad alta) - Verde claro */
 .container > div > :nth-child(-n + 4) {
-  background-color: rgb(123, 244, 123); /* Verde claro muy suave */
-  border-left: 4px solid #90ee90;
+  background-color: rgb(137, 245, 137);
+  border-left: 4px solid #70e870;
   border-radius: 12px;
   margin-bottom: 0.5rem;
   padding: 0.75rem;
@@ -163,7 +163,7 @@
 }
 
 .container > div > :nth-child(-n + 4) span:first-child {
-  background-color: #57ec57;
+  background-color: #70e870;
   color: #22395a;
   width: 26px;
   height: 26px;
@@ -173,20 +173,19 @@
   border-radius: 50%;
   font-weight: 600;
   font-size: 0.9rem;
-  opacity: 0.9;
 }
 
 /* Grupo T2 - Puestos 5-8 (Prioridad media) - Amarillo claro */
 .container > div > :nth-child(n + 5):nth-child(-n + 8) {
-  background-color: rgb(246, 246, 127); /* Amarillo claro muy suave */
-  border-left: 4px solid #ffffb0;
+  background-color: rgb(248, 248, 123);
+  border-left: 4px solid #f3f354;
   border-radius: 12px;
   margin-bottom: 0.5rem;
   padding: 0.75rem;
 }
 
 .container > div > :nth-child(n + 5):nth-child(-n + 8) span:first-child {
-  background-color: #f5f564;
+  background-color: #fafa6b;
   color: #22395a;
   width: 24px;
   height: 24px;
@@ -196,12 +195,11 @@
   border-radius: 50%;
   font-weight: 500;
   font-size: 0.85rem;
-  opacity: 0.9;
 }
 
 /* Grupo Resto - Puestos 9+ (Sin prioridad) - Rojo claro */
 .container > div > :nth-child(n + 9) {
-  background-color: rgba(255, 182, 193, 0.15); /* Rojo claro muy suave */
+  background-color: rgba(246, 101, 127, 0.784);
   border-left: 4px solid #ffb6c1;
   border-radius: 12px;
   margin-bottom: 0.35rem;
@@ -261,13 +259,35 @@
 /* Separadores suaves entre grupos */
 .container > div > :nth-child(4) {
   margin-bottom: 1rem;
+  position: relative;
+}
+
+.container > div > :nth-child(4)::after {
+  content: "";
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #70e870, transparent);
 }
 
 .container > div > :nth-child(8) {
   margin-bottom: 0.75rem;
+  position: relative;
 }
 
-/* Versión para exportación */
+.container > div > :nth-child(8)::after {
+  content: "";
+  position: absolute;
+  bottom: -0.4rem;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #fafa6b, transparent);
+}
+
+/* ===== VERSIÓN PARA EXPORTACIÓN CON LOS MISMOS COLORES ===== */
 .exportHidden {
   position: absolute;
   left: -9999px;
@@ -279,27 +299,112 @@
     system-ui,
     -apple-system,
     sans-serif;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(34, 57, 90, 0.15);
 }
 
 .exportHidden h2 {
   color: #22395a;
-  font-size: 1.8rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  border-bottom: 2px solid rgba(248, 187, 209, 0.5);
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  border-bottom: 3px solid #f8bbd1;
   padding-bottom: 0.5rem;
 }
 
 .exportHidden p {
   color: #22395a;
-  font-size: 1rem;
+  font-size: 1.1rem;
   margin-bottom: 1.5rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+/* Grupo T1 en exportación - Puestos 1-4 - Verde */
+.exportHidden > div:nth-child(3),
+.exportHidden > div:nth-child(4),
+.exportHidden > div:nth-child(5),
+.exportHidden > div:nth-child(6) {
+  background-color: rgb(137, 245, 137);
+  border-left: 6px solid #70e870;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+/* Grupo T2 en exportación - Puestos 5-8 - Amarillo */
+.exportHidden > div:nth-child(7),
+.exportHidden > div:nth-child(8),
+.exportHidden > div:nth-child(9),
+.exportHidden > div:nth-child(10) {
+  background-color: rgb(248, 248, 123);
+  border-left: 6px solid #f3f354;
+  padding: 0.6rem 1rem;
+  margin: 0.4rem 0;
+  border-radius: 12px;
+}
+
+/* Grupo Resto en exportación - Puestos 9+ - Rojo claro */
+.exportHidden > div:nth-child(n + 11) {
+  background-color: rgba(246, 101, 127, 0.784);
+  border-left: 6px solid #ffb6c1;
+  padding: 0.5rem 1rem;
+  margin: 0.3rem 0;
+  border-radius: 12px;
+  opacity: 0.9;
+}
+
+/* Números de posición en exportación */
+.exportHidden > div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  counter-increment: ranking;
+}
+
+.exportHidden > div::before {
+  content: counter(ranking) ".";
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  background-color: #22395a;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 28px;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+/* Colores de números por grupo - Verde para T1 */
+.exportHidden > div:nth-child(3)::before,
+.exportHidden > div:nth-child(4)::before,
+.exportHidden > div:nth-child(5)::before,
+.exportHidden > div:nth-child(6)::before {
+  background-color: #70e870;
+  color: #22395a;
+}
+
+/* Colores de números por grupo - Amarillo para T2 */
+.exportHidden > div:nth-child(7)::before,
+.exportHidden > div:nth-child(8)::before,
+.exportHidden > div:nth-child(9)::before,
+.exportHidden > div:nth-child(10)::before {
+  background-color: #fafa6b;
+  color: #22395a;
+}
+
+/* Colores de números por grupo - Rojo para Resto */
+.exportHidden > div:nth-child(n + 11)::before {
+  background-color: #ffb6c1;
+  color: #22395a;
   opacity: 0.8;
 }
 
-.exportHidden div {
-  padding: 0.4rem 0;
-  border-bottom: 1px solid rgba(34, 57, 90, 0.1);
+/* Contador reset */
+.exportHidden {
+  counter-reset: ranking;
 }
 
 /* Desktop */
@@ -318,10 +423,12 @@
   .navBtn:hover {
     opacity: 1;
     background-color: #1a2d47;
+    transform: translateY(-2px);
   }
 
   .todayBtn:hover {
     background-color: rgba(248, 187, 209, 0.4);
+    transform: translateY(-2px);
   }
 
   .exportButtons {
@@ -331,6 +438,7 @@
   .exportBtn:hover {
     background-color: rgba(34, 57, 90, 0.1);
     border-color: #22395a;
+    transform: translateY(-2px);
   }
 
   .rankingGrid {
@@ -349,17 +457,17 @@
 
   /* Hover effects suaves */
   .container > div > :nth-child(-n + 4):hover {
-    background-color: rgba(144, 238, 144, 0.3);
+    background-color: rgb(157, 245, 157);
     transform: translateX(3px);
   }
 
   .container > div > :nth-child(n + 5):nth-child(-n + 8):hover {
-    background-color: rgba(255, 255, 224, 0.8);
+    background-color: rgb(248, 248, 143);
     transform: translateX(3px);
   }
 
   .container > div > :nth-child(n + 9):hover {
-    background-color: rgba(255, 182, 193, 0.25);
+    background-color: rgba(246, 121, 147, 0.884);
     transform: translateX(2px);
   }
 }
