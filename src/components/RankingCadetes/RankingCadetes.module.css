@@ -176,7 +176,7 @@
 }
 
 /* Grupo T2 - Puestos 5-8 (Prioridad media) - Amarillo claro */
-.container > div > :nth-child(n + 5):nth-child(-n + 8) {
+.container > div > :nth-child(n + 5):nth-child(-n + 9) {
   background-color: rgb(248, 248, 123);
   border-left: 4px solid #f3f354;
   border-radius: 12px;
@@ -184,7 +184,7 @@
   padding: 0.75rem;
 }
 
-.container > div > :nth-child(n + 5):nth-child(-n + 8) span:first-child {
+.container > div > :nth-child(n + 5):nth-child(-n + 9) span:first-child {
   background-color: #fafa6b;
   color: #22395a;
   width: 24px;
@@ -198,7 +198,7 @@
 }
 
 /* Grupo Resto - Puestos 9+ (Sin prioridad) - Rojo claro */
-.container > div > :nth-child(n + 9) {
+.container > div > :nth-child(n + 10) {
   background-color: rgba(246, 101, 127, 0.784);
   border-left: 4px solid #ffb6c1;
   border-radius: 12px;
@@ -206,12 +206,27 @@
   padding: 0.7rem;
 }
 
-.container > div > :nth-child(n + 9) span:first-child {
+.container > div > :nth-child(n + 10) span:first-child {
   color: #22395a;
   opacity: 0.6;
   width: 24px;
   text-align: center;
   font-weight: 400;
+}
+
+.container > div > :nth-child(9) {
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.container > div > :nth-child(9)::after {
+  content: "";
+  position: absolute;
+  bottom: -0.4rem;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #fafa6b, transparent);
 }
 
 /* Fila de ranking base */
@@ -220,6 +235,11 @@
   grid-template-columns: 40px 1fr 70px 50px;
   align-items: center;
   gap: 0.5rem;
+}
+
+/* Cuando tiene turnos permitidos, agregamos una columna más */
+.row:has(.turnosPermitidos) {
+  grid-template-columns: 40px 1fr 70px 50px 85px;
 }
 
 .row span {
@@ -254,6 +274,25 @@
   color: #22395a;
   opacity: 0.6;
   font-size: 0.85rem;
+}
+
+/* Turnos permitidos - NUEVO */
+.turnosPermitidos {
+  text-align: center;
+  font-size: 0.8rem;
+  background-color: #f8bbd1;
+  
+  padding: 0.2rem 0.5rem;
+  border-radius: 30px;
+  color: #22395a;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.turnosPermitidos strong {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-left: 0.2rem;
 }
 
 /* Separadores suaves entre grupos */
@@ -455,13 +494,18 @@
     cursor: default;
   }
 
+  /* En desktop, cuando tiene turnos permitidos */
+  .row:has(.turnosPermitidos) {
+    grid-template-columns: 40px 1fr 70px 50px 95px;
+  }
+
   /* Hover effects suaves */
   .container > div > :nth-child(-n + 4):hover {
     background-color: rgb(157, 245, 157);
     transform: translateX(3px);
   }
 
-  .container > div > :nth-child(n + 5):nth-child(-n + 8):hover {
+  .container > div > :nth-child(n + 5):nth-child(-n + 9):hover {
     background-color: rgb(248, 248, 143);
     transform: translateX(3px);
   }
@@ -469,5 +513,22 @@
   .container > div > :nth-child(n + 9):hover {
     background-color: rgba(246, 121, 147, 0.884);
     transform: translateX(2px);
+  }
+}
+
+/* Mobile ajustes */
+@media (max-width: 480px) {
+  .row:has(.turnosPermitidos) {
+    grid-template-columns: 40px 1fr 70px 50px 80px;
+    gap: 0.3rem;
+  }
+
+  .turnosPermitidos {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.3rem;
+  }
+
+  .turnosPermitidos strong {
+    font-size: 0.8rem;
   }
 }

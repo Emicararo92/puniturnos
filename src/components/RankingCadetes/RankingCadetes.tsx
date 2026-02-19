@@ -134,6 +134,8 @@ export default function RankingCadetes() {
           icon="📅"
           data={rankingSemana}
           loading={loading}
+          showTurnos
+          zonaId={zonaSeleccionada}
         />
 
         <RankingBlock
@@ -141,6 +143,7 @@ export default function RankingCadetes() {
           icon="🏆"
           data={rankingTotal}
           loading={loading}
+          zonaId={zonaSeleccionada}
         />
       </div>
 
@@ -149,24 +152,36 @@ export default function RankingCadetes() {
         title="Ranking Semanal"
         extra={`Semana: ${semanaRef}`}
         data={rankingSemana}
+        showTurnos
+        zonaId={zonaSeleccionada}
       />
 
       <ExportBlock
         refProp={exportTotalRef}
         title="Ranking Histórico"
         data={rankingTotal}
+        zonaId={zonaSeleccionada}
       />
     </div>
   );
 }
 
-/* COMPONENTES AUX */
+/* ===== LÓGICA TURNOS POR ZONA ===== */
 
-function RankingBlock({ title, icon, data, loading }: any) {
-  const t1 = data.slice(0, 4);
-  const t2 = data.slice(4, 8);
-  const resto = data.slice(8);
+function getMaxTurnos(pos: number, zonaId?: string) {
+  const reglas =
+    zonaId === "3c8d4d22-b17e-4c40-b180-361c2117bc47"
+      ? [10, 8, 6] // Santo Tomé
+      : [12, 10, 8]; // La Falda default
 
+  if (pos <= 4) return reglas[0];
+  if (pos <= 9) return reglas[1];
+  return reglas[2];
+}
+
+/* ===== COMPONENTES ===== */
+
+function RankingBlock({ title, icon, data, loading, showTurnos, zonaId }: any) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -178,30 +193,13 @@ function RankingBlock({ title, icon, data, loading }: any) {
         <p>Cargando ranking…</p>
       ) : (
         <div>
-          {t1.map((c: any, i: number) => (
+          {data.map((c: any, i: number) => (
             <RankingRow
-              key={c.id || `t1-${i}`}
+              key={c.id || i}
               cadete={c}
               pos={i + 1}
-              tier={1}
-            />
-          ))}
-
-          {t2.map((c: any, i: number) => (
-            <RankingRow
-              key={c.id || `t2-${i}`}
-              cadete={c}
-              pos={i + 5}
-              tier={2}
-            />
-          ))}
-
-          {resto.map((c: any, i: number) => (
-            <RankingRow
-              key={c.id || `t3-${i}`}
-              cadete={c}
-              pos={i + 9}
-              tier={3}
+              showTurnos={showTurnos}
+              zonaId={zonaId}
             />
           ))}
         </div>
@@ -210,28 +208,41 @@ function RankingBlock({ title, icon, data, loading }: any) {
   );
 }
 
-function RankingRow({ cadete, pos }: any) {
+function RankingRow({ cadete, pos, showTurnos, zonaId }: any) {
+  const maxTurnos = getMaxTurnos(pos, zonaId);
+
   return (
     <div className={styles.row}>
-      <span>{pos}</span>
+      <span>#{pos}</span>
       <span>{cadete.nombre}</span>
       <span>{cadete.efectividad}%</span>
       <span>{cadete.total_turnos}</span>
+
+      {showTurnos && (
+        <span className={styles.turnosPermitidos}>
+          Puede pedir: <strong>{maxTurnos}</strong>
+        </span>
+      )}
     </div>
   );
 }
 
-function ExportBlock({ refProp, title, extra, data }: any) {
+function ExportBlock({ refProp, title, extra, data, showTurnos, zonaId }: any) {
   return (
     <div ref={refProp} className={styles.exportHidden}>
       <h2>{title}</h2>
       {extra && <p>{extra}</p>}
 
-      {data.map((c: any, i: number) => (
-        <div key={`${c.id || "cadete"}-${i}`}>
-          {i + 1}. {c.nombre} - {c.efectividad}% ({c.total_turnos})
-        </div>
-      ))}
+      {data.map((c: any, i: number) => {
+        const maxTurnos = getMaxTurnos(i + 1, zonaId);
+
+        return (
+          <div key={`${c.id}-${i}`}>
+            {i + 1}. {c.nombre} - {c.efectividad}% ({c.total_turnos})
+            {showTurnos && ` | Máx: ${maxTurnos}`}
+          </div>
+        );
+      })}
     </div>
   );
 }

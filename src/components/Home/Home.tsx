@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import WeeklyBoard from "../WeeklyBoard/WeeklyBoard";
+import HomeWeeklyTurns from "../HomeWeeklyTurns/HomeWeeklyTurns";
 
 export default function HomePage() {
   const [semanaRef, setSemanaRef] = useState(() => {
@@ -15,7 +16,7 @@ export default function HomePage() {
   return (
     <div>
       <WeeklyBoard semanaRef={semanaRef} setSemanaRef={setSemanaRef} />
-   
+      <HomeWeeklyTurns semanaRef={semanaRef} />
     </div>
   );
 }

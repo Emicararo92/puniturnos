@@ -1,0 +1,170 @@
+/* HomeWeeklyTurns.module.css - Mobile First - INTEGRADO */
+
+.container {
+  width: 100%;
+  background-color: #fdfafb;
+  padding: 1rem;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #22395a;
+  margin: 0 0 1rem 0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(34, 57, 90, 0.1);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+/* Scroll personalizado */
+.list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: rgba(34, 57, 90, 0.05);
+  border-radius: 10px;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background: #f8bbd1;
+  border-radius: 10px;
+}
+
+.row {
+  background-color: white;
+  border-radius: 20px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(34, 57, 90, 0.08);
+  border: 1px solid rgba(34, 57, 90, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+.row:hover {
+  background-color: rgba(248, 187, 209, 0.1);
+  border-color: #f8bbd1;
+  transform: translateX(3px);
+}
+
+.row span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #22395a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+}
+
+.row strong {
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background-color: #f8bbd1;
+  color: #22395a;
+  border: 1px solid rgba(34, 57, 90, 0.1);
+  min-width: 50px;
+  text-align: center;
+}
+
+/* Mensajes de estado */
+.container p {
+  text-align: center;
+  color: #22395a;
+  opacity: 0.7;
+  padding: 2rem 1rem;
+  background: white;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  border: 1px dashed rgba(34, 57, 90, 0.2);
+  margin: 1rem 0;
+}
+
+/* Destacados para top 3 */
+.row:nth-child(1) strong {
+  background: linear-gradient(135deg, #f8bbd1, #ffd9e8);
+  border: 1px solid #22395a;
+  font-weight: 700;
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(34, 57, 90, 0.15);
+}
+
+.row:nth-child(2) strong {
+  background: linear-gradient(135deg, #f8bbd1, #ffd9e8);
+  border: 1px solid #22395a;
+  font-weight: 700;
+}
+
+.row:nth-child(3) strong {
+  background: linear-gradient(135deg, #f8bbd1, #ffd9e8);
+  border: 1px solid #22395a;
+}
+
+/* Desktop - CON MARGEN PARA NAVBAR */
+@media (min-width: 1024px) {
+  .container {
+    margin-left: 280px; /* Ancho de la NavBar */
+    width: calc(100% - 280px);
+    padding: 2rem;
+  }
+
+  .title {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 0;
+  }
+
+  .list {
+    max-height: 500px;
+    gap: 1rem;
+  }
+
+  .row {
+    padding: 1.5rem;
+    transition: all 0.2s ease;
+  }
+
+  .row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.12);
+  }
+
+  .row span {
+    font-size: 1.1rem;
+  }
+
+  .row strong {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+  }
+
+  .row:hover strong {
+    background-color: #22395a;
+    color: white;
+    border-color: #f8bbd1;
+    transform: scale(1.05);
+  }
+
+  /* Top 3 en desktop */
+  .row:nth-child(1) strong {
+    transform: scale(1.05);
+  }
+
+  .row:nth-child(1):hover strong {
+    transform: scale(1.1);
+  }
+}
+    

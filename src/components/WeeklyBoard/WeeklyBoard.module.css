@@ -2,10 +2,9 @@
 
 .container {
   width: 100%;
-  min-height: 100vh;
+  height: fit-content; /* ← CAMBIO */
   background-color: #fdfafb;
 }
-
 /* Navegación de semanas */
 .weekNav {
   display: flex;

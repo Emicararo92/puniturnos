@@ -1,149 +1,66 @@
-/* ComparativeEffectivenessChart.module.css */
+/* ComparativeEffectivenessChart.module.css - Mobile First */
 
-/* ============================================================================
-   CONTENEDOR PRINCIPAL
-   ========================================================================== */
 .container {
   background: white;
-  border-radius: 32px;
-  padding: 2rem;
-  margin: 1.5rem 0 2.5rem;
-  box-shadow: 0 20px 40px rgba(34, 57, 90, 0.1);
-  border: 1px solid rgba(34, 57, 90, 0.15);
-  position: relative;
-  overflow: visible;
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(34, 57, 90, 0.08);
+  border: 1px solid rgba(34, 57, 90, 0.1);
+  margin-bottom: 1.5rem;
 }
 
-.container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 6px;
-  background: linear-gradient(90deg, #f8bbd1, #22395a, #f8bbd1);
-}
-
-/* ============================================================================
-   HEADER
-   ========================================================================== */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid rgba(248, 187, 209, 0.4);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f8bbd1;
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 600;
   color: #22395a;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  letter-spacing: -0.3px;
+  gap: 0.5rem;
 }
 
 .titleIcon {
-  font-size: 1.8rem;
-  background: rgba(248, 187, 209, 0.2);
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 16px;
+  font-size: 1.3rem;
 }
 
 .statsBadge {
   background: rgba(34, 57, 90, 0.1);
   color: #22395a;
-  padding: 0.5rem 1.2rem;
-  border-radius: 40px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border: 1px solid rgba(34, 57, 90, 0.2);
+  padding: 0.25rem 1rem;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
-/* ============================================================================
-   GRÁFICO
-   ========================================================================== */
 .chartWrapper {
   width: 100%;
-  margin: 1rem 0 1.5rem;
-  position: relative;
   overflow-x: auto;
-  overflow-y: visible;
   -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
 }
 
-/* Personalización de ejes y grid */
-.chartWrapper :global(.recharts-cartesian-grid line) {
-  stroke: #22395a;
-  stroke-opacity: 0.1;
-  stroke-width: 1px;
-  stroke-dasharray: 5 5;
+.chartWrapper :global(.recharts-wrapper) {
+  min-width: 600px;
 }
 
-.chartWrapper :global(.recharts-cartesian-axis-line) {
-  stroke: #22395a;
-  stroke-opacity: 0.3;
-  stroke-width: 1.5px;
-}
-
-.chartWrapper :global(.recharts-cartesian-axis-tick-line) {
-  stroke: #22395a;
-  stroke-opacity: 0.2;
-}
-
-/* Eje Y - NOMBRES CON MUCHO ESPACIO */
-.chartWrapper :global(.recharts-yAxis .recharts-cartesian-axis-tick) {
-  transform: translateY(0);
-}
-
-.chartWrapper :global(.recharts-yAxis .recharts-cartesian-axis-tick text) {
-  font-weight: 600;
-  font-size: 14px;
-  fill: #22395a;
-  white-space: nowrap;
-  overflow: visible !important;
-  text-overflow: clip;
-  dominant-baseline: middle;
-  transform: translateY(2px);
-}
-
-/* Barras */
-.chartWrapper :global(.recharts-bar-rectangle) {
-  transition: all 0.3s ease;
-  filter: drop-shadow(0 4px 8px rgba(34, 57, 90, 0.15));
-}
-
-.chartWrapper :global(.recharts-bar-rectangle:hover) {
-  filter: drop-shadow(0 8px 16px rgba(34, 57, 90, 0.25));
-  transform: scaleX(1.02);
-  cursor: pointer;
-}
-
-.barCell {
-  transition: all 0.3s ease;
-}
-
-/* ============================================================================
-   TOOLTIP
-   ========================================================================== */
+/* Tooltip */
 .tooltip {
   background: #22395a;
-  border-radius: 20px;
-  padding: 1.2rem 1.5rem;
+  border-radius: 16px;
+  padding: 1rem;
   color: white;
-  box-shadow: 0 15px 30px rgba(34, 57, 90, 0.4);
-  position: relative;
-  animation: slideIn 0.2s ease;
-  min-width: 260px;
-  border-left: 6px solid;
+  box-shadow: 0 8px 24px rgba(34, 57, 90, 0.3);
+  min-width: 200px;
+  border-left: 4px solid;
 }
 
 .tooltipExcellent {
@@ -158,98 +75,67 @@
   border-left-color: #ef4444;
 }
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(5px) translateX(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) translateX(0);
-  }
-}
-
 .tooltipHeader {
-  margin-bottom: 0.8rem;
-  padding-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .tooltipName {
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   color: #f8bbd1;
   display: block;
-  white-space: normal;
-  word-break: break-word;
-  max-width: 220px;
 }
 
 .tooltipBody {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
 }
 
 .tooltipLabel {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   opacity: 0.8;
-  font-weight: 500;
 }
 
 .tooltipValue {
-  font-size: 1.8rem;
-  font-weight: 800;
+  font-size: 1.3rem;
+  font-weight: 700;
   color: #f8bbd1;
-  line-height: 1;
 }
 
 .tooltipFooter {
-  font-size: 0.9rem;
-  padding-top: 0.6rem;
+  font-size: 0.8rem;
+  padding-top: 0.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-  font-weight: 500;
-  opacity: 0.9;
 }
 
-/* ============================================================================
-   LEYENDA
-   ========================================================================== */
+/* Leyenda */
 .legendContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem;
-  margin: 2rem 0 1.5rem;
-  padding: 1.2rem;
-  background: rgba(248, 187, 209, 0.08);
-  border-radius: 60px;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(248, 187, 209, 0.05);
+  border-radius: 40px;
 }
 
 .legendItem {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  font-size: 0.95rem;
+  gap: 0.5rem;
+  font-size: 0.85rem;
   color: #22395a;
-  font-weight: 500;
-  padding: 0.4rem 1rem;
-  border-radius: 40px;
-  transition: all 0.2s ease;
-}
-
-.legendItem:hover {
-  background: white;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(34, 57, 90, 0.1);
 }
 
 .legendDot {
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
 }
 
 .legendDot.excellent {
@@ -264,132 +150,45 @@
   background: #ef4444;
 }
 
-/* ============================================================================
-   FOOTER CON ESTADÍSTICAS
-   ========================================================================== */
+/* Footer */
 .footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3rem;
-  margin-top: 1rem;
-  padding-top: 1.5rem;
-  border-top: 1px dashed rgba(34, 57, 90, 0.2);
+  display: none;
 }
 
-.footerStat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.footerLabel {
-  font-size: 0.85rem;
-  color: #22395a;
-  opacity: 0.6;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.footerValue {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #22395a;
-  background: rgba(248, 187, 209, 0.2);
-  padding: 0.2rem 1.2rem;
-  border-radius: 40px;
-  line-height: 1.3;
-}
-
-/* ============================================================================
-   DESKTOP
-   ========================================================================== */
 @media (min-width: 1024px) {
   .container {
-    padding: 2.5rem;
-    transition: all 0.3s ease;
-  }
-
-  .container:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 30px 60px rgba(34, 57, 90, 0.15);
-    border-color: #f8bbd1;
-  }
-
-  .title {
-    font-size: 1.7rem;
-  }
-
-  .chartWrapper :global(.recharts-yAxis .recharts-cartesian-axis-tick text) {
-    font-size: 15px;
-    transition: all 0.2s ease;
-  }
-
-  .chartWrapper
-    :global(.recharts-yAxis .recharts-cartesian-axis-tick:hover text) {
-    fill: #f8bbd1;
-    transform: translateX(-5px);
-    font-weight: 700;
-  }
-
-  .tooltip {
-    min-width: 300px;
-    padding: 1.5rem 2rem;
-  }
-
-  .tooltipName {
-    font-size: 1.3rem;
-  }
-
-  .tooltipValue {
-    font-size: 2rem;
-  }
-
-  .legendContainer {
-    gap: 3rem;
-    padding: 1.5rem;
-  }
-
-  .legendItem {
-    font-size: 1rem;
-    padding: 0.5rem 1.5rem;
-  }
-
-  .footerValue {
-    font-size: 1.8rem;
-  }
-}
-
-/* ============================================================================
-   MOBILE
-   ========================================================================== */
-@media (max-width: 768px) {
-  .container {
-    padding: 1.5rem;
-  }
-
-  .chartWrapper :global(.recharts-wrapper) {
-    min-width: 800px;
-  }
-
-  .legendContainer {
-    border-radius: 30px;
-    gap: 1rem;
-    padding: 1rem;
-  }
-
-  .legendItem {
-    padding: 0.3rem 0.8rem;
-    font-size: 0.85rem;
+    padding: 2rem;
   }
 
   .footer {
-    gap: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed rgba(34, 57, 90, 0.2);
+  }
+
+  .footerStat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .footerLabel {
+    font-size: 0.8rem;
+    color: #22395a;
+    opacity: 0.6;
+    text-transform: uppercase;
   }
 
   .footerValue {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #22395a;
+    background: rgba(248, 187, 209, 0.2);
     padding: 0.2rem 1rem;
+    border-radius: 30px;
   }
 }

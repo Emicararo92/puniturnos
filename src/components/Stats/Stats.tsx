@@ -139,23 +139,25 @@ export default function EstadisticasPage() {
       {/* LOADING */}
       {loading && <LoadingState />}
 
-      {/* GRÁFICOS (SOLO DESKTOP) */}
-      {!loading && filteredData.length > 0 && (
-        <div className="desktopCharts">
-          <ComparativeEffectivenessChart data={filteredData} />
+      {/* ===== ESTADÍSTICAS PERSONALES (PRIMERO) ===== */}
+      {cadeteSeleccionado && (
+        <div className={styles.personalStatsContainer}>
+          <ExpandedCadeteCard
+            cadete={cadeteSeleccionado}
+            prevData={prevData.find(
+              (p) => p.cadete_id === cadeteSeleccionado.cadete_id,
+            )}
+          />
           <ReliabilityRadarChart cadete={cadeteSeleccionado} />
-          <TrendPerformanceChart data={filteredData} prevData={prevData} />
         </div>
       )}
 
-      {/* CARD EXPANDIDA DEL CADETE SELECCIONADO */}
-      {cadeteSeleccionado && (
-        <ExpandedCadeteCard
-          cadete={cadeteSeleccionado}
-          prevData={prevData.find(
-            (p) => p.cadete_id === cadeteSeleccionado.cadete_id,
-          )}
-        />
+      {/* ===== ESTADÍSTICAS GRUPALES (DESPUÉS) ===== */}
+      {!loading && filteredData.length > 0 && (
+        <div className="desktopCharts">
+          <ComparativeEffectivenessChart data={filteredData} />
+          <TrendPerformanceChart data={filteredData} prevData={prevData} />
+        </div>
       )}
     </div>
   );
@@ -213,20 +215,6 @@ function Controls({
       </div>
 
       {/* Filtros y búsqueda */}
-      <div>
-        <input
-          placeholder="Buscar cadete..."
-          value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-        />
-
-        <select value={filtro} onChange={(e) => onFiltroChange(e.target.value)}>
-          <option value="efectividad">Mayor efectividad</option>
-          <option value="llegadas">Más llegadas tarde</option>
-          <option value="faltas">Más faltas</option>
-          <option value="turnos">Más turnos</option>
-        </select>
-      </div>
     </div>
   );
 }
@@ -328,12 +316,15 @@ function ExpandedCadeteCard({ cadete, prevData }: ExpandedCadeteCardProps) {
         <MetricCard label="Turnos" value={cadete.total_turnos} />
         <MetricCard label="Faltas" value={cadete.faltas} type="faltas" />
         <MetricCard
-          label="Llegadas"
+          label="Llegadas Tarde"
           value={cadete.llegadas_tarde}
-          type="llegadas"
+          type="llegadas Tarde"
         />
-        <MetricCard label="Pedidos" value={cadete.tardanza_pedido} />
-        <MetricCard label="Activación" value={cadete.activacion_tardia} />
+        <MetricCard label="Pedidos Tardios" value={cadete.tardanza_pedido} />
+        <MetricCard
+          label="Activación Tardia"
+          value={cadete.activacion_tardia}
+        />
       </div>
 
       {/* Lista detallada */}

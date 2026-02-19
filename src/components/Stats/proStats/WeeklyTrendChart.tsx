@@ -15,8 +15,8 @@ import styles from "./WeeklyTrendChart.module.css";
 export default function WeeklyTrendChart({ data = [] }: any) {
   if (!data.length) return null;
 
-  const formattedData = data.map((c: any, i: number) => ({
-    semana: `Cadete ${i + 1}`,
+  const formattedData = data.map((c: any) => ({
+    semana: c.nombre || "Sin nombre",
     efectividad: Number(c.efectividad ?? 0),
   }));
 
