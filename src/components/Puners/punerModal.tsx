@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import ExportCadeteTurnsPDF from "../ExportCadeteTurnsPDF/ExportCadeteTurnsPDF";
 import styles from "./CadeteModal.module.css";
 
 export default function CadeteModal({ cadete, onClose, onUpdated }: any) {
@@ -84,11 +85,15 @@ export default function CadeteModal({ cadete, onClose, onUpdated }: any) {
           </p>
         )}
 
+        {/* WHATSAPP */}
         {cadete.telefono && (
           <button onClick={abrirWhatsapp}>💬 Enviar WhatsApp</button>
         )}
 
-        {/* CONFIRMACION VISUAL */}
+        {/* EXPORT PDF TURNOS */}
+        <ExportCadeteTurnsPDF cadete={cadete} />
+
+        {/* CONFIRMACION BAJA */}
         {confirmBaja ? (
           <div className={styles.confirmBox}>
             <p>¿Dar de baja a {cadete.nombre}?</p>
@@ -110,4 +115,3 @@ export default function CadeteModal({ cadete, onClose, onUpdated }: any) {
     </div>
   );
 }
-  

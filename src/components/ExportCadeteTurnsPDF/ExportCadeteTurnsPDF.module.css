@@ -1,0 +1,51 @@
+/* ExportCadeteTurnsPDF.module.css - Mobile First */
+
+.exportButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background-color: white;
+  border: 1px solid #22395a;
+  border-radius: 30px;
+  color: #22395a;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(34, 57, 90, 0.05);
+}
+
+.exportButton:hover {
+  background-color: #f8bbd1;
+  border-color: #22395a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(34, 57, 90, 0.1);
+}
+
+.exportButton:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(34, 57, 90, 0.05);
+}
+
+/* Variante para desktop */
+@media (min-width: 1024px) {
+  .exportButton {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Si querés un tamaño más chico para usar dentro de cards */
+.exportButton.small {
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+}
+
+/* Si querés un botón a ancho completo */
+.exportButton.fullWidth {
+  width: 100%;
+  justify-content: center;
+}

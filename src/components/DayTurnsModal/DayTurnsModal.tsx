@@ -84,7 +84,12 @@ export default function DayTurnsModal({ fecha, onClose }: Props) {
       }, {}),
   );
 
-  const diaFormateado = new Date(fecha).toLocaleDateString("es-ES", {
+  function parseLocalDate(dateStr: string) {
+    const [y, m, d] = dateStr.split("-").map(Number);
+    return new Date(y, m - 1, d);
+  }
+
+  const diaFormateado = parseLocalDate(fecha).toLocaleDateString("es-ES", {
     weekday: "long",
     day: "numeric",
     month: "long",
