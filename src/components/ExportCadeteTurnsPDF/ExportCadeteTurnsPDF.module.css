@@ -1,4 +1,4 @@
-/* ExportCadeteTurnsPDF.module.css - Mobile First */
+/* ExportCadeteTurnsPDF.module.css - Mobile First - SOLO DISEÑO (SIN MARCO ROSA) */
 
 .exportButton {
   display: inline-flex;
@@ -25,27 +25,251 @@
   box-shadow: 0 4px 8px rgba(34, 57, 90, 0.1);
 }
 
-.exportButton:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(34, 57, 90, 0.05);
+/* Overlay y Modal */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(34, 57, 90, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease;
 }
 
-/* Variante para desktop */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background: white;
+  border-radius: 24px;
+  padding: 1.5rem;
+  width: 95%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 0 20px 40px rgba(34, 57, 90, 0.3);
+  border: 2px solid #22395a;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== CONTENIDO A CAPTURAR ===== */
+.capturaContent {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.capturaContent h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #22395a;
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+  width: 100%;
+  letter-spacing: -0.3px;
+  text-shadow: 0 1px 2px rgba(34, 57, 90, 0.05);
+}
+
+.capturaContent .subtitulo {
+  font-size: 1rem;
+  color: #22395a;
+  opacity: 0.7;
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f8bbd1;
+  text-align: center;
+  width: 100%;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* ===== CALENDARIO ===== */
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  width: fit-content;
+  margin: 0 auto;
+  background: rgba(248, 187, 209, 0.02);
+  padding: 1rem;
+  border-radius: 20px;
+}
+
+.dayColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.dayHeader {
+  background: #f8bbd1;
+  color: #22395a;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.75rem 0.25rem;
+  text-align: center;
+  border-radius: 12px;
+  border: 1px solid #22395a;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 3px 0 #22395a;
+  transition: all 0.1s ease;
+}
+
+.turnoItem {
+  background: #f0f0f0;
+  color: #22395a;
+  font-size: 0.75rem;
+  padding: 0.4rem 0.2rem;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid rgba(34, 57, 90, 0.1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  font-weight: 500;
+}
+
+.empty {
+  background: transparent;
+  color: rgba(34, 57, 90, 0.3);
+  font-size: 0.75rem;
+  padding: 0.4rem 0.2rem;
+  text-align: center;
+  border: 1px dashed rgba(34, 57, 90, 0.2);
+  border-radius: 8px;
+  font-style: italic;
+}
+
+/* Acciones */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.actions button {
+  padding: 1rem;
+  border: none;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(34, 57, 90, 0.1);
+}
+
+.actions button:first-child {
+  background-color: #22395a;
+  color: white;
+  border: 1px solid #f8bbd1;
+}
+
+.actions button:first-child:hover {
+  background-color: #1a2d47;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(34, 57, 90, 0.2);
+}
+
+.actions button:last-child {
+  background-color: white;
+  color: #22395a;
+  border: 1px solid #22395a;
+}
+
+.actions button:last-child:hover {
+  background-color: #f8f8f8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(34, 57, 90, 0.1);
+}
+
+/* ===== DESKTOP ===== */
 @media (min-width: 1024px) {
   .exportButton {
     padding: 0.5rem 1.2rem;
     font-size: 0.9rem;
   }
-}
 
-/* Si querés un tamaño más chico para usar dentro de cards */
-.exportButton.small {
-  padding: 0.4rem 1rem;
-  font-size: 0.8rem;
-}
+  .modal {
+    padding: 2rem;
+  }
 
-/* Si querés un botón a ancho completo */
-.exportButton.fullWidth {
-  width: 100%;
-  justify-content: center;
+  .capturaContent {
+    padding: 2rem;
+  }
+
+  .capturaContent h3 {
+    font-size: 1.5rem;
+  }
+
+  .calendar {
+    max-width: 1100px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.05);
+  }
+
+  .dayHeader {
+    font-size: 0.95rem;
+    padding: 0.85rem 0.25rem;
+    box-shadow: 0 4px 0 #22395a;
+  }
+
+  .turnoItem {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .empty {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .actions {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .actions button {
+    width: auto;
+    padding: 0.875rem 2rem;
+  }
 }

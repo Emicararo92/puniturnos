@@ -1,0 +1,241 @@
+/* WeeklyCadetesGrid.module.css - Mobile First con botón toggle */
+
+.container {
+  width: 100%;
+  background-color: #fdfafb;
+  padding: 1rem 1rem 2rem 1rem;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #22395a;
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f8bbd1;
+}
+
+/* ===== BOTÓN TOGGLE (DESKTOP) ===== */
+.toggleContainer {
+  display: none;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.toggleButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: white;
+  border: 1px solid #22395a;
+  border-radius: 30px;
+  color: #22395a;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(34, 57, 90, 0.05);
+}
+
+.toggleButton:hover {
+  background-color: #f8bbd1;
+  border-color: #22395a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(34, 57, 90, 0.1);
+}
+
+.toggleIcon {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.toggleIcon.open {
+  transform: rotate(180deg);
+}
+
+/* ===== ACORDEÓN (MOBILE Y DESKTOP) ===== */
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.accordionItem {
+  background-color: white;
+  border-radius: 20px;
+  border: 1px solid rgba(34, 57, 90, 0.1);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(34, 57, 90, 0.05);
+}
+
+.accordionHeader {
+  width: 100%;
+  padding: 1.25rem;
+  background-color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #22395a;
+  text-transform: capitalize;
+}
+
+.accordionHeader:hover {
+  background-color: rgba(248, 187, 209, 0.05);
+}
+
+.accordionHeader.active {
+  background-color: rgba(248, 187, 209, 0.1);
+  border-bottom: 2px solid #f8bbd1;
+}
+
+.accordionIcon {
+  font-size: 1.2rem;
+  color: #22395a;
+  transition: transform 0.3s ease;
+}
+
+.accordionIcon.open {
+  transform: rotate(180deg);
+}
+
+.accordionContent {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background-color: #f8f9fa;
+}
+
+.accordionContent.open {
+  max-height: 2000px;
+}
+
+.contentInner {
+  padding: 1.25rem;
+}
+
+/* ===== CONTENIDO DE CADA DÍA ===== */
+.dayHeader {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #22395a;
+  text-transform: capitalize;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #f8bbd1;
+}
+
+.turnoBlock {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: white;
+  border-radius: 16px;
+  border: 1px solid rgba(34, 57, 90, 0.08);
+}
+
+.turnoBlock:last-child {
+  margin-bottom: 0;
+}
+
+.turnoHora {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #22395a;
+  background-color: rgba(248, 187, 209, 0.2);
+  padding: 0.35rem 0.75rem;
+  border-radius: 30px;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+
+.cadete {
+  font-size: 0.9rem;
+  color: #22395a;
+  padding: 0.4rem 0.5rem;
+  margin: 0.25rem 0;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid rgba(34, 57, 90, 0.05);
+  transition: all 0.2s ease;
+}
+
+.cadete:hover {
+  background-color: rgba(248, 187, 209, 0.1);
+  transform: translateX(3px);
+}
+
+.empty {
+  font-size: 0.85rem;
+  color: rgba(34, 57, 90, 0.4);
+  font-style: italic;
+  padding: 0.5rem;
+  text-align: center;
+  border: 1px dashed rgba(34, 57, 90, 0.2);
+  border-radius: 8px;
+}
+
+/* Mensaje de carga */
+.container p {
+  text-align: center;
+  color: #22395a;
+  opacity: 0.7;
+  padding: 2rem;
+  background: white;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  border: 1px dashed rgba(34, 57, 90, 0.2);
+}
+
+/* ===== DESKTOP ===== */
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 2rem 2rem 2rem;
+  }
+
+  .toggleContainer {
+    display: flex;
+  }
+
+  .accordion {
+    gap: 1rem;
+  }
+
+  .accordionHeader {
+    padding: 1.5rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+
+  .contentInner {
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .turnoBlock {
+    margin-bottom: 0;
+    transition: all 0.2s ease;
+  }
+
+  .turnoBlock:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(34, 57, 90, 0.1);
+    border-color: #f8bbd1;
+  }
+
+  .dayHeader {
+    grid-column: 1 / -1;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .cadete {
+    font-size: 0.95rem;
+  }
+}
