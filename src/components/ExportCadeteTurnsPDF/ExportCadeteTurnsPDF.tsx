@@ -19,22 +19,40 @@ export default function ExportCadeteTurnsPDF({
   const [turnos, setTurnos] = useState<any[]>([]);
   const capturaRef = useRef<HTMLDivElement>(null);
 
+  /* =========================
+     UTILIDADES SEGURAS FECHA
+  ========================== */
+
+  function parseLocalDate(dateStr: string) {
+    const [y, m, d] = dateStr.split("-").map(Number);
+    return new Date(y, m - 1, d);
+  }
+
+  function formatLocalDate(date: Date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      "0",
+    )}-${String(date.getDate()).padStart(2, "0")}`;
+  }
+
   function getMonday(date: Date) {
     const d = new Date(date);
     const day = d.getDay();
     const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-    return new Date(d.setDate(diff)).toISOString().slice(0, 10);
+    const monday = new Date(d.setDate(diff));
+    return formatLocalDate(monday);
   }
 
   function getWeekDays(monday: string) {
     const days = [];
-    const base = new Date(monday);
+    const base = parseLocalDate(monday);
 
     for (let i = 0; i < 7; i++) {
       const d = new Date(base);
       d.setDate(base.getDate() + i);
+
       days.push({
-        fecha: d.toISOString().slice(0, 10),
+        fecha: formatLocalDate(d),
         label: d.toLocaleDateString("es-AR", {
           weekday: "short",
           day: "numeric",
@@ -42,8 +60,11 @@ export default function ExportCadeteTurnsPDF({
         }),
       });
     }
+
     return days;
   }
+
+  /* ========================= */
 
   async function cargarTurnos() {
     if (!cadete?.id || !zonaSeleccionada) return;
@@ -69,8 +90,6 @@ export default function ExportCadeteTurnsPDF({
     if (!capturaRef.current || !cadete.telefono) return;
 
     const element = capturaRef.current;
-
-    // 🔥 Tomamos el tamaño REAL renderizado
     const rect = element.getBoundingClientRect();
 
     const canvas = await html2canvas(element, {
@@ -129,8 +148,9 @@ export default function ExportCadeteTurnsPDF({
           <div className={styles.modal}>
             <div ref={capturaRef} className={styles.capturaContent}>
               <h3>Calendario de {cadete.nombre}</h3>
+
               <div className={styles.subtitulo}>
-                Semana del {new Date(semana).toLocaleDateString("es-AR")}
+                Semana del {parseLocalDate(semana).toLocaleDateString("es-AR")}
               </div>
 
               <div className={styles.calendar}>
@@ -158,6 +178,7 @@ export default function ExportCadeteTurnsPDF({
               <button onClick={capturarYEnviar}>
                 📸 Capturar y enviar por WhatsApp
               </button>
+
               <button onClick={() => setOpen(false)}>Cerrar</button>
             </div>
           </div>
