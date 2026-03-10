@@ -172,7 +172,7 @@ function getMaxTurnos(pos: number, zonaId?: string) {
   const reglas =
     zonaId === "3c8d4d22-b17e-4c40-b180-361c2117bc47"
       ? [10, 8, 6] // Santo Tomé
-      : [12, 10, 8]; // La Falda default
+      : [10, 8, 6]; // La Falda default
 
   if (pos <= 4) return reglas[0];
   if (pos <= 9) return reglas[1];
