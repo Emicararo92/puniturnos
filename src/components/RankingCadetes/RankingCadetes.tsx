@@ -10,10 +10,21 @@ import { useZona } from "../../Context/zonaContext";
 import styles from "./RankingCadetes.module.css";
 
 type CadeteRanking = {
-  id: string;
+  id?: string;
+  cadete_id?: string;
   nombre: string;
+
   efectividad: number;
-  total_turnos: number;
+
+  total_turnos?: number;
+  turnos?: number;
+
+  faltas?: number;
+  falta?: number;
+
+  llegadas_tarde?: number;
+  tardanza_pedido?: number;
+  activacion_tardia?: number;
 };
 
 export default function RankingCadetes() {
@@ -166,17 +177,34 @@ export default function RankingCadetes() {
   );
 }
 
-/* ===== LÓGICA TURNOS POR ZONA ===== */
+/* ===== CÁLCULO DE TURNOS ===== */
 
-function getMaxTurnos(pos: number, zonaId?: string) {
-  const reglas =
-    zonaId === "3c8d4d22-b17e-4c40-b180-361c2117bc47"
-      ? [10, 8, 6] // Santo Tomé
-      : [10, 8, 6]; // La Falda default
+function getMaxTurnos(pos: number, cadete: CadeteRanking) {
+  const turnosCategoria = [10, 8, 6];
 
-  if (pos <= 4) return reglas[0];
-  if (pos <= 9) return reglas[1];
-  return reglas[2];
+  let categoriaBase = 0;
+
+  if (pos <= 4) categoriaBase = 0;
+  else if (pos <= 9) categoriaBase = 1;
+  else categoriaBase = 2;
+
+  const faltas = cadete.faltas ?? cadete.falta ?? 0;
+  const llegadasTarde = cadete.llegadas_tarde ?? 0;
+  const tardanzaPedido = cadete.tardanza_pedido ?? 0;
+  const activacionTardia = cadete.activacion_tardia ?? 0;
+
+  let penalizacion = 0;
+
+  penalizacion += faltas * 2;
+  penalizacion += llegadasTarde;
+  penalizacion += tardanzaPedido;
+  penalizacion += activacionTardia;
+
+  let categoriaFinal = categoriaBase + penalizacion;
+
+  if (categoriaFinal > 2) categoriaFinal = 2;
+
+  return turnosCategoria[categoriaFinal];
 }
 
 /* ===== COMPONENTES ===== */
@@ -195,7 +223,7 @@ function RankingBlock({ title, icon, data, loading, showTurnos, zonaId }: any) {
         <div>
           {data.map((c: any, i: number) => (
             <RankingRow
-              key={c.id || i}
+              key={c.id || c.cadete_id || i}
               cadete={c}
               pos={i + 1}
               showTurnos={showTurnos}
@@ -208,15 +236,17 @@ function RankingBlock({ title, icon, data, loading, showTurnos, zonaId }: any) {
   );
 }
 
-function RankingRow({ cadete, pos, showTurnos, zonaId }: any) {
-  const maxTurnos = getMaxTurnos(pos, zonaId);
+function RankingRow({ cadete, pos, showTurnos }: any) {
+  const maxTurnos = getMaxTurnos(pos, cadete);
+
+  const totalTurnos = cadete.total_turnos ?? cadete.turnos ?? 0;
 
   return (
     <div className={styles.row}>
       <span>#{pos}</span>
       <span>{cadete.nombre}</span>
       <span>{cadete.efectividad}%</span>
-      <span>{cadete.total_turnos}</span>
+      <span>{totalTurnos}</span>
 
       {showTurnos && (
         <span className={styles.turnosPermitidos}>
@@ -227,18 +257,19 @@ function RankingRow({ cadete, pos, showTurnos, zonaId }: any) {
   );
 }
 
-function ExportBlock({ refProp, title, extra, data, showTurnos, zonaId }: any) {
+function ExportBlock({ refProp, title, extra, data, showTurnos }: any) {
   return (
     <div ref={refProp} className={styles.exportHidden}>
       <h2>{title}</h2>
       {extra && <p>{extra}</p>}
 
       {data.map((c: any, i: number) => {
-        const maxTurnos = getMaxTurnos(i + 1, zonaId);
+        const maxTurnos = getMaxTurnos(i + 1, c);
+        const totalTurnos = c.total_turnos ?? c.turnos ?? 0;
 
         return (
-          <div key={`${c.id}-${i}`}>
-            {i + 1}. {c.nombre} - {c.efectividad}% ({c.total_turnos})
+          <div key={`${c.id || c.cadete_id}-${i}`}>
+            {i + 1}. {c.nombre} - {c.efectividad}% ({totalTurnos})
             {showTurnos && ` | Máx: ${maxTurnos}`}
           </div>
         );
