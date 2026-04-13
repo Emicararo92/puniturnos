@@ -195,7 +195,10 @@ function getMaxTurnos(pos: number, cadete: CadeteRanking) {
 
   let penalizacion = 0;
 
-  penalizacion += faltas * 2;
+  
+  penalizacion += faltas * 3;
+
+  
   penalizacion += llegadasTarde;
   penalizacion += tardanzaPedido;
   penalizacion += activacionTardia;
