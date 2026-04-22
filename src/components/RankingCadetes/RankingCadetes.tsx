@@ -36,9 +36,12 @@ export default function RankingCadetes() {
 
   const [rankingSemana, setRankingSemana] = useState<CadeteRanking[]>([]);
   const [rankingTotal, setRankingTotal] = useState<CadeteRanking[]>([]);
+  const [penalMap, setPenalMap] = useState<Map<string, any>>(new Map());
+
   const [loading, setLoading] = useState(false);
 
   const [semanaRef, setSemanaRef] = useState(getMonday(new Date()));
+  const [maxTurnosBase, setMaxTurnosBase] = useState<number>(0);
 
   function changeWeek(offset: number) {
     const [y, m, d] = semanaRef.split("-").map(Number);
@@ -47,10 +50,19 @@ export default function RankingCadetes() {
     setSemanaRef(getMonday(date));
   }
 
+  function getPreviousMonday(fecha: string) {
+    const [y, m, d] = fecha.split("-").map(Number);
+    const date = new Date(y, m - 1, d);
+    date.setDate(date.getDate() - 7);
+    return getMonday(date);
+  }
+
   async function loadRankings() {
     if (!zonaSeleccionada) return;
 
     setLoading(true);
+
+    const semanaAnterior = getPreviousMonday(semanaRef);
 
     const { data: semana } = await supabase.rpc("ranking_cadetes_zona", {
       semana_ref: semanaRef,
@@ -64,8 +76,33 @@ export default function RankingCadetes() {
       tipo: "total",
     });
 
+    const { data: penalizaciones } = await supabase.rpc(
+      "penalizaciones_semana",
+      {
+        semana_ref: semanaAnterior,
+        zona: zonaSeleccionada,
+      },
+    );
+
+    const map = new Map();
+    penalizaciones?.forEach((c: any) => {
+      map.set(c.cadete_id, c);
+    });
+
+    const { data: config } = await supabase
+      .from("turnos_config")
+      .select("max_turnos")
+      .eq("zona_id", zonaSeleccionada)
+      .lte("semana", semanaRef)
+      .order("semana", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
     setRankingSemana(semana || []);
     setRankingTotal(total || []);
+    setPenalMap(map);
+    setMaxTurnosBase(config?.max_turnos ?? 0);
+
     setLoading(false);
   }
 
@@ -146,7 +183,8 @@ export default function RankingCadetes() {
           data={rankingSemana}
           loading={loading}
           showTurnos
-          zonaId={zonaSeleccionada}
+          maxTurnosBase={maxTurnosBase}
+          penalMap={penalMap}
         />
 
         <RankingBlock
@@ -154,7 +192,8 @@ export default function RankingCadetes() {
           icon="🏆"
           data={rankingTotal}
           loading={loading}
-          zonaId={zonaSeleccionada}
+          maxTurnosBase={maxTurnosBase}
+          penalMap={penalMap}
         />
       </div>
 
@@ -164,55 +203,44 @@ export default function RankingCadetes() {
         extra={`Semana: ${semanaRef}`}
         data={rankingSemana}
         showTurnos
-        zonaId={zonaSeleccionada}
+        maxTurnosBase={maxTurnosBase}
+        penalMap={penalMap}
       />
 
       <ExportBlock
         refProp={exportTotalRef}
         title="Ranking Histórico"
         data={rankingTotal}
-        zonaId={zonaSeleccionada}
+        maxTurnosBase={maxTurnosBase}
+        penalMap={penalMap}
       />
     </div>
   );
 }
 
-/* ===== CÁLCULO DE TURNOS ===== */
+/* ===== CÁLCULO ===== */
 
-function getMaxTurnos(pos: number, cadete: CadeteRanking) {
-  const turnosCategoria = [10, 8, 6];
+function calcularTurnos(cadete: any, base: number) {
+  const penalizacion =
+    (cadete.faltas ?? cadete.falta ?? 0) * 3 +
+    (cadete.llegadas_tarde ?? 0) +
+    (cadete.tardanza_pedido ?? 0) +
+    (cadete.activacion_tardia ?? 0);
 
-  let categoriaBase = 0;
-
-  if (pos <= 4) categoriaBase = 0;
-  else if (pos <= 9) categoriaBase = 1;
-  else categoriaBase = 2;
-
-  const faltas = cadete.faltas ?? cadete.falta ?? 0;
-  const llegadasTarde = cadete.llegadas_tarde ?? 0;
-  const tardanzaPedido = cadete.tardanza_pedido ?? 0;
-  const activacionTardia = cadete.activacion_tardia ?? 0;
-
-  let penalizacion = 0;
-
-  
-  penalizacion += faltas * 3;
-
-  
-  penalizacion += llegadasTarde;
-  penalizacion += tardanzaPedido;
-  penalizacion += activacionTardia;
-
-  let categoriaFinal = categoriaBase + penalizacion;
-
-  if (categoriaFinal > 2) categoriaFinal = 2;
-
-  return turnosCategoria[categoriaFinal];
+  return Math.max(0, base - penalizacion);
 }
 
 /* ===== COMPONENTES ===== */
 
-function RankingBlock({ title, icon, data, loading, showTurnos, zonaId }: any) {
+function RankingBlock({
+  title,
+  icon,
+  data,
+  loading,
+  showTurnos,
+  maxTurnosBase,
+  penalMap,
+}: any) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -224,23 +252,35 @@ function RankingBlock({ title, icon, data, loading, showTurnos, zonaId }: any) {
         <p>Cargando ranking…</p>
       ) : (
         <div>
-          {data.map((c: any, i: number) => (
-            <RankingRow
-              key={c.id || c.cadete_id || i}
-              cadete={c}
-              pos={i + 1}
-              showTurnos={showTurnos}
-              zonaId={zonaId}
-            />
-          ))}
+          {[...data]
+            .sort((a: any, b: any) => {
+              const penalA = penalMap.get(a.cadete_id) || {};
+              const penalB = penalMap.get(b.cadete_id) || {};
+
+              const turnosA = calcularTurnos(penalA, maxTurnosBase);
+              const turnosB = calcularTurnos(penalB, maxTurnosBase);
+
+              return turnosB - turnosA; // 🔥 mayor a menor
+            })
+            .map((c: any, i: number) => (
+              <RankingRow
+                key={c.id || c.cadete_id || i}
+                cadete={c}
+                pos={i + 1}
+                showTurnos={showTurnos}
+                maxTurnosBase={maxTurnosBase}
+                penalMap={penalMap}
+              />
+            ))}
         </div>
       )}
     </div>
   );
 }
 
-function RankingRow({ cadete, pos, showTurnos }: any) {
-  const maxTurnos = getMaxTurnos(pos, cadete);
+function RankingRow({ cadete, pos, showTurnos, maxTurnosBase, penalMap }: any) {
+  const penal = penalMap.get(cadete.cadete_id) || {};
+  const maxTurnos = calcularTurnos(penal, maxTurnosBase);
 
   const totalTurnos = cadete.total_turnos ?? cadete.turnos ?? 0;
 
@@ -260,14 +300,23 @@ function RankingRow({ cadete, pos, showTurnos }: any) {
   );
 }
 
-function ExportBlock({ refProp, title, extra, data, showTurnos }: any) {
+function ExportBlock({
+  refProp,
+  title,
+  extra,
+  data,
+  showTurnos,
+  maxTurnosBase,
+  penalMap,
+}: any) {
   return (
     <div ref={refProp} className={styles.exportHidden}>
       <h2>{title}</h2>
       {extra && <p>{extra}</p>}
 
       {data.map((c: any, i: number) => {
-        const maxTurnos = getMaxTurnos(i + 1, c);
+        const penal = penalMap.get(c.cadete_id) || {};
+        const maxTurnos = calcularTurnos(penal, maxTurnosBase);
         const totalTurnos = c.total_turnos ?? c.turnos ?? 0;
 
         return (

@@ -90,8 +90,13 @@ export default function WeeklyBoard({ semanaRef, setSemanaRef }: any) {
     }
   }
 
-  const dias = Object.keys(dayStats).map((fechaISO) => {
-    const d = new Date(fechaISO + "T00:00:00");
+  // ✅ FIX REAL ACÁ (NO usar toISOString)
+  const dias = Array.from({ length: 7 }).map((_, i) => {
+    const base = new Date(semanaRef);
+    const d = new Date(base);
+    d.setDate(base.getDate() + i);
+
+    const fechaISO = d.toLocaleDateString("sv-SE"); // 🔥 clave
     const hoy = new Date().toLocaleDateString("sv-SE");
 
     return {
@@ -102,7 +107,7 @@ export default function WeeklyBoard({ semanaRef, setSemanaRef }: any) {
         month: "short",
       }),
       isToday: fechaISO === hoy,
-      stats: dayStats[fechaISO],
+      stats: dayStats[fechaISO] || null,
     };
   });
 
