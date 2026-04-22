@@ -13,15 +13,11 @@ type CadeteRanking = {
   id?: string;
   cadete_id?: string;
   nombre: string;
-
   efectividad: number;
-
   total_turnos?: number;
   turnos?: number;
-
   faltas?: number;
   falta?: number;
-
   llegadas_tarde?: number;
   tardanza_pedido?: number;
   activacion_tardia?: number;
@@ -31,13 +27,11 @@ export default function RankingCadetes() {
   const supabase = createClient();
   const { zonaSeleccionada } = useZona();
 
-  const exportSemanaRef = useRef<HTMLDivElement>(null);
-  const exportTotalRef = useRef<HTMLDivElement>(null);
+  const exportRef = useRef<HTMLDivElement>(null);
+  const [exportando, setExportando] = useState(false);
 
   const [rankingSemana, setRankingSemana] = useState<CadeteRanking[]>([]);
-  const [rankingTotal, setRankingTotal] = useState<CadeteRanking[]>([]);
   const [penalMap, setPenalMap] = useState<Map<string, any>>(new Map());
-
   const [loading, setLoading] = useState(false);
 
   const [semanaRef, setSemanaRef] = useState(getMonday(new Date()));
@@ -70,12 +64,6 @@ export default function RankingCadetes() {
       tipo: "semana",
     });
 
-    const { data: total } = await supabase.rpc("ranking_cadetes_zona", {
-      semana_ref: null,
-      zona: zonaSeleccionada,
-      tipo: "total",
-    });
-
     const { data: penalizaciones } = await supabase.rpc(
       "penalizaciones_semana",
       {
@@ -93,15 +81,13 @@ export default function RankingCadetes() {
       .from("turnos_config")
       .select("max_turnos")
       .eq("zona_id", zonaSeleccionada)
-      .lte("semana", semanaRef)
       .order("semana", { ascending: false })
       .limit(1)
       .maybeSingle();
 
     setRankingSemana(semana || []);
-    setRankingTotal(total || []);
     setPenalMap(map);
-    setMaxTurnosBase(config?.max_turnos ?? 0);
+    setMaxTurnosBase(Number(config?.max_turnos || 0));
 
     setLoading(false);
   }
@@ -110,115 +96,172 @@ export default function RankingCadetes() {
     loadRankings();
   }, [semanaRef, zonaSeleccionada]);
 
-  async function exportar(ref: any, nombre: string) {
-    if (!ref.current) return;
+  async function exportar() {
+    if (!exportRef.current || exportando) return;
 
-    const canvas = await html2canvas(ref.current, {
-      scale: 2,
-      backgroundColor: "#ffffff",
-      allowTaint: true,
-      useCORS: true,
-      logging: false,
-    });
+    setExportando(true);
 
-    const link = document.createElement("a");
-    link.download = nombre;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+    try {
+      const original = exportRef.current;
+
+      // 🔥 CLON REAL
+      const clone = original.cloneNode(true) as HTMLElement;
+
+      // 🔥 CONTENEDOR LIMPIO (CLAVE)
+      const container = document.createElement("div");
+      container.style.position = "absolute";
+      container.style.top = "0";
+      container.style.left = "0";
+      container.style.width = "800px"; // ancho fijo consistente
+      container.style.background = "#ffffff";
+      container.style.zIndex = "-9999";
+
+      // 🔥 RESET TOTAL (evita cortes)
+      clone.style.height = "auto";
+      clone.style.maxHeight = "none";
+      clone.style.overflow = "visible";
+      clone.style.position = "static";
+
+      container.appendChild(clone);
+      document.body.appendChild(container);
+
+      await new Promise((r) => setTimeout(r, 100));
+
+      const canvas = await html2canvas(clone, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+        useCORS: true,
+      });
+
+      document.body.removeChild(container);
+
+      const link = document.createElement("a");
+      const fecha = new Date(semanaRef)
+        .toLocaleDateString("es-AR")
+        .replace(/\//g, "-");
+
+      link.download = `ranking-${fecha}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch (error) {
+      console.error(error);
+      alert("Error exportando");
+    } finally {
+      setExportando(false);
+    }
   }
+
+  const sortedData = [...rankingSemana].sort((a: any, b: any) => {
+    const ta = calcularTurnos(penalMap.get(a.cadete_id) || {}, maxTurnosBase);
+    const tb = calcularTurnos(penalMap.get(b.cadete_id) || {}, maxTurnosBase);
+    return tb - ta;
+  });
 
   return (
     <div className={styles.pageContainer}>
       <div className={styles.weekNav}>
-        <button onClick={() => changeWeek(-1)} className={styles.navBtn}>
-          ←
-        </button>
-
-        <div className={styles.weekInfo}>
-          <span className={styles.weekLabel}>Semana</span>
-          <strong className={styles.weekDate}>
-            {new Date(semanaRef).toLocaleDateString("es-AR", {
-              day: "numeric",
-              month: "short",
-            })}
-          </strong>
-        </div>
-
-        <button onClick={() => changeWeek(1)} className={styles.navBtn}>
-          →
-        </button>
-
-        <button
-          onClick={() => setSemanaRef(getMonday(new Date()))}
-          className={styles.todayBtn}
-        >
-          Hoy
-        </button>
+        <button onClick={() => changeWeek(-1)}>←</button>
+        <strong>
+          {new Date(semanaRef).toLocaleDateString("es-AR", {
+            day: "numeric",
+            month: "short",
+          })}
+        </strong>
+        <button onClick={() => changeWeek(1)}>→</button>
       </div>
 
       <div className={styles.exportButtons}>
-        <button
-          onClick={() =>
-            exportar(exportSemanaRef, `ranking-${zonaSeleccionada}-semana.png`)
-          }
-          className={styles.exportBtn}
-        >
-          📸 Semana
-        </button>
-
-        <button
-          onClick={() =>
-            exportar(exportTotalRef, `ranking-${zonaSeleccionada}-total.png`)
-          }
-          className={styles.exportBtn}
-        >
-          📸 Histórico
+        <button onClick={exportar} disabled={exportando}>
+          {exportando ? "⏳ Exportando..." : "📸 Exportar"}
         </button>
       </div>
 
-      <div className={styles.rankingGrid}>
-        <RankingBlock
-          title="Esta Semana"
-          icon="📅"
-          data={rankingSemana}
-          loading={loading}
-          showTurnos
-          maxTurnosBase={maxTurnosBase}
-          penalMap={penalMap}
-        />
+      {loading ? (
+        <div className={styles.loadingState}>Cargando ranking...</div>
+      ) : (
+        <div ref={exportRef} className={styles.exportContainer}>
+          <div className={styles.rankingTitle}>Ranking de Cadetes</div>
+          <div className={styles.rankingSubtitle}>
+            Semana del {new Date(semanaRef).toLocaleDateString("es-AR")} |
+            Máximo: {maxTurnosBase} turnos
+          </div>
 
-        <RankingBlock
-          title="Histórico"
-          icon="🏆"
-          data={rankingTotal}
-          loading={loading}
-          maxTurnosBase={maxTurnosBase}
-          penalMap={penalMap}
-        />
-      </div>
+          <div className={styles.rankingList}>
+            {sortedData.map((c: any, i: number) => {
+              const penal = penalMap.get(c.cadete_id) || {};
+              const maxTurnos = calcularTurnos(penal, maxTurnosBase);
 
-      <ExportBlock
-        refProp={exportSemanaRef}
-        title="Ranking Semanal"
-        extra={`Semana: ${semanaRef}`}
-        data={rankingSemana}
-        showTurnos
-        maxTurnosBase={maxTurnosBase}
-        penalMap={penalMap}
-      />
+              const alcanzoMaximo = maxTurnos === maxTurnosBase;
+              const claseRendimiento = alcanzoMaximo
+                ? styles.perfecto
+                : styles.bajo;
+              const claseTurnos = alcanzoMaximo ? styles.perfecto : styles.bajo;
 
-      <ExportBlock
-        refProp={exportTotalRef}
-        title="Ranking Histórico"
-        data={rankingTotal}
-        maxTurnosBase={maxTurnosBase}
-        penalMap={penalMap}
-      />
+              const faltas = penal.faltas ?? penal.falta ?? 0;
+              const llegadasTarde = penal.llegadas_tarde ?? 0;
+              const tardanzaPedido = penal.tardanza_pedido ?? 0;
+
+              return (
+                <div
+                  key={c.cadete_id || i}
+                  className={`${styles.rankingItem} ${claseRendimiento}`}
+                >
+                  <div className={styles.position}>
+                    {i === 0
+                      ? "🥇"
+                      : i === 1
+                        ? "🥈"
+                        : i === 2
+                          ? "🥉"
+                          : `${i + 1}°`}
+                  </div>
+
+                  <div className={styles.cadeteInfo}>
+                    <div className={styles.cadeteName}>{c.nombre}</div>
+                    {(faltas > 0 ||
+                      llegadasTarde > 0 ||
+                      tardanzaPedido > 0) && (
+                      <div className={styles.cadeteMetrics}>
+                        {faltas > 0 && (
+                          <span className={styles.metric}>
+                            ❌{" "}
+                            <span className={styles.metricValue}>{faltas}</span>
+                          </span>
+                        )}
+                        {llegadasTarde > 0 && (
+                          <span className={styles.metric}>
+                            ⏰{" "}
+                            <span className={styles.metricValue}>
+                              {llegadasTarde}
+                            </span>
+                          </span>
+                        )}
+                        {tardanzaPedido > 0 && (
+                          <span className={styles.metric}>
+                            📦{" "}
+                            <span className={styles.metricValue}>
+                              {tardanzaPedido}
+                            </span>
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={`${styles.turnosValue} ${claseTurnos}`}>
+                    {maxTurnos} / {maxTurnosBase}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-/* ===== CÁLCULO ===== */
+/* ===== LÓGICA ===== */
 
 function calcularTurnos(cadete: any, base: number) {
   const penalizacion =
@@ -228,106 +271,6 @@ function calcularTurnos(cadete: any, base: number) {
     (cadete.activacion_tardia ?? 0);
 
   return Math.max(0, base - penalizacion);
-}
-
-/* ===== COMPONENTES ===== */
-
-function RankingBlock({
-  title,
-  icon,
-  data,
-  loading,
-  showTurnos,
-  maxTurnosBase,
-  penalMap,
-}: any) {
-  return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <span>{icon}</span>
-        <h3>{title}</h3>
-      </div>
-
-      {loading ? (
-        <p>Cargando ranking…</p>
-      ) : (
-        <div>
-          {[...data]
-            .sort((a: any, b: any) => {
-              const penalA = penalMap.get(a.cadete_id) || {};
-              const penalB = penalMap.get(b.cadete_id) || {};
-
-              const turnosA = calcularTurnos(penalA, maxTurnosBase);
-              const turnosB = calcularTurnos(penalB, maxTurnosBase);
-
-              return turnosB - turnosA; // 🔥 mayor a menor
-            })
-            .map((c: any, i: number) => (
-              <RankingRow
-                key={c.id || c.cadete_id || i}
-                cadete={c}
-                pos={i + 1}
-                showTurnos={showTurnos}
-                maxTurnosBase={maxTurnosBase}
-                penalMap={penalMap}
-              />
-            ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function RankingRow({ cadete, pos, showTurnos, maxTurnosBase, penalMap }: any) {
-  const penal = penalMap.get(cadete.cadete_id) || {};
-  const maxTurnos = calcularTurnos(penal, maxTurnosBase);
-
-  const totalTurnos = cadete.total_turnos ?? cadete.turnos ?? 0;
-
-  return (
-    <div className={styles.row}>
-      <span>#{pos}</span>
-      <span>{cadete.nombre}</span>
-      <span>{cadete.efectividad}%</span>
-      <span>{totalTurnos}</span>
-
-      {showTurnos && (
-        <span className={styles.turnosPermitidos}>
-          Puede pedir: <strong>{maxTurnos}</strong>
-        </span>
-      )}
-    </div>
-  );
-}
-
-function ExportBlock({
-  refProp,
-  title,
-  extra,
-  data,
-  showTurnos,
-  maxTurnosBase,
-  penalMap,
-}: any) {
-  return (
-    <div ref={refProp} className={styles.exportHidden}>
-      <h2>{title}</h2>
-      {extra && <p>{extra}</p>}
-
-      {data.map((c: any, i: number) => {
-        const penal = penalMap.get(c.cadete_id) || {};
-        const maxTurnos = calcularTurnos(penal, maxTurnosBase);
-        const totalTurnos = c.total_turnos ?? c.turnos ?? 0;
-
-        return (
-          <div key={`${c.id || c.cadete_id}-${i}`}>
-            {i + 1}. {c.nombre} - {c.efectividad}% ({totalTurnos})
-            {showTurnos && ` | Máx: ${maxTurnos}`}
-          </div>
-        );
-      })}
-    </div>
-  );
 }
 
 function getMonday(date: Date) {

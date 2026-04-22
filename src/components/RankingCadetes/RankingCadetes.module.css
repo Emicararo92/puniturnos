@@ -1,9 +1,9 @@
-/* RankingCadetes.module.css - Mobile First - VERSIÓN CORREGIDA */
+/* RankingCadetes.module.css - Estilo por rendimiento */
 
 .pageContainer {
   width: 100%;
+  background-color: #f5f7fa;
   min-height: 100vh;
-  background-color: #fdfafb;
   padding: 1rem;
 }
 
@@ -11,439 +11,227 @@
 .weekNav {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 1rem;
   background-color: white;
-  padding: 0.75rem;
-  border-radius: 20px;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 8px rgba(34, 57, 90, 0.04);
-  border: 1px solid rgba(34, 57, 90, 0.08);
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e9ecef;
 }
 
-.navBtn {
-  width: 44px;
-  height: 44px;
+.weekNav button {
+  background-color: #f8bbd1;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #22395a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.weekNav button:hover {
+  background-color: #22395a;
+  color: #f8bbd1;
+}
+
+.weekNav strong {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #22395a;
+  background-color: #f8f9fa;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  min-width: 120px;
+  text-align: center;
+}
+
+/* Export buttons */
+.exportButtons {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  justify-content: flex-end;
+}
+
+.exportButtons button {
   background-color: #22395a;
   border: none;
-  border-radius: 16px;
-  color: #fdfafb;
-  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
   font-weight: 500;
+  color: white;
   cursor: pointer;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
+}
+
+.exportButtons button:hover {
+  background-color: #f8bbd1;
+  color: #22395a;
+}
+
+/* Contenedor para exportación - SIN altura máxima ni scroll */
+.exportContainer {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e9ecef;
+  /* IMPORTANTE: Sin max-height, sin overflow hidden */
+}
+
+/* Título del ranking */
+.rankingTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #22395a;
+  margin: 0 0 0.25rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f8bbd1;
+  display: inline-block;
+}
+
+.rankingSubtitle {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+/* Lista de ranking - SIN altura máxima, SIN scroll para exportación */
+.rankingList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  /* IMPORTANTE: Sin max-height, sin overflow-y */
+}
+
+/* Item individual - base */
+.rankingItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
   transition: all 0.2s ease;
-  opacity: 0.9;
+  border: 1px solid transparent;
 }
 
-.navBtn:active {
-  opacity: 1;
-  transform: scale(0.95);
+/* RENDIMIENTO PERFECTO - VERDE */
+.rankingItem.perfecto {
+  background-color: rgba(40, 167, 69, 0.08);
+  border-left: 4px solid #28a745;
 }
 
-.weekInfo {
+/* RENDIMIENTO BAJO - AMARILLO */
+.rankingItem.bajo {
+  background-color: rgba(255, 193, 7, 0.08);
+  border-left: 4px solid #ffc107;
+}
+
+/* Hover efectos */
+.rankingItem.perfecto:hover {
+  background-color: rgba(40, 167, 69, 0.15);
+}
+
+.rankingItem.bajo:hover {
+  background-color: rgba(255, 193, 7, 0.15);
+}
+
+/* Posición */
+.position {
+  width: 45px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #6c757d;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+/* Top 3 - medallas */
+.rankingItem:nth-child(1) .position,
+.rankingItem:nth-child(2) .position,
+.rankingItem:nth-child(3) .position {
+  font-size: 1.3rem;
+}
+
+/* Info del cadete */
+.cadeteInfo {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: rgba(248, 187, 209, 0.1);
-  padding: 0.5rem;
-  border-radius: 16px;
+  gap: 0.25rem;
+  min-width: 0;
 }
 
-.weekLabel {
-  font-size: 0.7rem;
-  color: #22395a;
-  opacity: 0.6;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.weekDate {
+.cadeteName {
   font-size: 0.95rem;
   font-weight: 600;
   color: #22395a;
-}
-
-.todayBtn {
-  padding: 0 1rem;
-  height: 44px;
-  background-color: rgba(248, 187, 209, 0.3);
-  border: 1px solid #22395a;
-  border-radius: 16px;
-  color: #22395a;
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.todayBtn:active {
-  background-color: rgba(248, 187, 209, 0.5);
-}
-
-/* Botones de exportación */
-.exportButtons {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.exportBtn {
-  flex: 1;
-  padding: 0.875rem;
-  background-color: white;
-  border: 1px solid rgba(34, 57, 90, 0.2);
-  border-radius: 16px;
-  color: #22395a;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  opacity: 0.8;
-}
-
-.exportBtn:active {
-  background-color: rgba(34, 57, 90, 0.05);
-  opacity: 1;
-}
-
-/* Grid de rankings */
-.rankingGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.container {
-  background-color: white;
-  border-radius: 24px;
-  padding: 1.5rem 1rem;
-  box-shadow: 0 4px 12px rgba(34, 57, 90, 0.05);
-  border: 1px solid rgba(34, 57, 90, 0.08);
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid rgba(248, 187, 209, 0.5);
-}
-
-.header span {
-  font-size: 1.3rem;
-  opacity: 0.8;
-}
-
-.header h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #22395a;
-  margin: 0;
-  letter-spacing: -0.3px;
-}
-
-/* ===== GRUPOS DE RANKING CON COLORES SUAVES ===== */
-
-/* Grupo T1 - Puestos 1-4 (Prioridad alta) - Verde claro */
-.container > div > :nth-child(-n + 4) {
-  background-color: rgb(137, 245, 137);
-  border-left: 4px solid #70e870;
-  border-radius: 12px;
-  margin-bottom: 0.5rem;
-  padding: 0.75rem;
-  transition: all 0.2s ease;
-}
-
-.container > div > :nth-child(-n + 4) span:first-child {
-  background-color: #70e870;
-  color: #22395a;
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-/* Grupo T2 - Puestos 5-8 (Prioridad media) - Amarillo claro */
-.container > div > :nth-child(n + 5):nth-child(-n + 9) {
-  background-color: rgb(248, 248, 123);
-  border-left: 4px solid #f3f354;
-  border-radius: 12px;
-  margin-bottom: 0.5rem;
-  padding: 0.75rem;
-}
-
-.container > div > :nth-child(n + 5):nth-child(-n + 9) span:first-child {
-  background-color: #fafa6b;
-  color: #22395a;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  font-weight: 500;
-  font-size: 0.85rem;
-}
-
-/* Grupo Resto - Puestos 9+ (Sin prioridad) - Rojo claro */
-.container > div > :nth-child(n + 10) {
-  background-color: rgba(246, 101, 127, 0.784);
-  border-left: 4px solid #ffb6c1;
-  border-radius: 12px;
-  margin-bottom: 0.35rem;
-  padding: 0.7rem;
-}
-
-.container > div > :nth-child(n + 10) span:first-child {
-  color: #22395a;
-  opacity: 0.6;
-  width: 24px;
-  text-align: center;
-  font-weight: 400;
-}
-
-.container > div > :nth-child(9) {
-  margin-bottom: 0.75rem;
-  position: relative;
-}
-
-.container > div > :nth-child(9)::after {
-  content: "";
-  position: absolute;
-  bottom: -0.4rem;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #fafa6b, transparent);
-}
-
-/* Fila de ranking base */
-.row {
-  display: grid;
-  grid-template-columns: 40px 1fr 70px 50px;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-/* Cuando tiene turnos permitidos, agregamos una columna más */
-.row:has(.turnosPermitidos) {
-  grid-template-columns: 40px 1fr 70px 50px 85px;
-}
-
-.row span {
-  color: #22395a;
-  transition: all 0.2s ease;
-}
-
-.row span:first-child {
-  font-weight: 500;
-  text-align: center;
-}
-
-.row span:nth-child(2) {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-weight: 500;
 }
 
-.row span:nth-child(3) {
-  text-align: center;
-  font-weight: 500;
-  background-color: rgba(34, 57, 90, 0.05);
-  padding: 0.15rem 0.4rem;
-  border-radius: 30px;
-  font-size: 0.9rem;
+/* Métricas */
+.cadeteMetrics {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.7rem;
+  color: #6c757d;
 }
 
-.row span:nth-child(4) {
-  text-align: center;
-  font-weight: 400;
-  color: #22395a;
-  opacity: 0.6;
-  font-size: 0.85rem;
-}
-
-/* Turnos permitidos - NUEVO */
-.turnosPermitidos {
-  text-align: center;
-  font-size: 0.8rem;
-  background-color: #f8bbd1;
-  
-  padding: 0.2rem 0.5rem;
-  border-radius: 30px;
-  color: #22395a;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.turnosPermitidos strong {
-  font-weight: 700;
-  font-size: 0.9rem;
-  margin-left: 0.2rem;
-}
-
-/* Separadores suaves entre grupos */
-.container > div > :nth-child(4) {
-  margin-bottom: 1rem;
-  position: relative;
-}
-
-.container > div > :nth-child(4)::after {
-  content: "";
-  position: absolute;
-  bottom: -0.5rem;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #70e870, transparent);
-}
-
-.container > div > :nth-child(8) {
-  margin-bottom: 0.75rem;
-  position: relative;
-}
-
-.container > div > :nth-child(8)::after {
-  content: "";
-  position: absolute;
-  bottom: -0.4rem;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #fafa6b, transparent);
-}
-
-/* ===== VERSIÓN PARA EXPORTACIÓN CON LOS MISMOS COLORES ===== */
-.exportHidden {
-  position: absolute;
-  left: -9999px;
-  top: -9999px;
-  width: 800px;
-  background-color: white;
-  padding: 2rem;
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(34, 57, 90, 0.15);
-}
-
-.exportHidden h2 {
-  color: #22395a;
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 0 0 0.5rem 0;
-  border-bottom: 3px solid #f8bbd1;
-  padding-bottom: 0.5rem;
-}
-
-.exportHidden p {
-  color: #22395a;
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-  opacity: 0.8;
-  font-weight: 500;
-}
-
-/* Grupo T1 en exportación - Puestos 1-4 - Verde */
-.exportHidden > div:nth-child(3),
-.exportHidden > div:nth-child(4),
-.exportHidden > div:nth-child(5),
-.exportHidden > div:nth-child(6) {
-  background-color: rgb(137, 245, 137);
-  border-left: 6px solid #70e870;
-  padding: 0.75rem 1rem;
-  margin: 0.5rem 0;
-  border-radius: 12px;
-  font-weight: 600;
-}
-
-/* Grupo T2 en exportación - Puestos 5-8 - Amarillo */
-.exportHidden > div:nth-child(7),
-.exportHidden > div:nth-child(8),
-.exportHidden > div:nth-child(9),
-.exportHidden > div:nth-child(10) {
-  background-color: rgb(248, 248, 123);
-  border-left: 6px solid #f3f354;
-  padding: 0.6rem 1rem;
-  margin: 0.4rem 0;
-  border-radius: 12px;
-}
-
-/* Grupo Resto en exportación - Puestos 9+ - Rojo claro */
-.exportHidden > div:nth-child(n + 11) {
-  background-color: rgba(246, 101, 127, 0.784);
-  border-left: 6px solid #ffb6c1;
-  padding: 0.5rem 1rem;
-  margin: 0.3rem 0;
-  border-radius: 12px;
-  opacity: 0.9;
-}
-
-/* Números de posición en exportación */
-.exportHidden > div {
+.metric {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  counter-increment: ranking;
+  gap: 0.2rem;
 }
 
-.exportHidden > div::before {
-  content: counter(ranking) ".";
-  display: inline-block;
-  width: 28px;
-  height: 28px;
-  background-color: #22395a;
-  color: white;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 28px;
+.metricValue {
   font-weight: 600;
-  margin-right: 0.5rem;
+  color: #dc3545;
 }
 
-/* Colores de números por grupo - Verde para T1 */
-.exportHidden > div:nth-child(3)::before,
-.exportHidden > div:nth-child(4)::before,
-.exportHidden > div:nth-child(5)::before,
-.exportHidden > div:nth-child(6)::before {
-  background-color: #70e870;
+/* Valor de turnos */
+.turnosValue {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  min-width: 85px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Perfecto - verde */
+.turnosValue.perfecto {
+  background-color: #28a745;
+  color: white;
+}
+
+/* Bajo - amarillo */
+.turnosValue.bajo {
+  background-color: #ffc107;
   color: #22395a;
 }
 
-/* Colores de números por grupo - Amarillo para T2 */
-.exportHidden > div:nth-child(7)::before,
-.exportHidden > div:nth-child(8)::before,
-.exportHidden > div:nth-child(9)::before,
-.exportHidden > div:nth-child(10)::before {
-  background-color: #fafa6b;
-  color: #22395a;
-}
-
-/* Colores de números por grupo - Rojo para Resto */
-.exportHidden > div:nth-child(n + 11)::before {
-  background-color: #ffb6c1;
-  color: #22395a;
-  opacity: 0.8;
-}
-
-/* Contador reset */
-.exportHidden {
-  counter-reset: ranking;
+/* Loading state */
+.loadingState {
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+  font-size: 0.9rem;
+  background-color: white;
+  border-radius: 12px;
 }
 
 /* Desktop */
@@ -455,80 +243,114 @@
   }
 
   .weekNav {
-    max-width: 400px;
-    margin-bottom: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    margin-bottom: 2rem;
   }
 
-  .navBtn:hover {
-    opacity: 1;
-    background-color: #1a2d47;
-    transform: translateY(-2px);
+  .weekNav button {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
   }
 
-  .todayBtn:hover {
-    background-color: rgba(248, 187, 209, 0.4);
-    transform: translateY(-2px);
+  .weekNav strong {
+    font-size: 1.1rem;
+    padding: 0.5rem 1.5rem;
   }
 
-  .exportButtons {
-    max-width: 350px;
+  .exportContainer {
+    padding: 2rem;
   }
 
-  .exportBtn:hover {
-    background-color: rgba(34, 57, 90, 0.1);
-    border-color: #22395a;
-    transform: translateY(-2px);
+  .rankingTitle {
+    font-size: 1.5rem;
   }
 
-  .rankingGrid {
-    flex-direction: row;
-    gap: 2rem;
+  .rankingSubtitle {
+    font-size: 0.85rem;
   }
 
-  .container {
-    flex: 1;
-    padding: 1.5rem;
+  .rankingItem {
+    padding: 0.85rem 1rem;
+    gap: 1.2rem;
   }
 
-  .row {
-    cursor: default;
+  .position {
+    width: 55px;
+    font-size: 1rem;
   }
 
-  /* En desktop, cuando tiene turnos permitidos */
-  .row:has(.turnosPermitidos) {
-    grid-template-columns: 40px 1fr 70px 50px 95px;
+  .cadeteName {
+    font-size: 1rem;
   }
 
-  /* Hover effects suaves */
-  .container > div > :nth-child(-n + 4):hover {
-    background-color: rgb(157, 245, 157);
-    transform: translateX(3px);
-  }
-
-  .container > div > :nth-child(n + 5):nth-child(-n + 9):hover {
-    background-color: rgb(248, 248, 143);
-    transform: translateX(3px);
-  }
-
-  .container > div > :nth-child(n + 9):hover {
-    background-color: rgba(246, 121, 147, 0.884);
-    transform: translateX(2px);
+  .turnosValue {
+    padding: 0.4rem 1rem;
+    font-size: 1rem;
+    min-width: 95px;
   }
 }
 
-/* Mobile ajustes */
-@media (max-width: 480px) {
-  .row:has(.turnosPermitidos) {
-    grid-template-columns: 40px 1fr 70px 50px 80px;
-    gap: 0.3rem;
+/* Estilos para exportación/impresión */
+@media print {
+  .weekNav,
+  .exportButtons {
+    display: none;
   }
 
-  .turnosPermitidos {
-    font-size: 0.7rem;
-    padding: 0.15rem 0.3rem;
+  .pageContainer {
+    padding: 0;
+    margin: 0;
+    background-color: white;
   }
 
-  .turnosPermitidos strong {
-    font-size: 0.8rem;
+  .exportContainer {
+    box-shadow: none;
+    border: none;
+    padding: 0;
   }
+
+  .rankingItem {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .rankingList {
+    max-height: none;
+    overflow: visible;
+  }
+
+  /* Mantener colores en print */
+  .rankingItem.perfecto {
+    background-color: rgba(40, 167, 69, 0.1);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .rankingItem.bajo {
+    background-color: rgba(255, 193, 7, 0.1);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .turnosValue.perfecto,
+  .turnosValue.bajo {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+.pageContainer {
+  min-height: auto;
+}
+
+.exportContainer {
+  min-height: auto !important;
+}
+
+.exportContainer .cadeteName {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  word-break: break-word;
 }

@@ -1,0 +1,194 @@
+/* ConfigTurnos.module.css - Mobile First */
+
+.container {
+  width: 100%;
+  background-color: #fdfafb;
+  padding: 1rem;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #22395a;
+  margin: 0 0 1.5rem 0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(34, 57, 90, 0.1);
+}
+
+/* Navegación de semanas */
+.weekNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 50px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(34, 57, 90, 0.08);
+  border: 1px solid rgba(34, 57, 90, 0.05);
+}
+
+.navButton {
+  background-color: #f8bbd1;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #22395a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navButton:hover {
+  background-color: #22395a;
+  color: #f8bbd1;
+  transform: scale(1.05);
+}
+
+.weekDate {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #22395a;
+  background-color: rgba(248, 187, 209, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 40px;
+}
+
+/* Info destacada */
+.infoBox {
+  background-color: white;
+  border-radius: 20px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(34, 57, 90, 0.05);
+  box-shadow: 0 2px 8px rgba(34, 57, 90, 0.08);
+  color: #22395a;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Grupo de formulario */
+.formGroup {
+  background-color: white;
+  border-radius: 20px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(34, 57, 90, 0.05);
+  box-shadow: 0 2px 8px rgba(34, 57, 90, 0.08);
+}
+
+.label {
+  display: block;
+  font-weight: 600;
+  color: #22395a;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid rgba(34, 57, 90, 0.2);
+  border-radius: 30px;
+  background-color: #fdfafb;
+  transition: all 0.2s ease;
+  color: #22395a;
+  font-weight: 500;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #f8bbd1;
+  box-shadow: 0 0 0 3px rgba(248, 187, 209, 0.3);
+}
+
+/* Botón guardar */
+.saveButton {
+  width: 100%;
+  background: linear-gradient(135deg, #f8bbd1, #ffd9e8);
+  border: 1px solid rgba(34, 57, 90, 0.1);
+  padding: 0.85rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #22395a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(34, 57, 90, 0.08);
+}
+
+.saveButton:hover:not(:disabled) {
+  background: #f8bbd1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 57, 90, 0.12);
+  border-color: #22395a;
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Desktop - CON MARGEN PARA NAVBAR */
+@media (min-width: 1024px) {
+  .container {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    padding: 2rem;
+  }
+
+  .title {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+  }
+
+  .weekNav {
+    padding: 0.5rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .navButton {
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+  }
+
+  .weekDate {
+    font-size: 1.1rem;
+    padding: 0.5rem 1.5rem;
+  }
+
+  .infoBox {
+    font-size: 1rem;
+    padding: 1.25rem;
+  }
+
+  .formGroup {
+    padding: 1.5rem;
+  }
+
+  .label {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .input {
+    padding: 0.85rem 1.25rem;
+    font-size: 1.05rem;
+  }
+
+  .saveButton {
+    padding: 1rem;
+    font-size: 1.05rem;
+    width: auto;
+    min-width: 200px;
+    display: block;
+    margin: 0 auto;
+  }
+}

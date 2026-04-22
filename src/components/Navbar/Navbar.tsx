@@ -83,6 +83,14 @@ export default function Navbar() {
           Puners
         </Link>
 
+        <Link
+          href="/config"
+          className={styles.navLink}
+          onClick={() => setIsOpen(false)}
+        >
+          Configuración
+        </Link>
+
         <button
           onClick={() => {
             logout();
