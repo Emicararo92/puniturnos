@@ -90,13 +90,21 @@ export default function WeeklyBoard({ semanaRef, setSemanaRef }: any) {
     }
   }
 
-  // ✅ FIX REAL ACÁ (NO usar toISOString)
+  // ✅ LUNES → DOMINGO (FIX)
   const dias = Array.from({ length: 7 }).map((_, i) => {
-    const base = new Date(semanaRef);
+    const raw = new Date(semanaRef + "T00:00:00");
+
+    // 🔥 FORZAR LUNES SIEMPRE
+    const day = raw.getDay();
+    const diff = raw.getDate() - day + (day === 0 ? -6 : 1);
+
+    const base = new Date(raw);
+    base.setDate(diff);
+
     const d = new Date(base);
     d.setDate(base.getDate() + i);
 
-    const fechaISO = d.toLocaleDateString("sv-SE"); // 🔥 clave
+    const fechaISO = d.toLocaleDateString("sv-SE");
     const hoy = new Date().toLocaleDateString("sv-SE");
 
     return {
