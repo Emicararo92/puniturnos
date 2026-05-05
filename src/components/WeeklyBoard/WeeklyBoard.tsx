@@ -126,11 +126,20 @@ export default function WeeklyBoard({ semanaRef, setSemanaRef }: any) {
 
         <strong>
           Semana del{" "}
-          {new Date(semanaRef).toLocaleDateString("es-AR", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })}
+          {(() => {
+            const raw = new Date(semanaRef + "T00:00:00");
+            const day = raw.getDay();
+            const diff = raw.getDate() - day + (day === 0 ? -6 : 1);
+
+            const monday = new Date(raw);
+            monday.setDate(diff);
+
+            return monday.toLocaleDateString("es-AR", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            });
+          })()}
         </strong>
 
         <div>
