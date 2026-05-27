@@ -30,7 +30,7 @@ export default function Navbar() {
         </Link>
       </div>
       <select
-        value={zonaSeleccionada}
+        value={zonaSeleccionada || ""}
         onChange={(e) => cambiarZona(e.target.value)}
         className={styles.zonaSelect}
       >
