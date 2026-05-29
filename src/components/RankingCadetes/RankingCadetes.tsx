@@ -72,10 +72,23 @@ export default function RankingCadetes() {
       },
     );
 
+    console.log("PENALIZACIONES", penalizaciones);
+
     const map = new Map();
+
     penalizaciones?.forEach((c: any) => {
-      map.set(c.cadete_id, c);
+      // 🔥 Evita registros inválidos
+      if (!c?.cadete_id) return;
+
+      map.set(c.cadete_id, {
+        faltas: Number(c.faltas ?? c.falta ?? 0),
+        llegadas_tarde: Number(c.llegadas_tarde ?? 0),
+        tardanza_pedido: Number(c.tardanza_pedido ?? 0),
+        activacion_tardia: Number(c.activacion_tardia ?? 0),
+      });
     });
+
+    console.log("PENAL MAP", map);
 
     const { data: config } = await supabase
       .from("turnos_config")
