@@ -41,12 +41,16 @@ export default function AssignCadeteModal({
   }, [open, zonaSeleccionada]);
 
   async function loadCadetes() {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("cadetes")
-      .select("id,nombre")
+      .select("id,nombre,zona_id")
       .eq("activo", true)
-      .eq("zona_id", zonaSeleccionada) // ← filtro zona
+      .eq("zona_id", zonaSeleccionada)
       .order("nombre");
+
+    console.log("ZONA SELECCIONADA", zonaSeleccionada);
+    console.log("CADETES", data);
+    console.log("ERROR CADETES", error);
 
     setCadetes(data || []);
   }
@@ -65,7 +69,7 @@ export default function AssignCadeteModal({
       cadete_id: cadeteId,
       fecha,
       estado: "asignado",
-      zona_id: zonaSeleccionada, // ← guardar zona
+      zona_id: zonaSeleccionada,
     }));
 
     const { error } = await supabase
@@ -75,8 +79,10 @@ export default function AssignCadeteModal({
       });
 
     if (error) {
-      console.error(error);
-      alert("Error asignando cadetes");
+      console.error("ERROR ASIGNANDO", error);
+
+      alert(`${error.message}\n${error.details ?? ""}\n${error.hint ?? ""}`);
+
       return;
     }
 
@@ -97,16 +103,27 @@ export default function AssignCadeteModal({
 
         <div className={styles.content}>
           <div className={styles.list}>
-            {cadetes.map((c) => (
-              <label key={c.id} className={styles.item}>
-                <input
-                  type="checkbox"
-                  checked={selected.includes(c.id)}
-                  onChange={() => toggle(c.id)}
-                />
-                <span className={styles.itemName}>{c.nombre}</span>
-              </label>
-            ))}
+            {cadetes.length === 0 ? (
+              <div
+                style={{
+                  padding: "20px",
+                  textAlign: "center",
+                }}
+              >
+                No hay cadetes para esta zona
+              </div>
+            ) : (
+              cadetes.map((c) => (
+                <label key={c.id} className={styles.item}>
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(c.id)}
+                    onChange={() => toggle(c.id)}
+                  />
+                  <span className={styles.itemName}>{c.nombre}</span>
+                </label>
+              ))
+            )}
           </div>
         </div>
 
